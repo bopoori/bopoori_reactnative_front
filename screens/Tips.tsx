@@ -1,12 +1,21 @@
 import React from "react";
-import { Text, View } from "react-native";
+import styled from "styled-components/native";
 
 const Tips: React.FC = () => {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Container>
       <Text>Tips</Text>
-    </View>
+    </Container>
   );
 };
+
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const Text = styled.Text`
+  color: ${({ theme }) => theme.textColor};
+`;
 
 export default Tips;
