@@ -21,7 +21,7 @@ const Login: React.FC = () => {
       </Header>
       <Btns>
         <LoginBtn
-          backgroundColor="#333"
+          backgroundColor="#000"
           textColor="#fff"
           text="Apple로 로그인"
         />
@@ -47,6 +47,7 @@ const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  background-color: ${({ theme }) => theme.bgColor};
 `;
 const Header = styled.View`
   height: ${WINDOW_HEIGHT / 2}px;
@@ -61,6 +62,8 @@ const PassBtn = styled.TouchableOpacity`
   padding: 16px;
   align-items: center;
 `;
-const Text = styled.Text``;
+const Text = styled.Text`
+  color: ${({ theme }) => theme.textColor};
+`;
 
 export default Login;
