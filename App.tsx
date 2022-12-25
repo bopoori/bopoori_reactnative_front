@@ -13,9 +13,8 @@ import { ThemeProvider } from "styled-components/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useColorScheme } from "react-native";
 import { darkTheme, lightTheme } from "./styles/theme";
-import Login from "./screens/Login";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { loginAtom } from "./utils/recoil";
 
 SplashScreen.preventAutoHideAsync();
@@ -23,9 +22,9 @@ SplashScreen.preventAutoHideAsync();
 export default function App() {
   const queryClient = new QueryClient();
   const isDark = useColorScheme() === "dark";
+  const setIsLoggedIn = useSetRecoilState(loginAtom);
 
   const [appIsReady, setAppIsReady] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginAtom);
 
   useEffect(() => {
     const prepare = async () => {
@@ -67,7 +66,7 @@ export default function App() {
             onReady={onLayoutRootView}
             theme={isDark ? DarkTheme : DefaultTheme}
           >
-            {isLoggedIn ? <Root /> : <Login />}
+            <Root />
             <StatusBar style="auto" />
           </NavigationContainer>
         </ThemeProvider>

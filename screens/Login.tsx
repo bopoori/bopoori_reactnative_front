@@ -1,18 +1,27 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useLayoutEffect } from "react";
 import { Dimensions } from "react-native";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components/native";
 import LoginBtn from "../components/LoginBtn";
 import { loginAtom } from "../utils/recoil";
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 
 const Login: React.FC = () => {
-  const setIsLoggedIn = useSetRecoilState(loginAtom);
+  const { navigate } = useNavigation();
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginAtom);
   const onPassPress = () => {
     AsyncStorage.setItem("login", "pass");
     setIsLoggedIn(true);
   };
+
+  useLayoutEffect(() => {
+    if (isLoggedIn) {
+      // @ts-ignore
+      navigate("Tabs", { screen: "Home" });
+    }
+  }, [isLoggedIn]);
 
   return (
     <Container>
