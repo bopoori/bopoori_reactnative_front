@@ -8,7 +8,7 @@ import Tips from "../screens/Tips";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs: React.FC = () => {
   return (
     <Tab.Navigator
       screenOptions={{ tabBarShowLabel: false, unmountOnBlur: true }}
