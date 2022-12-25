@@ -5,7 +5,10 @@ import styled from "styled-components/native";
 
 const Closet: React.FC = () => {
   const { navigate } = useNavigation();
-  const pickNextDress = () => navigate("Stack", { screen: "PickNextDress" });
+  const pickNextDress = () => {
+    // @ts-ignore
+    navigate("Stack", { screen: "PickNextDress" });
+  };
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Button onPress={pickNextDress}>
