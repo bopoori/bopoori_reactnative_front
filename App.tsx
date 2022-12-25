@@ -1,21 +1,60 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useCallback, useEffect, useState } from "react";
+import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font";
+import { MaterialIcons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
+import Root from "./navigation/Root";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { ThemeProvider } from "styled-components/native";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useColorScheme } from "react-native";
+import { darkTheme, lightTheme } from "./styles/theme";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const queryClient = new QueryClient();
+  const isDark = useColorScheme() === "dark";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  const [appIsReady, setAppIsReady] = useState(false);
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await Font.loadAsync(MaterialIcons.font);
+      } catch {
+        console.error;
+      } finally {
+        setAppIsReady(true);
+      }
+    };
+    prepare();
+  }, []);
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  } else {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+          <NavigationContainer
+            onReady={onLayoutRootView}
+            theme={isDark ? DarkTheme : DefaultTheme}
+          >
+            <Root />
+            <StatusBar style="auto" />
+          </NavigationContainer>
+        </ThemeProvider>
+      </QueryClientProvider>
+    );
+  }
+}
