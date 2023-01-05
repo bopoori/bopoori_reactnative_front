@@ -7,15 +7,17 @@ interface LoginBtnProps {
   backgroundColor: string;
   textColor: string;
   text: string;
+  onPress: any;
 }
 
 const LoginBtn: React.FC<LoginBtnProps> = ({
   backgroundColor,
   textColor,
   text,
+  onPress,
 }) => {
   return (
-    <Btn backgroundColor={backgroundColor}>
+    <Btn backgroundColor={backgroundColor} onPress={onPress}>
       <Text textColor={textColor}>{text}</Text>
     </Btn>
   );
