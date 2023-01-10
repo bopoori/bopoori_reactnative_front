@@ -14,9 +14,8 @@ const Closet: React.FC = () => {
   const showModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
   const onOptionPressed = (option: optionType) => {
-    console.log(option);
     // setSelectedOption(option);
-    // closeModal();
+    closeModal();
   };
   return (
     <Container>
