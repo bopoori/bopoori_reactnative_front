@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
 import Root from "./navigation/Root";
 import {
@@ -30,6 +30,7 @@ export default function App() {
     const prepare = async () => {
       try {
         await Font.loadAsync(MaterialCommunityIcons.font);
+        await Font.loadAsync(Ionicons.font);
       } catch {
         console.error;
       } finally {
