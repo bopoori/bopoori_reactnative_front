@@ -1,59 +1,52 @@
 import React from "react";
-import Home from "../screens/Home";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { BottomNavigation, Text } from "react-native-paper";
 import Closet from "../screens/Closet";
+import Home from "../screens/Home";
 import My from "../screens/My";
 import Tips from "../screens/Tips";
 
-const Tab = createBottomTabNavigator();
+const Tabs = () => {
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    {
+      key: "home",
+      title: "홈",
+      focusedIcon: "home",
+      unfocusedIcon: "home-outline",
+    },
+    {
+      key: "closet",
+      title: "옷장",
+      focusedIcon: "dresser",
+      unfocusedIcon: "dresser-outline",
+    },
+    {
+      key: "tips",
+      title: "팁",
+      focusedIcon: "lightbulb",
+      unfocusedIcon: "lightbulb-outline",
+    },
+    {
+      key: "my",
+      title: "마이",
+      focusedIcon: "account",
+      unfocusedIcon: "account-outline",
+    },
+  ]);
 
-const Tabs: React.FC = () => {
+  const renderScene = BottomNavigation.SceneMap({
+    home: Home,
+    closet: Closet,
+    tips: Tips,
+    my: My,
+  });
+
   return (
-    <Tab.Navigator
-      screenOptions={{ tabBarShowLabel: false, unmountOnBlur: true }}
-    >
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Closet"
-        component={Closet}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="dresser" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Tips"
-        component={Tips}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="lightbulb"
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="My"
-        component={My}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={size} />
-          ),
-        }}
-      />
-    </Tab.Navigator>
+    <BottomNavigation
+      navigationState={{ index, routes }}
+      onIndexChange={setIndex}
+      renderScene={renderScene}
+    />
   );
 };
 
