@@ -1,5 +1,5 @@
+import styled from "styled-components/native";
 import { useNavigation } from "@react-navigation/native";
-import { HStack, Pressable, Text } from "native-base";
 
 const ClosetTitle = () => {
   const { navigate } = useNavigation();
@@ -8,28 +8,27 @@ const ClosetTitle = () => {
     navigate("Stack", { screen: "PickNextDress" });
   };
   return (
-    <Pressable onPress={pickNextDress}>
-      {({ isPressed }) => {
-        return (
-          <HStack
-            p="4"
-            rounded="md"
-            bg="muted.900"
-            borderRadius="5"
-            justifyContent="space-between"
-            opacity={isPressed ? "0.8" : "1"}
-          >
-            <Text fontSize="md" color="warmGray.100" fontWeight="extrabold">
-              슈퍼힙찔이 님의 옷장
-            </Text>
-            <Text fontSize="md" fontWeight="medium" color="warmGray.100">
-              관리
-            </Text>
-          </HStack>
-        );
-      }}
-    </Pressable>
+    <ClosetTitleBox>
+      <TitleText>슈퍼힙찔이 님의 옷장</TitleText>
+      <ClosetManagementBtn onPress={pickNextDress}>
+        <TitleText>관리</TitleText>
+      </ClosetManagementBtn>
+    </ClosetTitleBox>
   );
 };
+
+const ClosetTitleBox = styled.View`
+  padding: 18px;
+  border-radius: 12px;
+  background-color: ${({ theme }) => theme.textColor};
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+const TitleText = styled.Text`
+  font-weight: bold;
+  color: ${({ theme }) => theme.bgColor};
+`;
+const ClosetManagementBtn = styled.TouchableOpacity``;
 
 export default ClosetTitle;
