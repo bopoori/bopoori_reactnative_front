@@ -16,6 +16,7 @@ import { darkTheme, lightTheme } from "./styles/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSetRecoilState } from "recoil";
 import { loginAtom } from "./utils/recoil";
+import { NativeBaseProvider } from "native-base";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -61,17 +62,19 @@ export default function App() {
     return null;
   } else {
     return (
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-          <NavigationContainer
-            onReady={onLayoutRootView}
-            theme={isDark ? DarkTheme : DefaultTheme}
-          >
-            <Root />
-            <StatusBar style="auto" />
-          </NavigationContainer>
-        </ThemeProvider>
-      </QueryClientProvider>
+      <NativeBaseProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+            <NavigationContainer
+              onReady={onLayoutRootView}
+              theme={isDark ? DarkTheme : DefaultTheme}
+            >
+              <Root />
+              <StatusBar style="auto" />
+            </NavigationContainer>
+          </ThemeProvider>
+        </QueryClientProvider>
+      </NativeBaseProvider>
     );
   }
 }

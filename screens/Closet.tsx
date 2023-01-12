@@ -1,100 +1,77 @@
 import React, { useState } from "react";
-import { Modal, useColorScheme } from "react-native";
-import styled from "styled-components/native";
 import ClosetTitle from "../components/ClosetTitle";
-import { Ionicons } from "@expo/vector-icons";
+import {
+  Box,
+  Button,
+  CheckCircleIcon,
+  ChevronDownIcon,
+  HStack,
+  Pressable,
+  Select,
+  Text,
+  VStack,
+} from "native-base";
 
 type optionType = "카테고리별" | "이러쿵저러쿵별" | "어느새이별";
 const options: optionType[] = ["카테고리별", "이러쿵저러쿵별", "어느새이별"];
 
 const Closet: React.FC = () => {
-  const isDark = useColorScheme() === "dark";
-  const [selectedOption, setSelectedOption] =
-    useState<optionType>("카테고리별");
-  const [modalVisible, setModalVisible] = useState(false);
-  const showModal = () => setModalVisible(true);
-  const closeModal = () => setModalVisible(false);
-  const onOptionPressed = (option: optionType) => {
-    // setSelectedOption(option);
-    closeModal();
-  };
+  const [selectedValue, setSelectedValue] = useState("카테고리별");
   return (
-    <Container>
-      <Modal animationType="fade" transparent visible={modalVisible}>
-        <ModalContainer>
-          <ModalBox>
-            {options.map((option, i) => (
-              <ModalOption
-                key={i}
-                onPress={(option) => onOptionPressed(option)}
-              >
-                <Text>{option}</Text>
-              </ModalOption>
-            ))}
-          </ModalBox>
-          <Overlay onPress={closeModal} />
-        </ModalContainer>
-      </Modal>
+    <VStack space="4" p="4">
       <ClosetTitle />
-      <Sorter>
-        <Text>어떻게 보여드릴까요?</Text>
-        <Select onPress={showModal}>
-          <SelectText>{selectedOption}</SelectText>
-          <Ionicons
-            name="chevron-down"
-            size={18}
-            color={isDark ? "white" : "black"}
-          />
-        </Select>
-      </Sorter>
-    </Container>
+      <HStack alignItems="center" px="4" justifyContent="space-between">
+        <Text color="muted.900">어떻게 보여드릴까요?</Text>
+        <Box minW="150">
+          <Select
+            selectedValue={selectedValue}
+            minWidth="150"
+            accessibilityLabel="정렬 선택"
+            placeholder="정렬 기준 선택"
+            dropdownIcon={<ChevronDownIcon size="3" mr="2" />}
+            _selectedItem={{
+              bg: "muted.200",
+              endIcon: <CheckCircleIcon size="4" mt="1" />,
+            }}
+            mt={1}
+            onValueChange={(option) => setSelectedValue(option)}
+          >
+            {options.map((option, i) => (
+              <Select.Item key={i} label={option} value={option} />
+            ))}
+          </Select>
+        </Box>
+      </HStack>
+      <Box
+        borderColor="muted.900"
+        borderStyle="dashed"
+        borderRadius="lg"
+        // borderWidth="2"
+        minH="2/3"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <VStack></VStack>
+      </Box>
+      <Pressable>
+        {({ isPressed }) => {
+          return (
+            <Box
+              p="3"
+              opacity={isPressed ? "0.8" : "1"}
+              bgColor="muted.900"
+              alignItems="center"
+              borderRadius="md"
+            >
+              <Text fontWeight="bold" color="white">
+                옷장에 옷 넣기
+              </Text>
+            </Box>
+          );
+        }}
+      </Pressable>
+    </VStack>
   );
 };
-
-const Container = styled.View`
-  padding: 22px;
-`;
-const ModalContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-const Overlay = styled.Pressable`
-  position: absolute;
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
-`;
-const ModalBox = styled.View`
-  z-index: 1;
-  width: 300px;
-  background-color: ${({ theme }) => theme.bgColor};
-  border-radius: 8px;
-`;
-const ModalOption = styled.TouchableOpacity`
-  width: 100%;
-  padding: 16px;
-`;
-const Sorter = styled.View`
-  margin-top: 18px;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-`;
-const Text = styled.Text`
-  color: ${({ theme }) => theme.textColor};
-`;
-const Select = styled.TouchableOpacity`
-  align-items: center;
-  flex-direction: row;
-  border: solid 1px ${({ theme }) => theme.textColor};
-  padding: 6px 12px;
-  border-radius: 8px;
-`;
-const SelectText = styled.Text`
-  margin-right: 8px;
-  color: ${({ theme }) => theme.textColor};
-`;
 
 export default Closet;
