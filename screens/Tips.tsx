@@ -1,21 +1,26 @@
 import React from "react";
-import styled from "styled-components/native";
+import { StyleSheet, View } from "react-native";
+import { Appbar, Text } from "react-native-paper";
 
 const Tips: React.FC = () => {
   return (
-    <Container>
-      <Text>Tips</Text>
-    </Container>
+    <>
+      <Appbar.Header>
+        <Appbar.Content title="Tips" />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <Text>Tips</Text>
+      </View>
+    </>
   );
 };
 
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-const Text = styled.Text`
-  color: ${({ theme }) => theme.textColor};
-`;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Tips;

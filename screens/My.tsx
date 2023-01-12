@@ -4,6 +4,8 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components/native";
 import { loginAtom } from "../utils/recoil";
+import { StyleSheet, View } from "react-native";
+import { Appbar, Button } from "react-native-paper";
 
 const My: React.FC = () => {
   const { navigate } = useNavigation();
@@ -15,24 +17,25 @@ const My: React.FC = () => {
     navigate("Login");
   };
   return (
-    <Container>
-      <Logout onPress={onLogoutPress}>
-        <Text>로그아웃</Text>
-      </Logout>
-    </Container>
+    <>
+      <Appbar.Header>
+        <Appbar.Content title="My" />
+      </Appbar.Header>
+      <View style={styles.container}>
+        <Button onPress={onLogoutPress} mode="contained">
+          로그아웃
+        </Button>
+      </View>
+    </>
   );
 };
 
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-const Logout = styled.TouchableOpacity`
-  padding: 20px;
-`;
-const Text = styled.Text`
-  color: ${({ theme }) => theme.textColor};
-`;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default My;
