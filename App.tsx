@@ -1,4 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { AppRegistry } from "react-native";
+import { Provider as PaperProvider } from "react-native-paper";
+import { name as appName } from "./app.json";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
@@ -67,11 +70,15 @@ export default function App() {
             onReady={onLayoutRootView}
             theme={isDark ? DarkTheme : DefaultTheme}
           >
-            <Root />
-            <StatusBar style="auto" />
+            <PaperProvider>
+              <Root />
+              <StatusBar style="auto" />
+            </PaperProvider>
           </NavigationContainer>
         </ThemeProvider>
       </QueryClientProvider>
     );
   }
 }
+
+AppRegistry.registerComponent(appName, () => App);
