@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import { NativeSyntheticEvent } from "react-native";
+import { useState } from "react";
 import { NativeScrollEvent, ScrollView, StyleSheet } from "react-native";
 import { Appbar, AnimatedFAB } from "react-native-paper";
 import TopCard from "../components/ClosetTopCard";
 import Selector from "../components/ClosetSelector";
 import Accordions from "../components/ClosetAccordions";
-import type { NativeSyntheticEvent } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Closet: React.FC = () => {
   const [isExtended, setIsExtended] = useState(true);
@@ -16,6 +17,11 @@ const Closet: React.FC = () => {
     const currentScrollPosition =
       Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
     setIsExtended(currentScrollPosition <= 0);
+  };
+
+  const { navigate } = useNavigation();
+  const openCamera = () => {
+    navigate("Stack", { screen: "ClothCamera" });
   };
 
   return (
@@ -32,7 +38,7 @@ const Closet: React.FC = () => {
         icon="plus"
         label="옷 추가하기"
         extended={isExtended}
-        onPress={() => console.log("pressed")}
+        onPress={openCamera}
         animateFrom={"right"}
         style={styles.fab}
       />

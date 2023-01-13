@@ -18,11 +18,7 @@ const Root: React.FC = () => {
     >
       <NativeStack.Screen name="Login" component={Login} />
       <NativeStack.Screen name="Tabs" component={Tabs} />
-      <NativeStack.Screen
-        name="Stack"
-        component={Stack}
-        options={{ presentation: "modal" }}
-      />
+      <NativeStack.Screen name="Stack" component={Stack} />
     </NativeStack.Navigator>
   );
 };
