@@ -1,12 +1,16 @@
+import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native";
 import { Avatar, Card, Button } from "react-native-paper";
 
 const TopCard = () => {
+  const [show, setShow] = useState(true);
+  const closeCard = () => setShow(false);
+
   const LeftContent = (props: { size: number }) => (
     <Avatar.Icon {...props} icon="tshirt-crew" />
   );
-  return (
+
+  return show ? (
     <Card style={style.card}>
       <Card.Title
         title="정형진님의 옷장"
@@ -14,15 +18,15 @@ const TopCard = () => {
         left={LeftContent}
       />
       <Card.Actions>
-        <TouchableOpacity>
-          <Button mode="contained">관리</Button>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Button mode="outlined">닫기</Button>
-        </TouchableOpacity>
+        <Button onPress={() => console.log("hello")} mode="contained">
+          관리
+        </Button>
+        {/* <Button onPress={closeCard} mode="outlined">
+          닫기
+        </Button> */}
       </Card.Actions>
     </Card>
-  );
+  ) : null;
 };
 
 const style = StyleSheet.create({
