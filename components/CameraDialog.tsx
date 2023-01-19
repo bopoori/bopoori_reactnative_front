@@ -18,11 +18,10 @@ const CameraDialog = ({
     console.log(permission);
     requestPermission();
     setShowDialog(false);
-    if (!permission || !permission.granted) {
-      Linking.openSettings();
-    }
     if (permission && permission.granted) {
       openCamera();
+    } else {
+      Linking.openSettings();
     }
   };
   const closeDialog = () => {

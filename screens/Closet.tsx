@@ -37,12 +37,10 @@ const Closet: React.FC = () => {
   };
 
   const onCameraPressed = () => {
-    if (!permission) {
-      return;
-    } else if (!permission.granted) {
-      setShowDialog(true);
-    } else {
+    if (permission && permission.granted) {
       openCamera();
+    } else {
+      setShowDialog(true);
     }
   };
 
