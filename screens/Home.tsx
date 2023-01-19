@@ -7,6 +7,8 @@ import {
   Card,
   Chip,
   IconButton,
+  List,
+  MD3Colors,
   Text,
 } from "react-native-paper";
 
@@ -43,19 +45,20 @@ const Home: React.FC = () => {
       </Card>
       <Card style={styles.card} mode="outlined">
         <Card.Title
-          titleStyle={{ marginTop: 6, fontWeight: "600" }}
+          titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
           titleVariant="titleMedium"
           title="내 옷장 속 들여다보기"
           right={({ size }) => (
-            <IconButton onPress={() => {}} icon="dots-vertical" size={size} />
+            <IconButton onPress={() => {}} icon="chevron-right" size={size} />
           )}
         />
         <Card.Content>
-          {/* <Text style={{ marginBottom: 16, fontSize: 16, fontWeight: "bold" }}>
-            내 옷장 속 들여다보기
-          </Text> */}
           <View
-            style={{ flexDirection: "row", justifyContent: "space-around" }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              paddingBottom: 8,
+            }}
           >
             <Chip mode="flat" onPress={() => {}}>
               Outer
@@ -65,6 +68,26 @@ const Home: React.FC = () => {
             <Chip onPress={() => {}}>Bottom</Chip>
           </View>
         </Card.Content>
+      </Card>
+      <Card style={styles.card} mode="outlined">
+        <Card.Title
+          titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
+          titleVariant="titleMedium"
+          title="자주 입는 옷"
+          right={({ size }) => (
+            <IconButton onPress={() => {}} icon="chevron-right" size={size} />
+          )}
+        />
+      </Card>
+      <Card style={styles.card} mode="outlined">
+        <Card.Title
+          titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
+          titleVariant="titleMedium"
+          title="잊고 있던 옷"
+          right={({ size }) => (
+            <IconButton onPress={() => {}} icon="chevron-right" size={size} />
+          )}
+        />
       </Card>
     </>
   );
