@@ -11,10 +11,11 @@ import {
 } from "react-native-paper";
 
 const Home: React.FC = () => {
-  const navigate = useNavigation();
-  // const moveToCloset = () => {
-  //   navigate("Closet");
-  // };
+  const { navigate } = useNavigation();
+  const pickNextCloth = () => {
+    // @ts-ignore
+    navigate("Stack", { screen: "PickNextCloth" });
+  };
 
   return (
     <>
@@ -32,7 +33,7 @@ const Home: React.FC = () => {
       </View>
       <Card style={styles.tomorrow}>
         <Card.Content>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={pickNextCloth}>
             <View
               style={{
                 flexDirection: "row",

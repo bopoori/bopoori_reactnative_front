@@ -1,7 +1,8 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import PickNextDress from "../screens/PickNextDress";
+import PickNextCloth from "../screens/PickNextCloth";
 import ClothCamera from "../screens/ClothCamera";
+import AddNewCloth from "../screens/AddNewCloth";
 
 const NativeStack = createNativeStackNavigator();
 
@@ -10,7 +11,8 @@ const Stack: React.FC = () => {
     <NativeStack.Navigator
       screenOptions={{ presentation: "fullScreenModal", headerShown: false }}
     >
-      <NativeStack.Screen name="PickNextDress" component={PickNextDress} />
+      <NativeStack.Screen name="PickNextCloth" component={PickNextCloth} />
+      <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
       <NativeStack.Screen name="ClothCamera" component={ClothCamera} />
     </NativeStack.Navigator>
   );

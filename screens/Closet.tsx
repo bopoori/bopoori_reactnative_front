@@ -31,7 +31,7 @@ const Closet: React.FC = () => {
 
   const onCameraPressed = () => {
     //@ts-ignore
-    navigate("Stack", { screen: "PickNextDress" });
+    navigate("Stack", { screen: "AddNewCloth" });
     // if (permission && permission.granted) {
     //   openCamera();
     // } else {
