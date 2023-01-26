@@ -1,18 +1,21 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
   Appbar,
   Avatar,
-  Button,
   Card,
   Chip,
   IconButton,
-  List,
-  MD3Colors,
   Text,
 } from "react-native-paper";
 
 const Home: React.FC = () => {
+  const navigate = useNavigation();
+  // const moveToCloset = () => {
+  //   navigate("Closet");
+  // };
+
   return (
     <>
       <Appbar.Header>
@@ -29,18 +32,28 @@ const Home: React.FC = () => {
       </View>
       <Card style={styles.tomorrow}>
         <Card.Content>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 16, fontWeight: "bold" }}>
-              내일 입을 옷을 미리 골라볼까요?
-            </Text>
-            <Avatar.Icon icon="tshirt-crew" size={50} />
-          </View>
+          <TouchableOpacity>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{ color: "white", fontSize: 18, fontWeight: "bold" }}
+              >
+                내일 입을 옷을 미리 골라볼까요?
+              </Text>
+              <Image
+                source={{
+                  uri: "https://cdn-icons-png.flaticon.com/512/2331/2331716.png",
+                }}
+                style={{ width: 50, height: 50 }}
+              />
+              {/* <Avatar.Icon icon="tshirt-crew" size={50} /> */}
+            </View>
+          </TouchableOpacity>
         </Card.Content>
       </Card>
       <Card style={styles.card} mode="outlined">

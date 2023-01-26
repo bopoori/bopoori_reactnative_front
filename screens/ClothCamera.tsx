@@ -14,51 +14,8 @@ const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 const ClothCamera = () => {
   const { goBack } = useNavigation();
-
-  // const [visible, setVisible] = useState(false);
-  // const [permission, requestPermission] = Camera.useCameraPermissions();
-
-  // const dismissDialog = () => {
-  //   setVisible(false);
-  //   goBack();
-  // };
-
-  // const grantPermission = () => {
-  //   console.log(permission);
-  //   requestPermission();
-  //   setVisible(false);
-  // };
-
-  // useEffect(() => {
-  //   if (!permission) {
-  //     setVisible(true);
-  //   }
-  // }, []);
-
-  // if (!permission) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>no permission</Text>
-  //     </View>
-  //   );
-  // }
-
-  // if (!permission.granted) {
-  //   return (
-  //     <Dialog visible={visible} onDismiss={dismissDialog}>
-  //       <Dialog.Title>옷 추가하기</Dialog.Title>
-  //       <Dialog.Content>
-  //         <Text variant="bodyLarge">
-  //           옷장 안에 옷을 추가하기 위해서는 카메라 접근 권한이 필요해요.
-  //         </Text>
-  //       </Dialog.Content>
-  //       <Dialog.Actions>
-  //         <Button onPress={grantPermission}>권한 허용하기</Button>
-  //         <Button onPress={dismissDialog}>닫기</Button>
-  //       </Dialog.Actions>
-  //     </Dialog>
-  //   );
-  // }
+  const takePicture = () => {};
+  console.log(Camera);
 
   return (
     <>

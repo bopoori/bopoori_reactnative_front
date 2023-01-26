@@ -15,14 +15,13 @@ const CameraDialog = ({
 }: CameraDialogProps) => {
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const grantPermission = () => {
-    console.log(permission);
-    requestPermission();
-    setShowDialog(false);
     if (permission && permission.granted) {
       openCamera();
     } else {
       Linking.openSettings();
     }
+    requestPermission();
+    setShowDialog(false);
   };
   const closeDialog = () => {
     setShowDialog(false);
