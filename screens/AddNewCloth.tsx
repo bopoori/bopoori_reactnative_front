@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Appbar, Button, List, TextInput, useTheme } from "react-native-paper";
+import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 
 const AddNewCloth: React.FC = () => {
@@ -42,53 +42,30 @@ const AddNewCloth: React.FC = () => {
           >
             <ListItem
               descriptionStyle={{ paddingTop: 8 }}
-              title="색상"
+              title="구매일"
               onPress={() => {}}
               description="없음"
             />
             <ListItem
               descriptionStyle={{ paddingTop: 8 }}
-              title="브랜드"
+              title="구매가격"
+              onPress={() => {}}
+              description="없음"
+            />
+            <ListItem
+              descriptionStyle={{ paddingTop: 8 }}
+              title="구매링크"
+              onPress={() => {}}
+              description="없음"
+            />
+            <ListItem
+              descriptionStyle={{ paddingTop: 8 }}
+              title="설명"
               onPress={() => {}}
               description="없음"
             />
           </List.Accordion>
         </ListSection>
-        <ListSection
-          title="나와 옷의 관계"
-          titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
-        >
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="구매일"
-            onPress={() => {}}
-            description="없음"
-          />
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="구매가격"
-            onPress={() => {}}
-            description="없음"
-          />
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="구매링크"
-            onPress={() => {}}
-            description="없음"
-          />
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="설명"
-            onPress={() => {}}
-            description="없음"
-          />
-        </ListSection>
-        {/* <Form>
-          <FormInput label="구매일" mode="outlined" dense />
-          <FormInput label="구매가격" mode="outlined" dense />
-          <FormInput label="구매링크" mode="outlined" dense />
-          <FormInput label="설명" mode="outlined" dense />
-        </Form> */}
         <Btns>
           <Btn mode="outlined">다시 찍기</Btn>
           <Btn mode="contained">옷장에 추가</Btn>
@@ -113,17 +90,10 @@ const ListSection = styled(List.Section)`
 const ListItem = styled(List.Item)`
   padding-left: 8px;
 `;
-const FormInput = styled(TextInput)`
-  font-size: 14px;
-  margin-bottom: 12px;
-`;
-const Form = styled.View`
-  padding: 24px;
-  padding-top: 0;
-`;
 const Btns = styled.View`
   flex-direction: row;
   justify-content: space-between;
+  padding-top: 20px;
   padding-bottom: 50px;
 `;
 const Btn = styled(Button)`
