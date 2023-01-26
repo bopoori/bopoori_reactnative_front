@@ -1,14 +1,7 @@
-import { Linking, NativeSyntheticEvent } from "react-native";
+import { NativeSyntheticEvent } from "react-native";
 import { useState } from "react";
 import { NativeScrollEvent, ScrollView, StyleSheet } from "react-native";
-import {
-  Appbar,
-  AnimatedFAB,
-  Dialog,
-  Text,
-  Button,
-  Portal,
-} from "react-native-paper";
+import { Appbar, AnimatedFAB } from "react-native-paper";
 import TopCard from "../components/ClosetTopCard";
 import Selector from "../components/ClosetSelector";
 import Accordions from "../components/ClosetAccordions";
@@ -37,11 +30,13 @@ const Closet: React.FC = () => {
   };
 
   const onCameraPressed = () => {
-    if (permission && permission.granted) {
-      openCamera();
-    } else {
-      setShowDialog(true);
-    }
+    //@ts-ignore
+    navigate("Stack", { screen: "PickNextDress" });
+    // if (permission && permission.granted) {
+    //   openCamera();
+    // } else {
+    //   setShowDialog(true);
+    // }
   };
 
   const cameraDialogProps = { openCamera, showDialog, setShowDialog };
