@@ -2,9 +2,8 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Appbar, Button, List, TextInput, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
-import { transparent } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
-const PickNextDress: React.FC = () => {
+const AddNewCloth: React.FC = () => {
   const { goBack } = useNavigation();
   const theme = useTheme();
   return (
@@ -131,4 +130,4 @@ const Btn = styled(Button)`
   margin: 0 24px;
 `;
 
-export default PickNextDress;
+export default AddNewCloth;
