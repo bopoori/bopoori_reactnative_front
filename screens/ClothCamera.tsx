@@ -1,22 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import { Camera, CameraType } from "expo-camera";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import {
-  Appbar,
-  Button,
-  Dialog,
-  IconButton,
-  MD3Colors,
-  Text,
-} from "react-native-paper";
+import { Appbar, IconButton, MD3Colors } from "react-native-paper";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 const ClothCamera = () => {
   const { goBack } = useNavigation();
-  const takePicture = () => {};
-  console.log(Camera);
-
   return (
     <>
       <Appbar.Header>
