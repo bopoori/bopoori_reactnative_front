@@ -1,13 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Image, ScrollView } from "react-native";
-import {
-  Appbar,
-  Avatar,
-  Button,
-  IconButton,
-  Text,
-  useTheme,
-} from "react-native-paper";
+import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
