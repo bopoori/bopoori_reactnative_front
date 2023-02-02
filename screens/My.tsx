@@ -2,10 +2,32 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components/native";
 import { loginAtom } from "../utils/recoil";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, List, Text } from "react-native-paper";
+
+const settingMenus = [
+  {
+    title: "알람",
+    navigateTo: "Alert",
+  },
+  {
+    title: "내 정보",
+    navigateTo: "MyInformation",
+  },
+  {
+    title: "옷장 설정",
+    navigateTo: "ClosetSettings",
+  },
+  {
+    title: "개인정보처리방침",
+    navigateTo: "Privacy",
+  },
+  {
+    title: "이용약관",
+    navigateTo: "Rules",
+  },
+];
 
 const My: React.FC = () => {
   const { navigate } = useNavigation();
@@ -15,6 +37,11 @@ const My: React.FC = () => {
     setIsLoggedIn(false);
     // @ts-ignore
     navigate("Login");
+  };
+
+  const onMenuPress = (navigateTo: string) => {
+    // @ts-ignore
+    navigate("Stack", { screen: navigateTo });
   };
   return (
     <>
@@ -30,16 +57,14 @@ const My: React.FC = () => {
         />
       </Card>
       <View style={styles.settings}>
-        {["알람", "내 정보", "옷장 설정", "개인정보처리방침", "이용약관"].map(
-          (item) => (
-            <List.Item
-              onPress={() => {}}
-              key={item}
-              title={item}
-              titleStyle={{ fontWeight: "700", fontSize: 20 }}
-            />
-          )
-        )}
+        {settingMenus.map((menu) => (
+          <List.Item
+            onPress={() => onMenuPress(menu.navigateTo)}
+            key={menu.navigateTo}
+            title={menu.title}
+            titleStyle={{ fontWeight: "700", fontSize: 20 }}
+          />
+        ))}
       </View>
       <View style={styles.info}>
         <Button
