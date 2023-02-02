@@ -1,4 +1,5 @@
 import { registerRootComponent } from "expo";
+import { ko, registerTranslation } from "react-native-paper-dates";
 
 import RecoilWrapper from "./RecoilWrapper";
 
@@ -6,3 +7,4 @@ import RecoilWrapper from "./RecoilWrapper";
 // It also ensures that whether you load the app in Expo Go or in a native build,
 // the environment is set up appropriately
 registerRootComponent(RecoilWrapper);
+registerTranslation("ko", ko);
