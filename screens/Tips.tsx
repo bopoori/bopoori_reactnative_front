@@ -1,6 +1,6 @@
 import React from "react";
-import { FlatList, ScrollView, StyleSheet, View } from "react-native";
-import { Appbar, Card, Text } from "react-native-paper";
+import { ScrollView, StyleSheet } from "react-native";
+import { Appbar, Card } from "react-native-paper";
 
 const Tips: React.FC = () => {
   return (
