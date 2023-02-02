@@ -36,36 +36,36 @@ const AddNewCloth: React.FC = () => {
             onPress={() => {}}
             description="없음"
           />
-          <List.Accordion
-            title="자세하게 기록하기"
-            titleStyle={{ marginLeft: 8 }}
-          >
-            <ListItem
-              descriptionStyle={{ paddingTop: 8 }}
-              title="구매일"
-              onPress={() => {}}
-              description="없음"
-            />
-            <ListItem
-              descriptionStyle={{ paddingTop: 8 }}
-              title="구매가격"
-              onPress={() => {}}
-              description="없음"
-            />
-            <ListItem
-              descriptionStyle={{ paddingTop: 8 }}
-              title="구매링크"
-              onPress={() => {}}
-              description="없음"
-            />
-            <ListItem
-              descriptionStyle={{ paddingTop: 8 }}
-              title="설명"
-              onPress={() => {}}
-              description="없음"
-            />
-          </List.Accordion>
         </ListSection>
+        <List.Accordion
+          title="더 자세한 내용 기록하기"
+          titleStyle={{ marginLeft: 8 }}
+        >
+          <ListItem
+            descriptionStyle={{ paddingTop: 8 }}
+            title="구매일"
+            onPress={() => {}}
+            description="없음"
+          />
+          <ListItem
+            descriptionStyle={{ paddingTop: 8 }}
+            title="구매가격"
+            onPress={() => {}}
+            description="없음"
+          />
+          <ListItem
+            descriptionStyle={{ paddingTop: 8 }}
+            title="구매링크"
+            onPress={() => {}}
+            description="없음"
+          />
+          <ListItem
+            descriptionStyle={{ paddingTop: 8 }}
+            title="설명"
+            onPress={() => {}}
+            description="없음"
+          />
+        </List.Accordion>
         <Btns>
           <Btn mode="outlined">다시 찍기</Btn>
           <Btn mode="contained">옷장에 추가</Btn>
