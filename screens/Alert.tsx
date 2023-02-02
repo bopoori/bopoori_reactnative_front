@@ -1,6 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { Appbar, List, Switch } from "react-native-paper";
+import {
+  Appbar,
+  Button,
+  Dialog,
+  List,
+  Portal,
+  Switch,
+  Text,
+  ToggleButton,
+} from "react-native-paper";
 import { TimePickerModal } from "react-native-paper-dates";
 import styled from "styled-components/native";
 
@@ -9,32 +18,54 @@ const Alert = () => {
   const [on, setOn] = useState(false);
   const onToggleSwitch = () => setOn((prev) => !prev);
 
-  const [alertTime, setAlertTime] = useState({ hours: 7, minutes: 0 });
-  const [visible, setVisible] = useState(false);
+  const [time, setTime] = useState({ hours: 7, minutes: 0 });
+  const [showTimeDialog, setShowTimeDialog] = useState(false);
   const onDismiss = useCallback(() => {
-    setVisible(false);
-  }, [setVisible]);
+    setShowTimeDialog(false);
+  }, [setShowTimeDialog]);
 
   const onConfirm = useCallback(
-    ({ hours, minutes }) => {
-      setVisible(false);
-      setAlertTime({ hours, minutes });
+    ({ hours, minutes }: { hours: number; minutes: number }) => {
+      setShowTimeDialog(false);
+      setTime({ hours, minutes });
     },
-    [setVisible]
+    [setShowTimeDialog]
   );
+
+  const [showRepeatDialog, setShowRepeatDialog] = useState(false);
+  const closeRepeatDialog = () => setShowRepeatDialog(false);
 
   return (
     <>
       <TimePickerModal
-        visible={visible}
+        visible={showTimeDialog}
         onDismiss={onDismiss}
         onConfirm={onConfirm}
-        hours={12}
-        minutes={14}
+        hours={time.hours}
+        minutes={time.minutes}
         cancelLabel="취소"
         confirmLabel="확인"
         label="알람을 받고 싶은 시간을 설정해주세요!"
       />
+      <Portal>
+        <Dialog visible={showRepeatDialog} onDismiss={closeRepeatDialog}>
+          <Dialog.Title>반복 설정하기</Dialog.Title>
+          <Dialog.Content
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <ToggleButton icon="bluetooth" value="monday" status="checked" />
+            <ToggleButton icon="bluetooth" value="monday" status="unchecked" />
+            <ToggleButton icon="bluetooth" value="monday" status="checked" />
+            <ToggleButton icon="bluetooth" value="monday" status="checked" />
+            <ToggleButton icon="bluetooth" value="monday" status="checked" />
+            <ToggleButton icon="bluetooth" value="monday" status="checked" />
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={closeRepeatDialog}>닫기</Button>
+            <Button>저장</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
       <Appbar.Header>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="알람" />
@@ -52,14 +83,14 @@ const Alert = () => {
               <ListItem
                 descriptionStyle={{ paddingTop: 8 }}
                 title="반복"
-                onPress={() => setVisible(true)}
+                onPress={() => setShowRepeatDialog(true)}
                 description="매일"
               />
               <ListItem
                 descriptionStyle={{ paddingTop: 8 }}
                 title="시간"
-                onPress={() => setVisible(true)}
-                description={`${alertTime.hours}시 ${alertTime.minutes}분`}
+                onPress={() => setShowTimeDialog(true)}
+                description={`${time.hours}시 ${time.minutes}분`}
               />
             </>
           ) : null}
