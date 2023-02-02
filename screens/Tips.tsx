@@ -1,15 +1,20 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Appbar, Card } from "react-native-paper";
 
 const Tips: React.FC = () => {
+  const { navigate } = useNavigation();
+  const showTipDetail = () => {
+    navigate("Stack", { screen: "TipDetail" });
+  };
   return (
     <>
       <Appbar.Header>
         <Appbar.Content title="Tips" />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
-        <Card onPress={() => {}} style={styles.card}>
+        <Card onPress={showTipDetail} style={styles.card}>
           <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
           <Card.Title
             title="더 맛깔나는 목도리 스타일링"
@@ -19,7 +24,7 @@ const Tips: React.FC = () => {
             style={{ marginVertical: 8 }}
           />
         </Card>
-        <Card onPress={() => {}} style={styles.card}>
+        <Card onPress={showTipDetail} style={styles.card}>
           <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
           <Card.Title
             title="항상 어려웠던 장례식 복장 예절"
@@ -29,7 +34,7 @@ const Tips: React.FC = () => {
             style={{ marginVertical: 8 }}
           />
         </Card>
-        <Card onPress={() => {}} style={styles.card}>
+        <Card onPress={showTipDetail} style={styles.card}>
           <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
           <Card.Title
             title="더 맛깔나는 목도리 스타일링"
