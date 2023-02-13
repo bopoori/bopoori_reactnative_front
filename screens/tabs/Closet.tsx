@@ -2,12 +2,12 @@ import { NativeSyntheticEvent } from "react-native";
 import { useState } from "react";
 import { NativeScrollEvent, ScrollView, StyleSheet } from "react-native";
 import { Appbar, AnimatedFAB } from "react-native-paper";
-import TopCard from "../components/ClosetTopCard";
-import Selector from "../components/ClosetSelector";
-import Accordions from "../components/ClosetAccordions";
+import TopCard from "../../components/ClosetTopCard";
+import Selector from "../../components/ClosetSelector";
+import Accordions from "../../components/ClosetAccordions";
 import { useNavigation } from "@react-navigation/native";
 import { Camera } from "expo-camera";
-import CameraDialog from "../components/CameraDialog";
+import CameraDialog from "../../components/CameraDialog";
 
 const Closet: React.FC = () => {
   const { navigate } = useNavigation();

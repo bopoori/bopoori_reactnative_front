@@ -4,8 +4,8 @@ import React, { useLayoutEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import { useRecoilState } from "recoil";
 import styled from "styled-components/native";
-import LoginBtn from "../components/LoginBtn";
-import { loginAtom } from "../utils/recoil";
+import LoginBtn from "../../components/LoginBtn";
+import { loginAtom } from "../../utils/recoil";
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 import { login } from "@react-native-seoul/kakao-login";
 
@@ -39,7 +39,7 @@ const Login: React.FC = () => {
   return (
     <Container>
       <Header>
-        <Image source={require("../assets/icon.png")} />
+        <Image source={require("../../assets/icon.png")} />
       </Header>
       <Btns>
         <LoginBtn

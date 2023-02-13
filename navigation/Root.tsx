@@ -2,7 +2,7 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
 import Stack from "./Stack";
-import Login from "../screens/Login";
+import Login from "../screens/stacks/Login";
 import { useRecoilValue } from "recoil";
 import { loginAtom } from "../utils/recoil";
 
