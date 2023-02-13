@@ -1,10 +1,11 @@
+import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
 import { useSetRecoilState } from "recoil";
-import { loginAtom } from "../utils/recoil";
+import { loginAtom } from "../../utils/recoil";
 import { StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, List, Text } from "react-native-paper";
+import styled from "styled-components/native";
 
 const settingMenus = [
   {
@@ -56,17 +57,18 @@ const My: React.FC = () => {
           subtitleStyle={styles.whiteText}
         />
       </Card>
-      <View style={styles.settings}>
+      <View>
         {settingMenus.map((menu) => (
           <List.Item
             onPress={() => onMenuPress(menu.navigateTo)}
             key={menu.navigateTo}
             title={menu.title}
             titleStyle={{ fontWeight: "700", fontSize: 20 }}
+            style={{ paddingHorizontal: 12 }}
           />
         ))}
       </View>
-      <View style={styles.info}>
+      <InfoWrapper>
         <Button
           style={{ marginBottom: 12 }}
           onPress={onLogoutPress}
@@ -75,7 +77,7 @@ const My: React.FC = () => {
           로그아웃
         </Button>
         <Text>v1.0.0</Text>
-      </View>
+      </InfoWrapper>
     </>
   );
 };
@@ -89,14 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#111",
     paddingVertical: 8,
   },
-  settings: {
-    paddingHorizontal: 12,
-  },
-  info: {
-    alignItems: "center",
-    marginTop: "auto",
-    height: 150,
-  },
 });
+const InfoWrapper = styled.View`
+  align-items: center;
+  margin-top: auto;
+  height: 150px;
+`;
 
 export default My;
