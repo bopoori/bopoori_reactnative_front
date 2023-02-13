@@ -1,14 +1,14 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import PickNextCloth from "../screens/PickNextCloth";
-import ClothCamera from "../screens/ClothCamera";
-import AddNewCloth from "../screens/AddNewCloth";
-import TipDetail from "../screens/TipDetail";
-import Alert from "../screens/Alert";
-import MyInformation from "../screens/MyInformation";
-import ClosetSettings from "../screens/ClosetSettings";
-import Privacy from "../screens/Privacy";
-import Rules from "../screens/Rules";
+import PickNextCloth from "../screens/stacks/PickNextCloth";
+import ClothCamera from "../screens/stacks/ClothCamera";
+import AddNewCloth from "../screens/stacks/AddNewCloth";
+import TipDetail from "../screens/stacks/TipDetail";
+import Alert from "../screens/settings/Alert";
+import MyInformation from "../screens/settings/MyInformation";
+import ClosetSettings from "../screens/settings/ClosetSettings";
+import Privacy from "../screens/settings/Privacy";
+import Rules from "../screens/settings/Rules";
 
 type StackParamList = {
   PickNextCloth: undefined;

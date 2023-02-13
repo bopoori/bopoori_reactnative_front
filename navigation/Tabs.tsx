@@ -1,9 +1,9 @@
 import React from "react";
-import { BottomNavigation, Text } from "react-native-paper";
-import Closet from "../screens/Closet";
-import Home from "../screens/Home";
-import My from "../screens/My";
-import Tips from "../screens/Tips";
+import { BottomNavigation } from "react-native-paper";
+import Closet from "../screens/tabs/Closet";
+import Home from "../screens/tabs/Home";
+import My from "../screens/tabs/My";
+import Tips from "../screens/tabs/Tips";
 
 const Tabs = () => {
   const [index, setIndex] = React.useState(0);
