@@ -1,15 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import {
-  Appbar,
-  Button,
-  Dialog,
-  List,
-  Portal,
-  TextInput as TextInputPaper,
-} from "react-native-paper";
-import styled from "styled-components/native";
 import { TextInput } from "react-native";
+import { Appbar, Button, Dialog, List, Portal } from "react-native-paper";
+import styled from "styled-components/native";
 
 const MyInformation = () => {
   const { goBack } = useNavigation();
@@ -24,14 +17,9 @@ const MyInformation = () => {
         <Dialog visible={showDialog} onDismiss={closeDialog}>
           <Dialog.Title>닉네임 변경</Dialog.Title>
           <Dialog.Content>
-            {/* <TextInput
+            <TextInput
               defaultValue={nickname}
               style={{ backgroundColor: "white", padding: 8, borderRadius: 12 }}
-            /> */}
-            <TextInputPaper
-              label="새로운 닉네임 입력"
-              value={nickname}
-              onChangeText={(text: string) => onChangeNickname(text)}
             />
           </Dialog.Content>
           <Dialog.Actions>
