@@ -7,7 +7,6 @@ import {
   List,
   Portal,
   Switch,
-  Text,
   ToggleButton,
 } from "react-native-paper";
 import { TimePickerModal } from "react-native-paper-dates";

@@ -1,16 +1,19 @@
 import { useNavigation } from "@react-navigation/native";
 import { Camera, CameraType } from "expo-camera";
-import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, MD3Colors } from "react-native-paper";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 const ClothCamera = () => {
-  const { goBack } = useNavigation();
+  const { goBack, navigate } = useNavigation();
+  const editPhoto = () => {
+    //@ts-ignore
+    navigate("Stack", { screen: "AddNewCloth" });
+  };
   return (
     <>
       <Appbar.Header>
-        <Appbar.Action icon="close" onPress={goBack} />
+        <Appbar.BackAction onPress={goBack} />
       </Appbar.Header>
       <View style={styles.container}>
         <Camera ratio="4:3" type={CameraType.back} style={styles.camera} />
@@ -20,6 +23,7 @@ const ClothCamera = () => {
           size={50}
           mode="contained"
           style={styles.cameraButton}
+          onPress={editPhoto}
         />
       </View>
     </>
