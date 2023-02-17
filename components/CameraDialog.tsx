@@ -13,15 +13,15 @@ const CameraDialog = ({
   showDialog,
   setShowDialog,
 }: CameraDialogProps) => {
-  const [permission, requestPermission] = Camera.useCameraPermissions();
-  const grantPermission = () => {
-    if (permission && permission.granted) {
-      openCamera();
-    } else {
-      Linking.openSettings();
-    }
-    requestPermission();
-    setShowDialog(false);
+  const onPressGrant = () => {
+    Camera.requestCameraPermissionsAsync().then((permission) => {
+      if (permission && permission.granted) {
+        setShowDialog(false);
+        openCamera();
+      } else {
+        Linking.openSettings();
+      }
+    });
   };
   const closeDialog = () => {
     setShowDialog(false);
@@ -36,7 +36,7 @@ const CameraDialog = ({
           </Text>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={grantPermission}>권한 허용하기</Button>
+          <Button onPress={onPressGrant}>권한 허용하기</Button>
           <Button onPress={closeDialog}>닫기</Button>
         </Dialog.Actions>
       </Dialog>

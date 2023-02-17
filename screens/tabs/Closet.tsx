@@ -11,9 +11,8 @@ import CameraDialog from "../../components/CameraDialog";
 
 const Closet: React.FC = () => {
   const { navigate } = useNavigation();
-  const [isExtended, setIsExtended] = useState(true);
+  const [isFabExtended, setIsFabExtended] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
-  const [permission] = Camera.useCameraPermissions();
   const [selectedOption, setSelectedOption] = useState("카테고리별");
 
   const onScroll = ({
@@ -21,7 +20,7 @@ const Closet: React.FC = () => {
   }: NativeSyntheticEvent<NativeScrollEvent>) => {
     const currentScrollPosition =
       Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
-    setIsExtended(currentScrollPosition <= 0);
+    setIsFabExtended(currentScrollPosition <= 0);
   };
 
   const openCamera = () => {
@@ -29,14 +28,15 @@ const Closet: React.FC = () => {
     navigate("Stack", { screen: "ClothCamera" });
   };
 
-  const onCameraPressed = () => {
-    //@ts-ignore
-    navigate("Stack", { screen: "AddNewCloth" });
-    // if (permission && permission.granted) {
-    //   openCamera();
-    // } else {
-    //   setShowDialog(true);
-    // }
+  const onFabPressed = () => {
+    Camera.getCameraPermissionsAsync().then((permission) => {
+      console.log(permission);
+      if (permission && permission.granted) {
+        openCamera();
+      } else {
+        setShowDialog(true);
+      }
+    });
   };
 
   const cameraDialogProps = { openCamera, showDialog, setShowDialog };
@@ -55,8 +55,8 @@ const Closet: React.FC = () => {
       <AnimatedFAB
         icon="plus"
         label="옷 추가하기"
-        extended={isExtended}
-        onPress={onCameraPressed}
+        extended={isFabExtended}
+        onPress={onFabPressed}
         animateFrom={"right"}
         style={styles.fab}
       />
