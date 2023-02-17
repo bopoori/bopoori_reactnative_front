@@ -6,13 +6,13 @@ import Login from "../screens/stacks/Login";
 import { useRecoilValue } from "recoil";
 import { loginAtom } from "../utils/recoil";
 
-const NativeStack = createNativeStackNavigator<RootStackParamList>();
-
 type RootStackParamList = {
   Login: undefined;
   Tabs: undefined;
   Stack: undefined;
 };
+
+const NativeStack = createNativeStackNavigator<RootStackParamList>();
 
 const Root: React.FC = () => {
   const isLoggedIn = useRecoilValue(loginAtom);

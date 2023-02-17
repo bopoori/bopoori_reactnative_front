@@ -10,9 +10,9 @@ import ClosetSettings from "../screens/settings/ClosetSettings";
 import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 
-type StackParamList = {
+export type StackParamList = {
   PickNextCloth: undefined;
-  AddNewCloth: undefined;
+  AddNewCloth: { uri: string };
   ClothCamera: undefined;
   TipDetail: undefined;
   Alert: undefined;
