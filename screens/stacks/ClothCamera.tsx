@@ -1,22 +1,46 @@
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Camera, CameraType } from "expo-camera";
+import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, MD3Colors } from "react-native-paper";
+import { StackParamList } from "../../navigation/Stack";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
-const ClothCamera = () => {
-  const { goBack, navigate } = useNavigation();
+type Props = NativeStackScreenProps<StackParamList, "ClothCamera">;
+
+const ClothCamera: React.FC<Props> = ({ navigation: { navigate, goBack } }) => {
+  const [camera, setCamera] = useState<null | Camera>(null);
+  const [isCameraReady, setIsCameraReady] = useState(false);
+
   const editPhoto = () => {
-    //@ts-ignore
-    navigate("Stack", { screen: "AddNewCloth" });
+    // console.log(Camera.takePictureAsync);
+    if (camera && isCameraReady) {
+      camera.pausePreview();
+      camera
+        .takePictureAsync()
+        .then((response) => {
+          navigate("AddNewCloth", { uri: response.uri });
+        })
+        .then(() => {
+          camera.resumePreview();
+        });
+    }
   };
+
   return (
     <>
       <Appbar.Header>
         <Appbar.BackAction onPress={goBack} />
       </Appbar.Header>
       <View style={styles.container}>
-        <Camera ratio="4:3" type={CameraType.back} style={styles.camera} />
+        <Camera
+          ref={(ref) => setCamera(ref)}
+          ratio="4:3"
+          type={CameraType.back}
+          style={styles.camera}
+          onCameraReady={() => setIsCameraReady(true)}
+        />
         <IconButton
           icon="camera"
           iconColor={MD3Colors.primary100}
