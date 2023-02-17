@@ -1,10 +1,14 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "../../navigation/Stack";
+import { Image } from "react-native";
 
-const AddNewCloth: React.FC = () => {
-  const { goBack } = useNavigation();
+type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
+
+const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
+  const uri = route.params.uri;
   const theme = useTheme();
   return (
     <>
@@ -13,7 +17,9 @@ const AddNewCloth: React.FC = () => {
         <Appbar.Content title="새로운 옷 추가" />
       </Appbar.Header>
       <ScrollContainer>
-        <DummyBox />
+        <ImageBox>
+          <Image source={{ uri }} />
+        </ImageBox>
         <ListSection
           title="옷에 대한 정보"
           titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
@@ -77,6 +83,11 @@ const AddNewCloth: React.FC = () => {
 
 const ScrollContainer = styled.ScrollView`
   flex: 1;
+`;
+const ImageBox = styled.View`
+  width: 300px;
+  height: 300px;
+  margin: 24px auto;
 `;
 const DummyBox = styled.View`
   width: 300px;
