@@ -13,7 +13,7 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
   return (
     <>
       <Appbar.Header style={{ elevation: 1 }}>
-        <Appbar.Action icon="close" onPress={goBack} />
+        <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="새로운 옷 추가" />
       </Appbar.Header>
       <ScrollContainer>
