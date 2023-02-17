@@ -12,13 +12,13 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
   const theme = useTheme();
   return (
     <>
-      <Appbar.Header elevated>
-        <Appbar.BackAction onPress={goBack} />
+      <Appbar.Header style={{ elevation: 1 }}>
+        <Appbar.Action icon="close" onPress={goBack} />
         <Appbar.Content title="새로운 옷 추가" />
       </Appbar.Header>
       <ScrollContainer>
         <ImageBox>
-          <Image source={{ uri }} />
+          <Image source={{ uri }} style={{ flex: 1 }} />
         </ImageBox>
         <ListSection
           title="옷에 대한 정보"
@@ -86,13 +86,7 @@ const ScrollContainer = styled.ScrollView`
 `;
 const ImageBox = styled.View`
   width: 300px;
-  height: 300px;
-  margin: 24px auto;
-`;
-const DummyBox = styled.View`
-  width: 300px;
-  height: 300px;
-  background-color: #ccc;
+  height: 400px;
   margin: 24px auto;
 `;
 const ListSection = styled(List.Section)`
