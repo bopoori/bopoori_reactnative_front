@@ -2,7 +2,7 @@ import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Camera, CameraType } from "expo-camera";
 import { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, useColorScheme, View } from "react-native";
+import { Dimensions, StyleSheet, useColorScheme } from "react-native";
 import { Appbar } from "react-native-paper";
 import styled from "styled-components/native";
 import { StackParamList } from "../../navigation/Stack";
