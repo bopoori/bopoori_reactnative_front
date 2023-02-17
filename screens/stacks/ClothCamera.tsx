@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Camera, CameraType } from "expo-camera";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { Appbar, IconButton, MD3Colors } from "react-native-paper";
 import { StackParamList } from "../../navigation/Stack";
@@ -14,17 +13,13 @@ const ClothCamera: React.FC<Props> = ({ navigation: { navigate, goBack } }) => {
   const [isCameraReady, setIsCameraReady] = useState(false);
 
   const editPhoto = () => {
-    // console.log(Camera.takePictureAsync);
     if (camera && isCameraReady) {
-      camera.pausePreview();
       camera
-        .takePictureAsync()
-        .then((response) => {
-          navigate("AddNewCloth", { uri: response.uri });
+        .takePictureAsync({
+          quality: 0.5,
+          onPictureSaved: ({ uri }) => navigate("AddNewCloth", { uri }),
         })
-        .then(() => {
-          camera.resumePreview();
-        });
+        .catch(console.error);
     }
   };
 
@@ -40,6 +35,7 @@ const ClothCamera: React.FC<Props> = ({ navigation: { navigate, goBack } }) => {
           type={CameraType.back}
           style={styles.camera}
           onCameraReady={() => setIsCameraReady(true)}
+          onMountError={console.error}
         />
         <IconButton
           icon="camera"
