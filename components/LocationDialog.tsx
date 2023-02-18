@@ -2,17 +2,17 @@ import { Camera } from "expo-camera";
 import { Linking } from "react-native";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 
-interface CameraDialogProps {
+interface LocationDialogProps {
   openCamera: () => void;
   showDialog: boolean;
   setShowDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const WeatherDialog = ({
+const LocationDialog = ({
   openCamera,
   showDialog,
   setShowDialog,
-}: CameraDialogProps) => {
+}: LocationDialogProps) => {
   const onPressGrant = () => {
     Camera.requestCameraPermissionsAsync().then((permission) => {
       if (permission && permission.granted) {
@@ -45,4 +45,4 @@ const WeatherDialog = ({
   );
 };
 
-export default WeatherDialog;
+export default LocationDialog;
