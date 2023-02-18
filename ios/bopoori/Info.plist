@@ -54,6 +54,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSLocationUsageDescription</key>
+	<string>get weather informations</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>get weather informations</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>get weather informations</string>
+	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+	<string>get weather informations</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Add new cloth from camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
