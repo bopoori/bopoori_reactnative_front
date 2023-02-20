@@ -8,9 +8,12 @@ import LoginBtn from "../../components/LoginBtn";
 import { loginAtom } from "../../utils/recoil";
 const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 import { login } from "@react-native-seoul/kakao-login";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootParamList } from "../../navigation/Root";
 
-const Login: React.FC = () => {
-  const { navigate } = useNavigation();
+type Props = NativeStackScreenProps<RootParamList, "Login">;
+
+const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginAtom);
   const onPassPress = () => {
     AsyncStorage.setItem("login", "pass");
@@ -31,7 +34,6 @@ const Login: React.FC = () => {
 
   useLayoutEffect(() => {
     if (isLoggedIn) {
-      // @ts-ignore
       navigate("Tabs", { screen: "Home" });
     }
   }, [isLoggedIn]);
