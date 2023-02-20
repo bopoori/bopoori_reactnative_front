@@ -6,13 +6,24 @@ import Login from "../screens/stacks/Login";
 import { useRecoilValue } from "recoil";
 import { loginAtom } from "../utils/recoil";
 
-type RootStackParamList = {
+export type RootParamList = {
   Login: undefined;
-  Tabs: undefined;
-  Stack: undefined;
+  Tabs: { screen: "Home" | "Closet" | "Tips" | "My" };
+  Stack: {
+    screen:
+      | "PickNextCloth"
+      | "AddNewCloth"
+      | "ClothCamera"
+      | "TipDetail"
+      | "Alert"
+      | "MyInformation"
+      | "ClosetSettings"
+      | "Privacy"
+      | "Rules";
+  };
 };
 
-const NativeStack = createNativeStackNavigator<RootStackParamList>();
+const NativeStack = createNativeStackNavigator<RootParamList>();
 
 const Root: React.FC = () => {
   const isLoggedIn = useRecoilValue(loginAtom);
@@ -21,8 +32,16 @@ const Root: React.FC = () => {
       initialRouteName={isLoggedIn ? "Tabs" : "Login"}
       screenOptions={{ headerShown: false }}
     >
-      <NativeStack.Screen name="Login" component={Login} />
-      <NativeStack.Screen name="Tabs" component={Tabs} />
+      <NativeStack.Screen
+        name="Login"
+        component={Login}
+        options={{ gestureEnabled: false }}
+      />
+      <NativeStack.Screen
+        name="Tabs"
+        component={Tabs}
+        options={{ gestureEnabled: false }}
+      />
       <NativeStack.Screen name="Stack" component={Stack} />
     </NativeStack.Navigator>
   );
