@@ -3,29 +3,10 @@ import { Dimensions, Image, ScrollView } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
 import Weather from "../../components/Weather";
-import * as Location from "expo-location";
-import { useEffect } from "react";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 const PickNextCloth = () => {
   const { goBack } = useNavigation();
-  const [status, requestPermission] = Location.useForegroundPermissions();
-
-  useEffect(() => {
-    if (!status) {
-      requestPermission();
-    } else {
-      Location.getForegroundPermissionsAsync().then(({ granted }) => {
-        if (granted) {
-          console.log("granted!");
-          Location.getCurrentPositionAsync().then((res) => console.log(res));
-        } else {
-          requestPermission();
-        }
-      });
-    }
-  }, [status]);
-
   return (
     <>
       <Appbar.Header>
