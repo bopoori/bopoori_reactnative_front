@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Alert, useColorScheme } from "react-native";
@@ -10,16 +11,24 @@ import { StackParamList } from "../../navigation/Stack";
 
 type Props = NativeStackScreenProps<StackParamList, "InformationForm">;
 
-const InformationForm: React.FC<Props> = ({ navigation: { goBack } }) => {
+interface PersonalInformationForm {
+  user_height: string;
+  user_weight: string;
+}
+
+const InformationForm: React.FC<Props> = ({
+  navigation: { navigate, goBack },
+}) => {
   const [gender, setGender] = useState<null | "female" | "male">(null);
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm<PersonalInformationForm>();
   const isDark = useColorScheme() === "dark";
 
-  const onSubmit = (data: Object) => {
+  const onSubmit = (formData: PersonalInformationForm) => {
     if (!gender) {
       Alert.alert("성별을 선택해주세요!");
     } else {
-      Alert.alert(JSON.stringify(data));
+      navigate("SignUp", { ...formData, user_gender: gender });
+      Alert.alert(JSON.stringify(formData));
     }
   };
 
@@ -31,7 +40,7 @@ const InformationForm: React.FC<Props> = ({ navigation: { goBack } }) => {
     <>
       <Appbar.Header>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="추가 정보 입력" />
+        <Appbar.Content title="정보 입력" />
       </Appbar.Header>
       <Container>
         <GenderWrapper>
@@ -87,7 +96,7 @@ const InformationForm: React.FC<Props> = ({ navigation: { goBack } }) => {
         </AlertText>
         <ConfirmWrapper>
           <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-            가입하기
+            회원 정보 만들기
           </Button>
         </ConfirmWrapper>
       </Container>
