@@ -16,7 +16,10 @@ interface SignUpForm {
   user_email: string;
 }
 
-const SignUp: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
+const SignUp: React.FC<Props> = ({
+  navigation: { goBack, navigate },
+  route: { params: informationData },
+}) => {
   const { control, handleSubmit } = useForm<SignUpForm>();
   const [otp, setOtp] = React.useState("");
   const [otpSented, setOtpSented] = React.useState(false);

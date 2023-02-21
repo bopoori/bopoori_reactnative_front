@@ -37,7 +37,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     }
   }, [isLoggedIn]);
 
-  const navigateToSignUp = () => navigate("Stack", { screen: "SignUp" });
+  const navigateToSignUp = () =>
+    navigate("Stack", { screen: "InformationForm" });
 
   return (
     <Container>
