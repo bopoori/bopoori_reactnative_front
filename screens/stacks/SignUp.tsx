@@ -1,15 +1,21 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Appbar, Button, Text, TextInput } from "react-native-paper";
+import {
+  Appbar,
+  Button,
+  Menu,
+  SegmentedButtons,
+  Text,
+  TextInput,
+} from "react-native-paper";
 import styled from "styled-components/native";
 import { StackParamList } from "../../navigation/Stack";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
 type Props = NativeStackScreenProps<StackParamList, "SignUp">;
 
 const SignUp: React.FC<Props> = ({ navigation: { goBack } }) => {
-  const [gender, setGender] = useState<null | "여성" | "남성">(null);
-
+  const [gender, setGender] = useState("");
   return (
     <>
       <Appbar.Header>
@@ -40,11 +46,26 @@ const SignUp: React.FC<Props> = ({ navigation: { goBack } }) => {
           />
         </FormBox>
         <FormBox>
+          {/* <Input label="성별" mode="outlined" keyboardType="numeric" /> */}
+          {/* <SegmentedButtons
+            value={gender}
+            onValueChange={setGender}
+            buttons={[
+              {
+                value: "female",
+                label: "여성",
+              },
+              {
+                value: "male",
+                label: "남성",
+              },
+            ]}
+          /> */}
           <ButtonWrapper>
             <Button
               style={{ width: "100%" }}
-              mode={gender === "여성" ? "contained-tonal" : "outlined"}
-              onPress={() => setGender("여성")}
+              mode={gender === "female" ? "contained-tonal" : "outlined"}
+              onPress={() => setGender("female")}
             >
               여성
             </Button>
@@ -52,8 +73,8 @@ const SignUp: React.FC<Props> = ({ navigation: { goBack } }) => {
           <ButtonWrapper>
             <Button
               style={{ width: "100%" }}
-              mode={gender === "남성" ? "contained-tonal" : "outlined"}
-              onPress={() => setGender("남성")}
+              mode={gender === "male" ? "contained-tonal" : "outlined"}
+              onPress={() => setGender("male")}
             >
               남성
             </Button>
@@ -88,11 +109,12 @@ const Input = styled(TextInput)`
 `;
 const AlertText = styled.View`
   margin: 0 auto;
+  margin-top: 20px;
   flex-direction: row;
   align-items: center;
 `;
 const ConfirmWrapper = styled.View`
-  margin-top: 50px;
+  margin-top: 30px;
   justify-content: flex-end;
 `;
 
