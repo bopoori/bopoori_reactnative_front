@@ -1,3 +1,4 @@
+import React from "react";
 import { useIsFocused } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Camera, CameraType } from "expo-camera";

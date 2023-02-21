@@ -1,3 +1,4 @@
+import React from "react";
 import { Camera } from "expo-camera";
 import { Linking } from "react-native";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
