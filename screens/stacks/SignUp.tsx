@@ -1,15 +1,30 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useState } from "react";
-import { Appbar, Button, Divider, Text, TextInput } from "react-native-paper";
+import { Appbar, Button, Divider, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
 import { StackParamList } from "../../navigation/Stack";
-import { Ionicons } from "@expo/vector-icons";
-import { KeyboardAvoidingView, Platform } from "react-native";
+import { Alert, KeyboardAvoidingView, Platform } from "react-native";
+import { useForm } from "react-hook-form";
+import ControlledInput from "../../components/ControlledInput";
 
 type Props = NativeStackScreenProps<StackParamList, "SignUp">;
 
-const SignUp: React.FC<Props> = ({ navigation: { goBack } }) => {
-  const [gender, setGender] = useState("");
+const SignUp: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
+  const { control, handleSubmit } = useForm();
+  const [otpSented, setOtpSented] = useState(false);
+  const [otp, setOtp] = useState("");
+  const onChangeOtp = (text: string) => setOtp(text);
+
+  const sendEmail = () => {
+    Alert.alert("메일을 발송했습니다.");
+    setOtpSented(true);
+  };
+
+  const certEmail = () => {
+    console.log(otp);
+    navigate("InformationForm");
+  };
+
   return (
     <>
       <Appbar.Header>
@@ -20,88 +35,130 @@ const SignUp: React.FC<Props> = ({ navigation: { goBack } }) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={{ flex: 1 }}
       >
-        <Form>
+        <Container>
           <FormBox>
-            <Input label="닉네임" mode="outlined" />
-          </FormBox>
-          <FormBox>
-            <Input label="이메일" mode="outlined" />
-          </FormBox>
-          <Divider style={{ marginTop: 20, marginBottom: 10 }} />
-          <FormBox>
-            <ButtonWrapper>
-              <Button
-                style={{ width: "100%" }}
-                mode={gender === "female" ? "contained-tonal" : "outlined"}
-                onPress={() => setGender("female")}
-                icon="face-woman"
-              >
-                여성
-              </Button>
-            </ButtonWrapper>
-            <ButtonWrapper>
-              <Button
-                style={{ width: "100%" }}
-                mode={gender === "male" ? "contained-tonal" : "outlined"}
-                onPress={() => setGender("male")}
-                icon="face-man"
-              >
-                남성
-              </Button>
-            </ButtonWrapper>
-          </FormBox>
-          <FormBox>
-            <Input
-              label="키"
-              mode="outlined"
-              keyboardType="number-pad"
-              returnKeyType="done"
-              right={<TextInput.Affix text="cm" />}
+            <ControlledInput
+              label="닉네임"
+              name="user_nickname"
+              autoComplete="name"
+              control={control}
             />
           </FormBox>
           <FormBox>
-            <Input
-              label="몸무게"
+            <ControlledInput
+              label="이메일"
+              name="user_email"
+              autoComplete="email"
+              control={control}
+            />
+          </FormBox>
+          <Button
+            disabled={otpSented}
+            onPress={handleSubmit(sendEmail)}
+            style={{ alignSelf: "center" }}
+          >
+            인증 번호 보내기
+          </Button>
+          <DividerWrapper>
+            <Divider />
+          </DividerWrapper>
+          <FormBox>
+            <TextInput
               mode="outlined"
+              disabled={!otpSented}
+              label="인증번호"
               keyboardType="number-pad"
-              returnKeyType="done"
-              right={<TextInput.Affix text="kg" />}
+              value={otp}
+              onChangeText={(text) => onChangeOtp(text)}
+            />
+          </FormBox>
+          <ConfirmWrapper>
+            <Button mode="contained" disabled={!otpSented} onPress={certEmail}>
+              인증하기
+            </Button>
+          </ConfirmWrapper>
+          {/* <Divider style={{ marginTop: 20, marginBottom: 10 }} />
+          <GenderWrapper>
+            <GenderBox>
+              <ButtonWrapper>
+                <Button
+                  style={{ width: "100%" }}
+                  mode={gender === "female" ? "contained-tonal" : "outlined"}
+                  onPress={() => setGender("female")}
+                  icon="face-woman"
+                >
+                  여성
+                </Button>
+              </ButtonWrapper>
+              <ButtonWrapper>
+                <Button
+                  style={{ width: "100%" }}
+                  mode={gender === "male" ? "contained-tonal" : "outlined"}
+                  onPress={() => setGender("male")}
+                  icon="face-man"
+                >
+                  남성
+                </Button>
+              </ButtonWrapper>
+            </GenderBox>
+          </GenderWrapper>
+          <FormBox>
+            <ControlledInput
+              label="키"
+              name="user_height"
+              control={control}
+              numberPad
+              rightText="cm"
+            />
+          </FormBox>
+          <FormBox>
+            <ControlledInput
+              label="몸무게"
+              name="user_weight"
+              control={control}
+              numberPad
+              rightText="kg"
             />
           </FormBox>
           <AlertText>
             <Ionicons
               name="alert-circle"
+              color={isDark ? "#fff" : "#000"}
               size={22}
               style={{ marginRight: 8 }}
             />
             <Text>이후 스타일링 추천을 위해 키와 몸무게를 알려주세요</Text>
           </AlertText>
           <ConfirmWrapper>
-            <Button mode="contained" onPress={() => {}}>
+            <Button mode="contained" onPress={handleSubmit(onSubmit)}>
               가입하기
             </Button>
-          </ConfirmWrapper>
-        </Form>
+          </ConfirmWrapper> */}
+        </Container>
       </KeyboardAvoidingView>
     </>
   );
 };
 
-const Form = styled.ScrollView`
+const Container = styled.ScrollView`
   padding: 22px;
 `;
+const DividerWrapper = styled.View`
+  margin: 20px 0;
+`;
 const FormBox = styled.View`
+  min-height: 70px;
+`;
+const ButtonWrapper = styled.View`
+  width: 48%;
+`;
+const GenderBox = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   height: 70px;
 `;
-const ButtonWrapper = styled.View`
-  width: 48%;
-`;
-const Input = styled(TextInput)`
-  width: 100%;
-`;
+const GenderWrapper = styled.View``;
 const AlertText = styled.View`
   margin: 0 auto;
   margin-top: 20px;
@@ -109,8 +166,7 @@ const AlertText = styled.View`
   align-items: center;
 `;
 const ConfirmWrapper = styled.View`
-  margin-top: 30px;
-  justify-content: flex-end;
+  margin-top: 10px;
 `;
 
 export default SignUp;
