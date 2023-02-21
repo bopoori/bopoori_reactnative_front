@@ -1,5 +1,4 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 import React, { useLayoutEffect, useState } from "react";
 import { Dimensions } from "react-native";
 import { useRecoilState } from "recoil";
@@ -38,6 +37,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     }
   }, [isLoggedIn]);
 
+  const navigateToSignUp = () => navigate("Stack", { screen: "SignUp" });
+
   return (
     <Container>
       <Header>
@@ -50,9 +51,20 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           text="카카오로 로그인"
           onPress={signInWithKakao}
         />
-        <PassBtn onPress={onPassPress}>
-          <Text>그냥 둘러보기</Text>
-        </PassBtn>
+        <LoginBtn
+          backgroundColor="#333"
+          textColor="#fff"
+          text="보풀 회원가입"
+          onPress={navigateToSignUp}
+        />
+        <BottomBtns>
+          <UnderlineBtn onPress={onPassPress}>
+            <Text>그냥 둘러보기</Text>
+          </UnderlineBtn>
+          <UnderlineBtn>
+            <Text>가입정보 찾기</Text>
+          </UnderlineBtn>
+        </BottomBtns>
       </Btns>
     </Container>
   );
@@ -73,11 +85,16 @@ const Image = styled.Image``;
 const Btns = styled.View`
   height: ${WINDOW_HEIGHT / 3}px;
 `;
-const PassBtn = styled.TouchableOpacity`
+const BottomBtns = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+`;
+const UnderlineBtn = styled.TouchableOpacity`
   padding: 16px;
   align-items: center;
 `;
 const Text = styled.Text`
+  text-decoration: underline;
   color: ${({ theme }) => theme.textColor};
 `;
 
