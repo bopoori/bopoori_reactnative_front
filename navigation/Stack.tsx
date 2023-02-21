@@ -13,7 +13,7 @@ import SignUp from "../screens/stacks/SignUp";
 import InformationForm from "../screens/stacks/InformationForm";
 
 export type StackParamList = {
-  SignUp: undefined;
+  SignUp: { user_height: string; user_weight: string; user_gender: string };
   InformationForm: undefined;
   PickNextCloth: undefined;
   AddNewCloth: { uri: string };
