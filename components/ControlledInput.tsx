@@ -1,15 +1,17 @@
-import { Control, useController } from "react-hook-form";
+import React from "react";
+import { Control, useController, ValidationRule } from "react-hook-form";
 import { HelperText, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
 
 interface InputProps {
   name: string;
   label: string;
-  control: Control;
+  control: Control<any>;
   disabled?: boolean;
   autoComplete?: "name" | "email";
   numberPad?: boolean;
   rightText?: string;
+  pattern?: ValidationRule<RegExp>;
 }
 
 const ControlledInput: React.FC<InputProps> = ({
@@ -20,6 +22,7 @@ const ControlledInput: React.FC<InputProps> = ({
   autoComplete,
   numberPad,
   rightText,
+  pattern,
 }) => {
   const {
     field,
@@ -28,7 +31,10 @@ const ControlledInput: React.FC<InputProps> = ({
     control,
     defaultValue: "",
     name,
-    rules: { required: `${label} 항목을 작성해주세요.` },
+    rules: {
+      required: `${label} 항목을 작성해주세요.`,
+      pattern,
+    },
   });
   const isError = errors[name] ? true : false;
   return (
