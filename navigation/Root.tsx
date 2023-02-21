@@ -19,6 +19,7 @@ export type RootParamList = {
       | "MyInformation"
       | "ClosetSettings"
       | "Privacy"
+      | "SignUp"
       | "Rules";
   };
 };
