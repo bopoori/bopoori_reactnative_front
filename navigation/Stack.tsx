@@ -10,9 +10,11 @@ import ClosetSettings from "../screens/settings/ClosetSettings";
 import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 import SignUp from "../screens/stacks/SignUp";
+import InformationForm from "../screens/stacks/InformationForm";
 
 export type StackParamList = {
   SignUp: undefined;
+  InformationForm: undefined;
   PickNextCloth: undefined;
   AddNewCloth: { uri: string };
   ClothCamera: undefined;
@@ -30,6 +32,7 @@ const Stack: React.FC = () => {
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
       <NativeStack.Screen name="SignUp" component={SignUp} />
+      <NativeStack.Screen name="InformationForm" component={InformationForm} />
       <NativeStack.Screen
         name="PickNextCloth"
         component={PickNextCloth}
