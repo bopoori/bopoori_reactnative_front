@@ -2,7 +2,7 @@ import React from "react";
 import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
-import { Ionicons } from "@expo/vector-icons";
+// import { Ionicons } from "@expo/vector-icons";
 
 interface LoginBtnProps {
   backgroundColor: string;
@@ -19,7 +19,7 @@ const LoginBtn: React.FC<LoginBtnProps> = ({
 }) => {
   return (
     <Btn backgroundColor={backgroundColor} onPress={onPress}>
-      <Ionicons name="chatbubble-ellipses" size={18} color="black" />
+      {/* <Ionicons name="chatbubble-ellipses" size={18} color="black" /> */}
       <Text textColor={textColor}>{text}</Text>
     </Btn>
   );
@@ -27,7 +27,7 @@ const LoginBtn: React.FC<LoginBtnProps> = ({
 
 const Btn = styled.TouchableOpacity<{ backgroundColor: string }>`
   flex-direction: row;
-  width: ${WINDOW_WIDTH * 0.6}px;
+  width: ${WINDOW_WIDTH * 0.8}px;
   max-width: 400px;
   justify-content: center;
   align-items: center;
