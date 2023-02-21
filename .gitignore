@@ -57,3 +57,4 @@ dist/
 
 # Env
 .env
+.env.development
