@@ -8,10 +8,11 @@ interface InputProps {
   label: string;
   control: Control<any>;
   disabled?: boolean;
-  autoComplete?: "name" | "email";
+  autoComplete?: "name" | "email" | "password";
   numberPad?: boolean;
   rightText?: string;
   pattern?: ValidationRule<RegExp>;
+  secureTextEntry?: boolean;
 }
 
 const ControlledInput: React.FC<InputProps> = ({
@@ -23,6 +24,7 @@ const ControlledInput: React.FC<InputProps> = ({
   numberPad,
   rightText,
   pattern,
+  secureTextEntry,
 }) => {
   const {
     field,
@@ -40,6 +42,7 @@ const ControlledInput: React.FC<InputProps> = ({
   return (
     <Container>
       <Input
+        secureTextEntry={secureTextEntry}
         label={label}
         mode="outlined"
         returnKeyType="done"

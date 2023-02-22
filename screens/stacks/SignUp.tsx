@@ -18,7 +18,7 @@ interface SignUpForm {
 
 const SignUp: React.FC<Props> = ({
   navigation: { goBack, navigate },
-  route: { params: informationData },
+  route: { params: informationFormData },
 }) => {
   const { control, handleSubmit } = useForm<SignUpForm>();
   const [otp, setOtp] = React.useState("");
@@ -79,6 +79,16 @@ const SignUp: React.FC<Props> = ({
                 value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
                 message: "이메일 형식이 올바르지 않습니다.",
               }}
+            />
+          </FormBox>
+          <FormBox>
+            <ControlledInput
+              disabled={otpSented}
+              label="비밀번호"
+              name="user_pw"
+              autoComplete="password"
+              control={control}
+              secureTextEntry
             />
           </FormBox>
           <Button
