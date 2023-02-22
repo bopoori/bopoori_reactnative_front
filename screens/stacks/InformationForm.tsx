@@ -28,19 +28,15 @@ const InformationForm: React.FC<Props> = ({
       Alert.alert("성별을 선택해주세요!");
     } else {
       navigate("SignUp", { ...formData, user_gender: gender });
-      Alert.alert(JSON.stringify(formData));
+      // Alert.alert(JSON.stringify(formData));
     }
-  };
-
-  const certEmail = () => {
-    Alert.alert("메일을 발송했습니다.");
   };
 
   return (
     <>
       <Appbar.Header>
         <Appbar.BackAction onPress={goBack} />
-        <Appbar.Content title="정보 입력" />
+        <Appbar.Content title="회원가입" />
       </Appbar.Header>
       <Container>
         <GenderWrapper>
@@ -96,7 +92,7 @@ const InformationForm: React.FC<Props> = ({
         </AlertText>
         <ConfirmWrapper>
           <Button mode="contained" onPress={handleSubmit(onSubmit)}>
-            회원 정보 만들기
+            이 정보로 가입하기
           </Button>
         </ConfirmWrapper>
       </Container>
