@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Appbar, Button, Divider, TextInput } from "react-native-paper";
 import styled from "styled-components/native";
@@ -7,35 +7,51 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import ControlledInput from "../../components/ControlledInput";
 import { useMutation } from "@tanstack/react-query";
-import { getOtp } from "../../utils/api";
+import { getOtp, signUp } from "../../utils/api";
 
 type Props = NativeStackScreenProps<StackParamList, "SignUp">;
 
-interface SignUpForm {
+interface GetOtpForm {
   user_nickname: string;
   user_email: string;
+  user_pw: string;
+}
+
+export interface SignUpForm {
+  user_nickname?: string;
+  user_email?: string;
+  user_pw?: string;
+  user_gender: string;
+  user_height: string;
+  user_weight: string;
+  otp: string;
 }
 
 const SignUp: React.FC<Props> = ({
   navigation: { goBack, navigate },
   route: { params: informationFormData },
 }) => {
-  const { control, handleSubmit } = useForm<SignUpForm>();
+  const { control, handleSubmit } = useForm<GetOtpForm>();
   const [otp, setOtp] = React.useState("");
   const [otpSented, setOtpSented] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [getOtpFormData, setGetOtpFormData] = useState<GetOtpForm>();
 
-  const { mutateAsync } = useMutation((user_email: string) =>
+  const { mutateAsync: getOtpAsync } = useMutation((user_email: string) =>
     getOtp(user_email)
+  );
+  const { mutateAsync: signUpAsync } = useMutation((signUpForm: SignUpForm) =>
+    signUp(signUpForm)
   );
 
   const onChangeOtp = (text: string) => setOtp(text);
-  const sendEmail = (formData: SignUpForm) => {
+  const sendEmail = (formData: GetOtpForm) => {
     setLoading(true);
-    mutateAsync(formData.user_email).then(({ success, message }) => {
+    getOtpAsync(formData.user_email).then(({ success, message }) => {
       setLoading(false);
       if (success) {
         setOtpSented(true);
+        setGetOtpFormData(formData);
         Alert.alert("메일을 발송했습니다.");
       } else {
         Alert.alert(message);
@@ -44,8 +60,17 @@ const SignUp: React.FC<Props> = ({
   };
 
   const certEmail = () => {
-    console.log(otp);
-    navigate("InformationForm");
+    const signUpForm = { ...informationFormData, ...getOtpFormData, otp };
+    signUpAsync(signUpForm).then((res) => {
+      console.log(res);
+      if (res.success) {
+        Alert.alert("회원가입 완료", res.message, [
+          { text: "로그인 하기", onPress: () => navigate("SignIn") },
+        ]);
+      } else {
+        Alert.alert(res.message);
+      }
+    });
   };
 
   return (
