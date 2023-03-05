@@ -11,9 +11,11 @@ import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 import SignUp from "../screens/stacks/SignUp";
 import InformationForm from "../screens/stacks/InformationForm";
+import SignIn from "../screens/stacks/SignIn";
 
 export type StackParamList = {
   SignUp: { user_height: string; user_weight: string; user_gender: string };
+  SignIn: undefined;
   InformationForm: undefined;
   PickNextCloth: undefined;
   AddNewCloth: { uri: string };
@@ -31,6 +33,7 @@ const NativeStack = createNativeStackNavigator<StackParamList>();
 const Stack: React.FC = () => {
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
+      <NativeStack.Screen name="SignIn" component={SignIn} />
       <NativeStack.Screen name="SignUp" component={SignUp} />
       <NativeStack.Screen name="InformationForm" component={InformationForm} />
       <NativeStack.Screen

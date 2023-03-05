@@ -5,10 +5,10 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components/native";
 import LoginBtn from "../../components/LoginBtn";
 import { loginAtom } from "../../utils/recoil";
-const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 import { login } from "@react-native-seoul/kakao-login";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootParamList } from "../../navigation/Root";
+const { height: WINDOW_HEIGHT } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<RootParamList, "Login">;
 
@@ -37,8 +37,7 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
     }
   }, [isLoggedIn]);
 
-  const navigateToSignUp = () =>
-    navigate("Stack", { screen: "InformationForm" });
+  const navigateToSignIn = () => navigate("Stack", { screen: "SignIn" });
 
   return (
     <Container>
@@ -55,8 +54,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
         <LoginBtn
           backgroundColor="#333"
           textColor="#fff"
-          text="보풀 회원가입"
-          onPress={navigateToSignUp}
+          text="이메일로 로그인"
+          onPress={navigateToSignIn}
         />
         <BottomBtns>
           <UnderlineBtn onPress={onPassPress}>
