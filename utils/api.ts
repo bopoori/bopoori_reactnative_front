@@ -7,9 +7,9 @@ const BASE_URL = "http://3.39.118.55:12023";
 axios.defaults.headers.common["Content-Type"] =
   "application/json; charset=utf-8";
 
-export const getOtp = (user_email: string) =>
+export const getOtp = (user_id: string) =>
   axios
-    .post(`${BASE_URL}/bopool/auth/registration/mail`, { user_email })
+    .post(`${BASE_URL}/bopool/auth/registration/mail`, { user_id })
     .then(({ data }) => data);
 
 export const signIn = (signInForm: SignInForm) =>
