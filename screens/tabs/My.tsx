@@ -37,7 +37,7 @@ const My: React.FC = () => {
     AsyncStorage.clear();
     setIsLoggedIn(false);
     // @ts-ignore
-    navigate("Login");
+    navigate("Auth", { screen: "Login" });
   };
 
   const onMenuPress = (navigateTo: string) => {
