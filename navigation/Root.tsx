@@ -2,28 +2,41 @@ import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
 import Stack from "./Stack";
-import Login from "../screens/stacks/Login";
 import { useRecoilValue } from "recoil";
 import { loginAtom } from "../utils/recoil";
+import { NavigatorScreenParams } from "@react-navigation/native";
+import Auth from "./Auth";
+
+export type TabsParamList = {
+  Home: undefined;
+  Closet: undefined;
+  Tips: undefined;
+  My: undefined;
+};
+
+export type AuthParamList = {
+  Login: undefined;
+  SignIn: undefined;
+  SignUp: { user_height: string; user_weight: string; user_gender: string };
+  InformationForm: undefined;
+};
+
+export type StackParamList = {
+  PickNextCloth: undefined;
+  AddNewCloth: { uri: string };
+  ClothCamera: undefined;
+  TipDetail: undefined;
+  Alert: undefined;
+  MyInformation: undefined;
+  ClosetSettings: undefined;
+  Privacy: undefined;
+  Rules: undefined;
+};
 
 export type RootParamList = {
-  Login: undefined;
-  Tabs: { screen: "Home" | "Closet" | "Tips" | "My" };
-  Stack: {
-    screen:
-      | "PickNextCloth"
-      | "AddNewCloth"
-      | "ClothCamera"
-      | "TipDetail"
-      | "Alert"
-      | "MyInformation"
-      | "ClosetSettings"
-      | "Privacy"
-      | "SignUp"
-      | "SignIn"
-      | "InformationForm"
-      | "Rules";
-  };
+  Auth: NavigatorScreenParams<AuthParamList>;
+  Tabs: NavigatorScreenParams<TabsParamList>;
+  Stack: NavigatorScreenParams<StackParamList>;
 };
 
 const NativeStack = createNativeStackNavigator<RootParamList>();
@@ -32,12 +45,12 @@ const Root: React.FC = () => {
   const isLoggedIn = useRecoilValue(loginAtom);
   return (
     <NativeStack.Navigator
-      initialRouteName={isLoggedIn ? "Tabs" : "Login"}
+      initialRouteName={isLoggedIn ? "Tabs" : "Auth"}
       screenOptions={{ headerShown: false }}
     >
       <NativeStack.Screen
-        name="Login"
-        component={Login}
+        name="Auth"
+        component={Auth}
         options={{ gestureEnabled: false }}
       />
       <NativeStack.Screen

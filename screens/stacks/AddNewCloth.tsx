@@ -2,8 +2,8 @@ import React from "react";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParamList } from "../../navigation/Stack";
 import { Image } from "react-native";
+import { StackParamList } from "../../navigation/Root";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 

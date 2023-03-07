@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, useColorScheme } from "react-native";
 import { Appbar } from "react-native-paper";
 import styled from "styled-components/native";
-import { StackParamList } from "../../navigation/Stack";
+import { StackParamList } from "../../navigation/Root";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 type Props = NativeStackScreenProps<StackParamList, "ClothCamera">;
