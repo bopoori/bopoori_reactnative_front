@@ -9,33 +9,13 @@ import MyInformation from "../screens/settings/MyInformation";
 import ClosetSettings from "../screens/settings/ClosetSettings";
 import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
-import SignUp from "../screens/stacks/SignUp";
-import InformationForm from "../screens/stacks/InformationForm";
-import SignIn from "../screens/stacks/SignIn";
-
-export type StackParamList = {
-  SignUp: { user_height: string; user_weight: string; user_gender: string };
-  SignIn: undefined;
-  InformationForm: undefined;
-  PickNextCloth: undefined;
-  AddNewCloth: { uri: string };
-  ClothCamera: undefined;
-  TipDetail: undefined;
-  Alert: undefined;
-  MyInformation: undefined;
-  ClosetSettings: undefined;
-  Privacy: undefined;
-  Rules: undefined;
-};
+import { StackParamList } from "./Root";
 
 const NativeStack = createNativeStackNavigator<StackParamList>();
 
 const Stack: React.FC = () => {
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
-      <NativeStack.Screen name="SignIn" component={SignIn} />
-      <NativeStack.Screen name="SignUp" component={SignUp} />
-      <NativeStack.Screen name="InformationForm" component={InformationForm} />
       <NativeStack.Screen
         name="PickNextCloth"
         component={PickNextCloth}
