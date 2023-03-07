@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SignInForm } from "../screens/stacks/SignIn";
+import { SignInForm } from "../screens/auth/SignIn";
 import { SignUpForm } from "../screens/stacks/SignUp";
 
 const BASE_URL = "http://3.39.118.55:12023";
