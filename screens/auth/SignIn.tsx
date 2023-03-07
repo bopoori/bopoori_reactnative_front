@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { signIn } from "../../utils/api";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<AuthParamList, "SignIn">,
@@ -32,6 +33,7 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
       if (res.success) {
         console.log(res);
         navigate("Tabs", { screen: "Home" });
+        AsyncStorage.setItem("login", "pass");
       } else {
         Alert.alert(res.message);
       }
