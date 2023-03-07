@@ -1,52 +1,74 @@
 import React from "react";
-import { BottomNavigation } from "react-native-paper";
 import Closet from "../screens/tabs/Closet";
 import Home from "../screens/tabs/Home";
 import My from "../screens/tabs/My";
 import Tips from "../screens/tabs/Tips";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { TabsParamList } from "./Root";
+
+const Tab = createMaterialBottomTabNavigator<TabsParamList>();
 
 const Tabs = () => {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    {
-      key: "home",
-      title: "홈",
-      focusedIcon: "home",
-      unfocusedIcon: "home-outline",
-    },
-    {
-      key: "closet",
-      title: "옷장",
-      focusedIcon: "dresser",
-      unfocusedIcon: "dresser-outline",
-    },
-    {
-      key: "tips",
-      title: "팁",
-      focusedIcon: "lightbulb",
-      unfocusedIcon: "lightbulb-outline",
-    },
-    {
-      key: "my",
-      title: "마이",
-      focusedIcon: "account",
-      unfocusedIcon: "account-outline",
-    },
-  ]);
-
-  const renderScene = BottomNavigation.SceneMap({
-    home: Home,
-    closet: Closet,
-    tips: Tips,
-    my: My,
-  });
-
   return (
-    <BottomNavigation
-      navigationState={{ index, routes }}
-      onIndexChange={setIndex}
-      renderScene={renderScene}
-    />
+    <Tab.Navigator>
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarLabel: "Home",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? "home" : "home-outline"}
+              color={color}
+              size={22}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Closet"
+        component={Closet}
+        options={{
+          tabBarLabel: "Closet",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? "dresser" : "dresser-outline"}
+              color={color}
+              size={22}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Tips"
+        component={Tips}
+        options={{
+          tabBarLabel: "Tips",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? "lightbulb" : "lightbulb-outline"}
+              color={color}
+              size={22}
+            />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="My"
+        component={My}
+        options={{
+          tabBarLabel: "My",
+          tabBarIcon: ({ color, focused }) => (
+            <MaterialCommunityIcons
+              name={focused ? "account" : "account-outline"}
+              color={color}
+              size={22}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
   );
 };
 
