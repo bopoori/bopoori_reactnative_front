@@ -5,12 +5,19 @@ import { Appbar, AnimatedFAB } from "react-native-paper";
 import TopCard from "../../components/ClosetTopCard";
 import Selector from "../../components/ClosetSelector";
 import Accordions from "../../components/ClosetAccordions";
-import { useNavigation } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { Camera } from "expo-camera";
 import CameraDialog from "../../components/CameraDialog";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { RootParamList, TabsParamList } from "../../navigation/Root";
 
-const Closet: React.FC = () => {
-  const { navigate } = useNavigation();
+type ClosetProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<TabsParamList, "Closet">,
+  NativeStackScreenProps<RootParamList>
+>;
+
+const Closet: React.FC<ClosetProps> = ({ navigation: { navigate } }) => {
   const [isFabExtended, setIsFabExtended] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [selectedOption, setSelectedOption] = useState("카테고리별");
@@ -24,7 +31,6 @@ const Closet: React.FC = () => {
   };
 
   const openCamera = () => {
-    //@ts-ignore
     navigate("Stack", { screen: "ClothCamera" });
   };
 

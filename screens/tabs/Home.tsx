@@ -1,4 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import {
@@ -9,11 +11,15 @@ import {
   IconButton,
   Text,
 } from "react-native-paper";
+import { RootParamList, TabsParamList } from "../../navigation/Root";
 
-const Home: React.FC = () => {
-  const { navigate } = useNavigation();
+type HomeProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<TabsParamList, "Home">,
+  NativeStackScreenProps<RootParamList>
+>;
+
+const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   const pickNextCloth = () => {
-    // @ts-ignore
     navigate("Stack", { screen: "PickNextCloth" });
   };
 

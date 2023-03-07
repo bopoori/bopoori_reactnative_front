@@ -1,10 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { Appbar, Card } from "react-native-paper";
+import { RootParamList, TabsParamList } from "../../navigation/Root";
 
-const Tips: React.FC = () => {
-  const { navigate } = useNavigation();
+type TipsProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<TabsParamList, "Tips">,
+  NativeStackScreenProps<RootParamList>
+>;
+
+const Tips: React.FC<TipsProps> = ({ navigation: { navigate } }) => {
   const showTipDetail = () => {
     navigate("Stack", { screen: "TipDetail" });
   };

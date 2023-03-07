@@ -1,13 +1,28 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
 import { useSetRecoilState } from "recoil";
 import { loginAtom } from "../../utils/recoil";
 import { StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, List, Text } from "react-native-paper";
 import styled from "styled-components/native";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
+import { RootParamList, TabsParamList } from "../../navigation/Root";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const settingMenus = [
+type StackNavigators =
+  | "Alert"
+  | "MyInformation"
+  | "ClosetSettings"
+  | "Privacy"
+  | "Rules";
+
+type SettingMenusType = {
+  title: string;
+  navigateTo: StackNavigators;
+}[];
+
+const settingMenus: SettingMenusType = [
   {
     title: "알람",
     navigateTo: "Alert",
@@ -30,18 +45,20 @@ const settingMenus = [
   },
 ];
 
-const My: React.FC = () => {
-  const { navigate } = useNavigation();
+type MyProps = CompositeScreenProps<
+  MaterialBottomTabScreenProps<TabsParamList, "My">,
+  NativeStackScreenProps<RootParamList>
+>;
+
+const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
   const setIsLoggedIn = useSetRecoilState(loginAtom);
   const onLogoutPress = () => {
     AsyncStorage.clear();
     setIsLoggedIn(false);
-    // @ts-ignore
     navigate("Auth", { screen: "Login" });
   };
 
-  const onMenuPress = (navigateTo: string) => {
-    // @ts-ignore
+  const onMenuPress = (navigateTo: StackNavigators) => {
     navigate("Stack", { screen: navigateTo });
   };
   return (
