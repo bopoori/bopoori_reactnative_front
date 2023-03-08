@@ -1,17 +1,67 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "react-native";
 import { StackParamList } from "../../navigation/Root";
+import SelectDialog from "../../components/SelectDialog";
+import { clothReducer, CLOTH_STATE } from "../../reducers/clothReducers";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
+
+const lists = {
+  category: [
+    "New",
+    "Top",
+    "Bottom",
+    "One piece",
+    "Outer",
+    "Bag",
+    "Socks",
+    "Shoes",
+    "Hat",
+    "Accessory",
+  ],
+  color: [
+    "Red",
+    "Orange",
+    "Yellow",
+    "Green",
+    "Blue",
+    "Purple",
+    "Pink",
+    "White",
+    "Black",
+    "Grey",
+    "Brown",
+    "etc.",
+  ],
+};
 
 const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
   const uri = route.params.uri;
   const theme = useTheme();
+  const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
+  const closeDialog = () => dispatch({ type: "CLOSE_DIALOG" });
+  const openDialog = (name: "category" | "color") => {
+    dispatch({
+      type: "OPEN_LIST_DIALOG",
+      payload: { lists: lists[name], name },
+    });
+  };
+  const onPressSave = (name: string, value: string) =>
+    dispatch({ type: "SAVE_INFO", payload: { name, value } });
+
   return (
     <>
+      <SelectDialog
+        initialValue={state.info[state.dialog.name]}
+        title={state.dialog.name}
+        visible={state.dialog.status}
+        lists={state.dialog.lists}
+        onPressSave={onPressSave}
+        closeDialog={closeDialog}
+      />
       <Appbar.Header style={{ elevation: 1 }}>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="새로운 옷 추가" />
@@ -25,20 +75,22 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
           titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
         >
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="1차 카테고리"
-            onPress={() => {}}
-            description="없음"
+            descriptionStyle={descriptionStyle}
+            title="카테고리"
+            onPress={() => openDialog("category")}
+            description={
+              state.info.category === "" ? "없음" : state.info.category
+            }
           />
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="2차 카테고리"
-            onPress={() => {}}
-            description="없음"
+            descriptionStyle={descriptionStyle}
+            title="색상"
+            onPress={() => openDialog("color")}
+            description={state.info.color === "" ? "없음" : state.info.color}
           />
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="계절"
+            descriptionStyle={descriptionStyle}
+            title="브랜드"
             onPress={() => {}}
             description="없음"
           />
@@ -48,25 +100,19 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
           titleStyle={{ marginLeft: 8 }}
         >
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
+            descriptionStyle={descriptionStyle}
             title="구매일"
             onPress={() => {}}
             description="없음"
           />
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
+            descriptionStyle={descriptionStyle}
             title="구매가격"
             onPress={() => {}}
             description="없음"
           />
           <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="구매링크"
-            onPress={() => {}}
-            description="없음"
-          />
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
+            descriptionStyle={descriptionStyle}
             title="설명"
             onPress={() => {}}
             description="없음"
@@ -81,6 +127,7 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
   );
 };
 
+const descriptionStyle = { paddingTop: 8 };
 const ScrollContainer = styled.ScrollView`
   flex: 1;
 `;
