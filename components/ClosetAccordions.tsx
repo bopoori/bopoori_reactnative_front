@@ -3,7 +3,7 @@ import { List } from "react-native-paper";
 
 const Accordion = ({ title }: { title: string }) => {
   return (
-    <List.Accordion title={title}>
+    <List.Accordion title={title} style={styles.accordions}>
       <View style={styles.accordion}>
         {Array.from({ length: 5 }, (_, i) => i).map((i) => (
           <Image
@@ -19,7 +19,7 @@ const Accordion = ({ title }: { title: string }) => {
 
 const Accordions = () => {
   return (
-    <List.Section style={styles.accordions}>
+    <List.Section>
       <Accordion title="Top" />
       <Accordion title="Bottom" />
       <Accordion title="Shoes" />
@@ -35,13 +35,15 @@ const styles = StyleSheet.create({
   },
   accordion: {
     flex: 1,
-    paddingHorizontal: 8,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     flexDirection: "row",
     justifyContent: "space-between",
     flexWrap: "wrap",
   },
   accordions: {
     paddingHorizontal: 16,
+    backgroundColor: "white",
   },
 });
 
