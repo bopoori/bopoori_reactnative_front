@@ -9,10 +9,12 @@ interface InputProps {
   control: Control<any>;
   disabled?: boolean;
   autoComplete?: "name" | "email" | "password";
+  autoFocus?: boolean;
   numberPad?: boolean;
   rightText?: string;
   pattern?: ValidationRule<RegExp>;
   secureTextEntry?: boolean;
+  defaultValue?: string;
 }
 
 const ControlledInput: React.FC<InputProps> = ({
@@ -21,10 +23,12 @@ const ControlledInput: React.FC<InputProps> = ({
   control,
   disabled,
   autoComplete,
+  autoFocus,
   numberPad,
   rightText,
   pattern,
   secureTextEntry,
+  defaultValue,
 }) => {
   const {
     field,
@@ -48,6 +52,8 @@ const ControlledInput: React.FC<InputProps> = ({
         returnKeyType="done"
         disabled={disabled}
         autoComplete={autoComplete}
+        autoFocus={autoFocus ?? false}
+        defaultValue={defaultValue}
         value={field.value}
         onChangeText={field.onChange}
         keyboardType={numberPad ? "number-pad" : "default"}
