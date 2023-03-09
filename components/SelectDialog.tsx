@@ -6,6 +6,7 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("screen");
 interface SelectDialogProps {
   initialValue: string;
   title: string;
+  dialogName: string;
   visible: boolean;
   lists: string[];
   closeDialog: () => void;
@@ -15,6 +16,7 @@ interface SelectDialogProps {
 const SelectDialog: React.FC<SelectDialogProps> = ({
   initialValue,
   title,
+  dialogName,
   lists,
   visible,
   closeDialog,
@@ -42,7 +44,7 @@ const SelectDialog: React.FC<SelectDialogProps> = ({
           </ScrollView>
         </Dialog.ScrollArea>
         <Dialog.Actions>
-          <Button onPress={() => onPressSave(title, value)}>저장</Button>
+          <Button onPress={() => onPressSave(dialogName, value)}>저장</Button>
           <Button onPress={closeDialog}>닫기</Button>
         </Dialog.Actions>
       </Dialog>
