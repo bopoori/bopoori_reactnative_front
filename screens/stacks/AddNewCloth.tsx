@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { Reducer, useReducer } from "react";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -6,9 +6,19 @@ import { Image } from "react-native";
 import { StackParamList } from "../../navigation/Root";
 import SelectDialog from "../../components/SelectDialog";
 import { clothReducer, CLOTH_STATE } from "../../reducers/clothReducers";
+import InputDialog from "../../components/InputDialog";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 
+const informationKr = {
+  name: "옷 이름",
+  category: "카테고리",
+  color: "색상",
+  brand: "브랜드",
+  buy_date: "구매일",
+  price: "구매가격",
+  explain: "설명",
+};
 const lists = {
   category: [
     "New",
@@ -38,29 +48,58 @@ const lists = {
   ],
 };
 
-const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
+const AddNewCloth: React.FC<Props> = ({
+  navigation: { goBack, navigate },
+  route,
+}) => {
   const uri = route.params.uri;
   const theme = useTheme();
-  const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
-  const closeDialog = () => dispatch({ type: "CLOSE_DIALOG" });
-  const openDialog = (name: "category" | "color") => {
+
+  const goToCamera = () => {
+    navigate("ClothCamera");
+  };
+
+  const [state, dispatch] = useReducer<Reducer<any, any>>(
+    clothReducer,
+    CLOTH_STATE
+  );
+  const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
+  const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
+  const openListDialog = (dialogName: "category" | "color") => {
     dispatch({
       type: "OPEN_LIST_DIALOG",
-      payload: { lists: lists[name], name },
+      payload: { lists: lists[dialogName], dialogName },
     });
   };
-  const onPressSave = (name: string, value: string) =>
-    dispatch({ type: "SAVE_INFO", payload: { name, value } });
+  const openInputDialog = (
+    dialogName: "brand" | "buy_date" | "price" | "explain" | "name"
+  ) => {
+    dispatch({ type: "OPEN_INPUT_DIALOG", payload: { dialogName } });
+  };
+  const onPressListSave = (dialogName: string, value: string) =>
+    dispatch({ type: "SAVE_LIST_INFO", payload: { dialogName, value } });
+  const onPressInputSave = (dialogName: string, value: string) =>
+    dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
 
+  console.log(state.info);
   return (
     <>
       <SelectDialog
-        initialValue={state.info[state.dialog.name]}
-        title={state.dialog.name}
-        visible={state.dialog.status}
-        lists={state.dialog.lists}
-        onPressSave={onPressSave}
-        closeDialog={closeDialog}
+        initialValue={state.info[state.dialogName]}
+        title={informationKr[state.dialogName]}
+        dialogName={state.dialogName}
+        visible={state.listDialog.status}
+        lists={state.listDialog.lists}
+        onPressSave={onPressListSave}
+        closeDialog={closeListDialog}
+      />
+      <InputDialog
+        initialValue={state.info[state.dialogName]}
+        title={informationKr[state.dialogName]}
+        dialogName={state.dialogName}
+        visible={state.inputDialog.status}
+        onPressSave={onPressInputSave}
+        closeDialog={closeInputDialog}
       />
       <Appbar.Header style={{ elevation: 1 }}>
         <Appbar.BackAction onPress={goBack} />
@@ -76,8 +115,14 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
         >
           <ListItem
             descriptionStyle={descriptionStyle}
+            title="옷 이름"
+            onPress={() => openInputDialog("name")}
+            description={state.info.name === "" ? "없음" : state.info.name}
+          />
+          <ListItem
+            descriptionStyle={descriptionStyle}
             title="카테고리"
-            onPress={() => openDialog("category")}
+            onPress={() => openListDialog("category")}
             description={
               state.info.category === "" ? "없음" : state.info.category
             }
@@ -85,14 +130,14 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
           <ListItem
             descriptionStyle={descriptionStyle}
             title="색상"
-            onPress={() => openDialog("color")}
+            onPress={() => openListDialog("color")}
             description={state.info.color === "" ? "없음" : state.info.color}
           />
           <ListItem
             descriptionStyle={descriptionStyle}
             title="브랜드"
-            onPress={() => {}}
-            description="없음"
+            onPress={() => openInputDialog("brand")}
+            description={state.info.brand === "" ? "없음" : state.info.brand}
           />
         </ListSection>
         <List.Accordion
@@ -102,24 +147,30 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack }, route }) => {
           <ListItem
             descriptionStyle={descriptionStyle}
             title="구매일"
-            onPress={() => {}}
-            description="없음"
+            onPress={() => openInputDialog("buy_date")}
+            description={
+              state.info.buy_date === "" ? "없음" : state.info.buy_date
+            }
           />
           <ListItem
             descriptionStyle={descriptionStyle}
             title="구매가격"
-            onPress={() => {}}
-            description="없음"
+            onPress={() => openInputDialog("price")}
+            description={state.info.price === "" ? "없음" : state.info.price}
           />
           <ListItem
             descriptionStyle={descriptionStyle}
             title="설명"
-            onPress={() => {}}
-            description="없음"
+            onPress={() => openInputDialog("explain")}
+            description={
+              state.info.explain === "" ? "없음" : state.info.explain
+            }
           />
         </List.Accordion>
         <Btns>
-          <Btn mode="outlined">다시 찍기</Btn>
+          <Btn mode="outlined" onPress={goToCamera}>
+            다시 찍기
+          </Btn>
           <Btn mode="contained">옷장에 추가</Btn>
         </Btns>
       </ScrollContainer>
