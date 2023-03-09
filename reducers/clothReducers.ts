@@ -1,35 +1,34 @@
-export interface IClothInfoState {
-  dialog: {
-    status: boolean;
-    name: "category" | "color";
-    lists: string[];
-  };
-  info: {
-    category: string;
-    color: string;
-    brand: string;
-    price: string;
-    buy_date: string;
-    explain: string;
-  };
-}
+type ClothActionWithoutPayload = {
+  type: "CLOSE_LIST_DIALOG" | "CLOSE_INPUT_DIALOG";
+};
 
-export interface IClothInfoAction {
-  type: "SAVE_INFO" | "OPEN_LIST_DIALOG" | "CLOSE_DIALOG";
+type ClothActionWithPayload = {
+  type:
+    | "SAVE_LIST_INFO"
+    | "SAVE_INPUT_INFO"
+    | "OPEN_LIST_DIALOG"
+    | "OPEN_INPUT_DIALOG";
   payload: {
-    name: "category" | "color" | "brand" | "price" | "buy_date" | "explain";
-    value: string;
-    lists: string[];
+    dialogName?: string;
+    value?: string;
+    lists?: string[];
   };
-}
+};
+
+export type ClothAction = ClothActionWithPayload | ClothActionWithoutPayload;
 
 export const CLOTH_STATE = {
-  dialog: {
+  dialogName: "",
+  inputDialog: {
     status: false,
-    name: "",
+    type: "",
+  },
+  listDialog: {
+    status: false,
     lists: [],
   },
   info: {
+    name: "",
     category: "",
     color: "",
     brand: "",
@@ -40,37 +39,79 @@ export const CLOTH_STATE = {
 };
 
 export const clothReducer = (
-  state: IClothInfoState,
-  action: IClothInfoAction
+  state: typeof CLOTH_STATE,
+  action: ClothAction
 ) => {
   switch (action.type) {
-    case "SAVE_INFO":
+    case "SAVE_LIST_INFO":
+      if (!action.payload || !action.payload.dialogName) {
+        throw new Error();
+      }
       return {
-        dialog: {
-          ...state.dialog,
+        ...state,
+        listDialog: {
+          ...state.listDialog,
           status: false,
         },
         info: {
           ...state.info,
-          [action.payload.name]: action.payload.value,
+          [action.payload.dialogName]: action.payload.value,
+        },
+      };
+    case "SAVE_INPUT_INFO":
+      if (!action.payload.dialogName || !action.payload.value) {
+        throw new Error();
+      }
+      return {
+        ...state,
+        inputDialog: {
+          status: false,
+        },
+        info: {
+          ...state.info,
+          [action.payload.dialogName]: action.payload.value,
         },
       };
     case "OPEN_LIST_DIALOG":
+      if (!action.payload) {
+        throw new Error();
+      }
       return {
-        dialog: {
+        ...state,
+        dialogName: action.payload.dialogName,
+        listDialog: {
           status: true,
-          name: action.payload.name,
           lists: action.payload.lists,
         },
         info: {
           ...state.info,
-          name: action.payload.name,
+          dialogName: action.payload.dialogName,
         },
       };
-    case "CLOSE_DIALOG":
+    case "OPEN_INPUT_DIALOG":
       return {
-        dialog: {
-          ...state.dialog,
+        ...state,
+        dialogName: action.payload.dialogName,
+        listDialog: {
+          ...state.listDialog,
+          status: false,
+        },
+        inputDialog: {
+          status: true,
+        },
+      };
+    case "CLOSE_INPUT_DIALOG":
+      return {
+        ...state,
+        inputDialog: {
+          status: false,
+        },
+      };
+    case "CLOSE_LIST_DIALOG":
+      return {
+        ...state,
+        listDialog: {
+          ...state.listDialog,
           status: false,
         },
         info: {
