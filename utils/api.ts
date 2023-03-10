@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SignInForm } from "../screens/auth/SignIn";
-import { SignUpForm } from "../screens/stacks/SignUp";
+import { SignUpForm } from "../screens/auth/SignUp";
+import { uploadClothForm } from "../screens/stacks/AddNewCloth";
 
 const BASE_URL = "http://3.39.118.55:12023";
 
@@ -20,4 +21,9 @@ export const signIn = (signInForm: SignInForm) =>
 export const signUp = (signUpForm: SignUpForm) =>
   axios
     .post(`${BASE_URL}/bopool/auth/registration`, signUpForm)
+    .then(({ data }) => data);
+
+export const uploadCloth = (uploadClothForm: uploadClothForm) =>
+  axios
+    .post(`${BASE_URL}/bopool/closets/img`, uploadClothForm)
     .then(({ data }) => data);
