@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   },
   accordions: {
     paddingHorizontal: 16,
-    backgroundColor: "white",
   },
 });
 
