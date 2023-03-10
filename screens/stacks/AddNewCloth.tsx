@@ -5,11 +5,26 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "react-native";
 import { StackParamList } from "../../navigation/Root";
 import SelectDialog from "../../components/SelectDialog";
-import { clothReducer, CLOTH_STATE } from "../../reducers/clothReducers";
+import { clothReducer, CLOTH_STATE } from "../../utils/clothReducers";
 import InputDialog from "../../components/InputDialog";
+import { useMutation } from "@tanstack/react-query";
+import { uploadCloth } from "../../utils/api";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 
+export interface uploadClothForm {
+  user_number: string;
+  brand: string;
+  buy_date: string;
+  category: string;
+  color: string;
+  explain: string;
+  name: string;
+  price: string;
+  closet_number: string;
+  table_name: string;
+  image: Blob;
+}
 const informationKr = {
   name: "옷 이름",
   category: "카테고리",
@@ -80,6 +95,11 @@ const AddNewCloth: React.FC<Props> = ({
     dispatch({ type: "SAVE_LIST_INFO", payload: { dialogName, value } });
   const onPressInputSave = (dialogName: string, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
+
+  const { mutateAsync, isLoading } = useMutation(
+    (uploadClothForm: uploadClothForm) => uploadCloth(uploadClothForm)
+  );
+  const postNewCloth = () => {};
 
   console.log(state.info);
   return (
@@ -171,7 +191,9 @@ const AddNewCloth: React.FC<Props> = ({
           <Btn mode="outlined" onPress={goToCamera}>
             다시 찍기
           </Btn>
-          <Btn mode="contained">옷장에 추가</Btn>
+          <Btn mode="contained" onPress={postNewCloth}>
+            옷장에 추가
+          </Btn>
         </Btns>
       </ScrollContainer>
     </>
