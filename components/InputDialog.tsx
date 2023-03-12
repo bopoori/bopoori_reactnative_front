@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import { DialogName } from "../utils/clothReducers";
 import ControlledInput from "./ControlledInput";
 
 interface InputDialogProps {
@@ -8,8 +9,8 @@ interface InputDialogProps {
   visible: boolean;
   closeDialog: () => void;
   title: string;
-  dialogName: string;
-  onPressSave: (dialogName: string, value: string) => void;
+  dialogName: DialogName;
+  onPressSave: (dialogName: DialogName, value: string) => void;
 }
 
 const InputDialog: React.FC<InputDialogProps> = ({

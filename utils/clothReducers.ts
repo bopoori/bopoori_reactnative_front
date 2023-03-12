@@ -1,3 +1,14 @@
+import { Reducer } from "react";
+
+export type DialogName =
+  | "name"
+  | "category"
+  | "color"
+  | "brand"
+  | "price"
+  | "buy_date"
+  | "explain";
+
 type ClothActionWithoutPayload = {
   type: "CLOSE_LIST_DIALOG" | "CLOSE_INPUT_DIALOG";
 };
@@ -9,7 +20,7 @@ type ClothActionWithPayload = {
     | "OPEN_LIST_DIALOG"
     | "OPEN_INPUT_DIALOG";
   payload: {
-    dialogName?: string;
+    dialogName?: DialogName;
     value?: string;
     lists?: string[];
   };
@@ -17,15 +28,36 @@ type ClothActionWithPayload = {
 
 export type ClothAction = ClothActionWithPayload | ClothActionWithoutPayload;
 
-export const CLOTH_STATE = {
-  dialogName: "",
+export type ClothStateType = {
+  dialogName: DialogName;
+  inputDialog: {
+    status: boolean;
+    type: string;
+  };
+  listDialog: {
+    status: boolean;
+    lists: string[];
+  };
+  info: {
+    name: string;
+    category: string;
+    color: string;
+    brand: string;
+    price: string;
+    buy_date: string;
+    explain: string;
+  };
+};
+
+export const CLOTH_STATE: ClothStateType = {
+  dialogName: "name",
   inputDialog: {
     status: false,
     type: "",
   },
   listDialog: {
     status: false,
-    lists: [],
+    lists: [""],
   },
   info: {
     name: "",
@@ -38,65 +70,59 @@ export const CLOTH_STATE = {
   },
 };
 
-export const clothReducer = (
-  state: typeof CLOTH_STATE,
-  action: ClothAction
+export const clothReducer: Reducer<ClothStateType, ClothAction> = (
+  state,
+  action
 ) => {
   switch (action.type) {
     case "SAVE_LIST_INFO":
-      if (!action.payload || !action.payload.dialogName) {
-        throw new Error();
-      }
       return {
         ...state,
+        dialogName: action.payload.dialogName!,
         listDialog: {
           ...state.listDialog,
           status: false,
         },
         info: {
           ...state.info,
-          [action.payload.dialogName]: action.payload.value,
+          [action.payload.dialogName!]: action.payload.value,
         },
       };
     case "SAVE_INPUT_INFO":
-      if (!action.payload.dialogName || !action.payload.value) {
-        throw new Error();
-      }
       return {
         ...state,
+        dialogName: action.payload.dialogName!,
         inputDialog: {
+          ...state.inputDialog,
           status: false,
         },
         info: {
           ...state.info,
-          [action.payload.dialogName]: action.payload.value,
+          [action.payload.dialogName!]: action.payload.value,
         },
       };
     case "OPEN_LIST_DIALOG":
-      if (!action.payload) {
-        throw new Error();
-      }
       return {
         ...state,
-        dialogName: action.payload.dialogName,
+        dialogName: action.payload.dialogName!,
         listDialog: {
           status: true,
-          lists: action.payload.lists,
+          lists: action.payload.lists!,
         },
-        info: {
-          ...state.info,
-          dialogName: action.payload.dialogName,
+        inputDialog: {
+          ...state.inputDialog,
         },
       };
     case "OPEN_INPUT_DIALOG":
       return {
         ...state,
-        dialogName: action.payload.dialogName,
+        dialogName: action.payload.dialogName!,
         listDialog: {
           ...state.listDialog,
           status: false,
         },
         inputDialog: {
+          ...state.inputDialog,
           status: true,
         },
       };
@@ -104,6 +130,7 @@ export const clothReducer = (
       return {
         ...state,
         inputDialog: {
+          ...state.inputDialog,
           status: false,
         },
       };
@@ -113,9 +140,6 @@ export const clothReducer = (
         listDialog: {
           ...state.listDialog,
           status: false,
-        },
-        info: {
-          ...state.info,
         },
       };
     default:

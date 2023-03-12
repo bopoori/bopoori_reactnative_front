@@ -1,11 +1,15 @@
-import React, { Reducer, useReducer } from "react";
+import React, { useReducer } from "react";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Image } from "react-native";
 import { StackParamList } from "../../navigation/Root";
 import SelectDialog from "../../components/SelectDialog";
-import { clothReducer, CLOTH_STATE } from "../../utils/clothReducers";
+import {
+  clothReducer,
+  CLOTH_STATE,
+  DialogName,
+} from "../../utils/clothReducers";
 import InputDialog from "../../components/InputDialog";
 import { useMutation } from "@tanstack/react-query";
 import { uploadCloth } from "../../utils/api";
@@ -74,10 +78,7 @@ const AddNewCloth: React.FC<Props> = ({
     navigate("ClothCamera");
   };
 
-  const [state, dispatch] = useReducer<Reducer<any, any>>(
-    clothReducer,
-    CLOTH_STATE
-  );
+  const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
   const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
   const openListDialog = (dialogName: "category" | "color") => {
@@ -91,9 +92,9 @@ const AddNewCloth: React.FC<Props> = ({
   ) => {
     dispatch({ type: "OPEN_INPUT_DIALOG", payload: { dialogName } });
   };
-  const onPressListSave = (dialogName: string, value: string) =>
+  const onPressListSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_LIST_INFO", payload: { dialogName, value } });
-  const onPressInputSave = (dialogName: string, value: string) =>
+  const onPressInputSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
 
   const { mutateAsync, isLoading } = useMutation(

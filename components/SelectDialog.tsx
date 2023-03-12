@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { Dimensions, ScrollView } from "react-native";
 import { Button, Dialog, Portal, RadioButton } from "react-native-paper";
+import { DialogName } from "../utils/clothReducers";
 const { height: SCREEN_HEIGHT } = Dimensions.get("screen");
 
 interface SelectDialogProps {
   initialValue: string;
   title: string;
-  dialogName: string;
+  dialogName: DialogName;
   visible: boolean;
   lists: string[];
   closeDialog: () => void;
-  onPressSave: (name: string, value: string) => void;
+  onPressSave: (name: DialogName, value: string) => void;
 }
 
 const SelectDialog: React.FC<SelectDialogProps> = ({
