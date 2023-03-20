@@ -7,6 +7,12 @@
     "assetBundlePatterns": ["**/*"],
     "plugins": [
       [
+        "expo-image-picker",
+        {
+          "photoPermission": "The app accesses your photos to let you upload cloth images."
+        }
+      ],
+      [
         "@react-native-seoul/kakao-login",
         { "kakaoAppKey": "9383aa737e6ce2930c7536958f9020dc" }
       ]
