@@ -6,7 +6,7 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import ControlledInput from "../../components/ControlledInput";
 import { useMutation } from "@tanstack/react-query";
-import { signIn } from "../../utils/api";
+import { getClosetSeq, signIn } from "../../utils/api";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -16,6 +16,8 @@ type Props = CompositeScreenProps<
   NativeStackScreenProps<RootParamList>
 >;
 
+type keyValuePairs = [string, string];
+
 export interface SignInForm {
   user_id: string;
   user_pw: string;
@@ -24,20 +26,38 @@ export interface SignInForm {
 const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const { control, handleSubmit } = useForm<SignInForm>();
 
-  const { mutateAsync, isLoading } = useMutation((signInForm: SignInForm) =>
-    signIn(signInForm)
+  const { mutateAsync: signInAsync, isLoading: signInLoading } = useMutation(
+    (signInForm: SignInForm) => signIn(signInForm)
   );
 
-  const onLoginPress = (signInForm: SignInForm) => {
-    mutateAsync(signInForm).then((res) => {
-      if (res.success) {
-        console.log(res);
-        navigate("Tabs", { screen: "Home" });
-        AsyncStorage.setItem("login", "pass");
-      } else {
-        Alert.alert(res.message);
-      }
-    });
+  const { mutateAsync: getClosetSeqAsync, isLoading: getClosetLoading } =
+    useMutation((user_number: string) => getClosetSeq(user_number));
+
+  const isLoading = signInLoading || getClosetLoading;
+
+  const onLoginPress = async (signInForm: SignInForm) => {
+    const signInRes = await signInAsync(signInForm);
+    if (signInRes.success) {
+      console.log("로그인 성공", signInRes);
+      const id: keyValuePairs = ["id", signInRes.data.user_id.toString()];
+      const uid: keyValuePairs = ["uid", signInRes.data.user_uid.toString()];
+      await AsyncStorage.multiSet([id, uid]);
+      await getSeq(signInRes.data.user_uid);
+    } else {
+      Alert.alert(signInRes.message);
+    }
+  };
+
+  const getSeq = async (user_uid: string) => {
+    const response = await getClosetSeqAsync(user_uid);
+    console.log("옷장 정보", response);
+    if (response.success) {
+      await AsyncStorage.setItem(
+        "closet_sequence",
+        response.data[0].closet_sequence.toString()
+      );
+      navigate("Tabs", { screen: "Home" });
+    }
   };
 
   const navigateToSignUp = () => {
