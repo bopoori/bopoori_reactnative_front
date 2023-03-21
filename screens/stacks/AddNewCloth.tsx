@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from "react";
 import mime from "mime";
-import { Appbar, Button, IconButton, List, useTheme } from "react-native-paper";
+import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Alert, Image, Platform } from "react-native";
@@ -56,14 +56,16 @@ const lists = {
   ],
 };
 
-const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
+const AddNewCloth: React.FC<Props> = ({
+  navigation: { goBack },
+  route: {
+    params: { image },
+  },
+}) => {
   const theme = useTheme();
 
-  const goToCamera = () => {
-    navigate("ClothCamera");
-  };
-
-  const [image, setImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
+  const [imageState, setImageState] =
+    useState<ImagePicker.ImagePickerAsset>(image);
   const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
 
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
@@ -109,7 +111,7 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
       closet_number: "4",
       table_name: "bottom",
     };
-    const formData = createFormData(image!, uploadClothForm);
+    const formData = createFormData(imageState!, uploadClothForm);
     try {
       const res = await mutateAsync(formData);
       Alert.alert(JSON.stringify(res));
@@ -119,24 +121,14 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   };
 
   const openCamera = async () => {
+    await ImagePicker.requestCameraPermissionsAsync();
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: false,
       quality: 1,
     });
     if (!result.canceled) {
-      setImage(result.assets[0]);
-    }
-  };
-
-  const openPhotoLibrary = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.assets[0]);
+      setImageState(result.assets[0]);
     }
   };
 
@@ -164,15 +156,9 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
         <Appbar.Content title="새로운 옷 추가" />
       </Appbar.Header>
       <ScrollContainer>
-        {image ? (
-          <ImageBox onPress={openPhotoLibrary}>
-            <Image source={{ uri: image.uri }} style={{ flex: 1 }} />
-          </ImageBox>
-        ) : (
-          <EmptyImageBox onPress={openPhotoLibrary}>
-            <IconButton icon="camera-plus-outline" size={60} />
-          </EmptyImageBox>
-        )}
+        <ImageBox>
+          <Image source={{ uri: imageState.uri }} style={{ flex: 1 }} />
+        </ImageBox>
         <ListSection
           title="옷에 대한 정보"
           titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
@@ -232,7 +218,7 @@ const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
           />
         </List.Accordion>
         <Btns>
-          <Btn mode="outlined" onPress={goToCamera}>
+          <Btn mode="outlined" onPress={openCamera}>
             다시 찍기
           </Btn>
           <Btn mode="contained" onPress={postNewCloth} loading={isLoading}>
@@ -254,11 +240,6 @@ const ImageBox = styled.TouchableOpacity`
   margin: 24px auto;
   border-radius: 8px;
   overflow: hidden;
-`;
-const EmptyImageBox = styled(ImageBox)`
-  background-color: #ccc;
-  justify-content: center;
-  align-items: center;
 `;
 const ListSection = styled(List.Section)`
   padding-top: 0;

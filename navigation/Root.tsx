@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { loginAtom } from "../utils/recoil";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import Auth from "./Auth";
+import { ImagePickerAsset } from "expo-image-picker";
 
 export type TabsParamList = {
   Home: undefined;
@@ -23,8 +24,7 @@ export type AuthParamList = {
 
 export type StackParamList = {
   PickNextCloth: undefined;
-  AddNewCloth: undefined;
-  ClothCamera: undefined;
+  AddNewCloth: { image: ImagePickerAsset };
   TipDetail: undefined;
   Alert: undefined;
   MyInformation: undefined;
