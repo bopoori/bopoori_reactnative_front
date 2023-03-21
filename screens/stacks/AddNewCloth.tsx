@@ -1,8 +1,10 @@
-import React, { useReducer } from "react";
-import { Appbar, Button, List, useTheme } from "react-native-paper";
+import React, { useReducer, useState } from "react";
+import mime from "mime";
+import { Appbar, Button, IconButton, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Image } from "react-native";
+import { Alert, Image, Platform } from "react-native";
+import * as ImagePicker from "expo-image-picker";
 import { StackParamList } from "../../navigation/Root";
 import SelectDialog from "../../components/SelectDialog";
 import {
@@ -16,19 +18,6 @@ import { uploadCloth } from "../../utils/api";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 
-export interface uploadClothForm {
-  user_number: string;
-  brand: string;
-  buy_date: string;
-  category: string;
-  color: string;
-  explain: string;
-  name: string;
-  price: string;
-  closet_number: string;
-  table_name: string;
-  image: Blob;
-}
 const informationKr = {
   name: "옷 이름",
   category: "카테고리",
@@ -67,18 +56,16 @@ const lists = {
   ],
 };
 
-const AddNewCloth: React.FC<Props> = ({
-  navigation: { goBack, navigate },
-  route,
-}) => {
-  const uri = route.params.uri;
+const AddNewCloth: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const theme = useTheme();
 
   const goToCamera = () => {
     navigate("ClothCamera");
   };
 
+  const [image, setImage] = useState<null | ImagePicker.ImagePickerAsset>(null);
   const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
+
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
   const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
   const openListDialog = (dialogName: "category" | "color") => {
@@ -97,12 +84,62 @@ const AddNewCloth: React.FC<Props> = ({
   const onPressInputSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
 
-  const { mutateAsync, isLoading } = useMutation(
-    (uploadClothForm: uploadClothForm) => uploadCloth(uploadClothForm)
+  const { mutateAsync, isLoading } = useMutation((uploadClothForm: any) =>
+    uploadCloth(uploadClothForm)
   );
-  const postNewCloth = () => {};
 
-  console.log(state.info);
+  const createFormData = (
+    asset: ImagePicker.ImagePickerAsset,
+    body: { [key: string]: string | number }
+  ) => {
+    const data = new FormData();
+    data.append("image", {
+      name: asset.fileName,
+      type: mime.getType(asset.fileName!),
+      uri: Platform.OS === "ios" ? asset.uri.replace("file://", "") : asset.uri,
+    });
+    Object.keys(body).forEach((key) => data.append(key, body[key]));
+    return data;
+  };
+
+  const postNewCloth = async () => {
+    const uploadClothForm = {
+      ...state.info,
+      user_number: "1",
+      closet_number: "4",
+      table_name: "bottom",
+    };
+    const formData = createFormData(image!, uploadClothForm);
+    try {
+      const res = await mutateAsync(formData);
+      Alert.alert(JSON.stringify(res));
+    } catch {
+      console.error;
+    }
+  };
+
+  const openCamera = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
+  };
+
+  const openPhotoLibrary = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
+  };
+
   return (
     <>
       <SelectDialog
@@ -127,9 +164,15 @@ const AddNewCloth: React.FC<Props> = ({
         <Appbar.Content title="새로운 옷 추가" />
       </Appbar.Header>
       <ScrollContainer>
-        <ImageBox>
-          <Image source={{ uri }} style={{ flex: 1 }} />
-        </ImageBox>
+        {image ? (
+          <ImageBox onPress={openPhotoLibrary}>
+            <Image source={{ uri: image.uri }} style={{ flex: 1 }} />
+          </ImageBox>
+        ) : (
+          <EmptyImageBox onPress={openPhotoLibrary}>
+            <IconButton icon="camera-plus-outline" size={60} />
+          </EmptyImageBox>
+        )}
         <ListSection
           title="옷에 대한 정보"
           titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
@@ -192,7 +235,7 @@ const AddNewCloth: React.FC<Props> = ({
           <Btn mode="outlined" onPress={goToCamera}>
             다시 찍기
           </Btn>
-          <Btn mode="contained" onPress={postNewCloth}>
+          <Btn mode="contained" onPress={postNewCloth} loading={isLoading}>
             옷장에 추가
           </Btn>
         </Btns>
@@ -205,10 +248,17 @@ const descriptionStyle = { paddingTop: 8 };
 const ScrollContainer = styled.ScrollView`
   flex: 1;
 `;
-const ImageBox = styled.View`
+const ImageBox = styled.TouchableOpacity`
   width: 300px;
   height: 400px;
   margin: 24px auto;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+const EmptyImageBox = styled(ImageBox)`
+  background-color: #ccc;
+  justify-content: center;
+  align-items: center;
 `;
 const ListSection = styled(List.Section)`
   padding-top: 0;
