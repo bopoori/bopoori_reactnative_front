@@ -23,7 +23,7 @@ export type AuthParamList = {
 
 export type StackParamList = {
   PickNextCloth: undefined;
-  AddNewCloth: { uri: string };
+  AddNewCloth: undefined;
   ClothCamera: undefined;
   TipDetail: undefined;
   Alert: undefined;
