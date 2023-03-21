@@ -31,17 +31,14 @@ const Closet: React.FC<ClosetProps> = ({ navigation: { navigate } }) => {
   };
 
   const openCamera = () => {
+    // navigate("Stack", { screen: "ClothCamera" });
     navigate("Stack", {
       screen: "AddNewCloth",
-      params: {
-        uri: "https://cdn.pixabay.com/photo/2022/03/18/13/13/sunset-7076676_1280.jpg",
-      },
     });
   };
 
   const onFabPressed = () => {
     Camera.getCameraPermissionsAsync().then((permission) => {
-      console.log(permission);
       if (permission && permission.granted) {
         openCamera();
       } else {
@@ -68,7 +65,7 @@ const Closet: React.FC<ClosetProps> = ({ navigation: { navigate } }) => {
         label="옷 추가하기"
         extended={isFabExtended}
         onPress={onFabPressed}
-        animateFrom={"right"}
+        animateFrom="right"
         style={styles.fab}
       />
     </>
