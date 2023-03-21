@@ -22,14 +22,18 @@ const ClosetFAB = () => {
   const { open } = state;
 
   const openCamera = async () => {
-    await ImagePicker.requestCameraPermissionsAsync();
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      quality: 1,
-    });
-    if (!result.canceled) {
-      goToAddNewCloth(result.assets[0]);
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (permission.granted) {
+      const result = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: false,
+        quality: 1,
+      });
+      if (!result.canceled) {
+        goToAddNewCloth(result.assets[0]);
+      }
+    } else {
+      Linking.openSettings();
     }
   };
 
@@ -58,7 +62,7 @@ const ClosetFAB = () => {
 
   return (
     <FAB.Group
-      style={{ marginBottom: -30 }}
+      style={{ position: "absolute", bottom: 0, right: 0 }}
       open={open}
       visible
       icon={open ? "close" : "plus"}
