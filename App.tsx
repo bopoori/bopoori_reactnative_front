@@ -48,7 +48,7 @@ export default function App() {
     };
     const checkLogin = async () => {
       try {
-        const loginData = await AsyncStorage.getItem("login");
+        const loginData = await AsyncStorage.getItem("uid");
         if (loginData) {
           setIsLoggedIn(true);
         }
