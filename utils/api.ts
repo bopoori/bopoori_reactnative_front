@@ -18,6 +18,16 @@ export const signIn = (signInForm: SignInForm) =>
     .post(`${BASE_URL}/bopool/auth/log-in`, signInForm)
     .then(({ data }) => data);
 
+export const getClosetSeq = (user_number: string) =>
+  axios
+    .get(`${BASE_URL}/bopool/auth/closet-info?user_number=${user_number}`)
+    .then(({ data }) => data);
+
+export const getClosetInfo = (seq: string) =>
+  axios
+    .get(`${BASE_URL}/bopool/closets/info?closet_sequence=${seq}`)
+    .then(({ data }) => data);
+
 export const signUp = (signUpForm: SignUpForm) =>
   axios
     .post(`${BASE_URL}/bopool/auth/registration`, signUpForm)
