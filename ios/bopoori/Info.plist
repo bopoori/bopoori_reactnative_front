@@ -63,7 +63,9 @@
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<string>get weather informations</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Add new cloth from camera</string>
+	<string>For adding new cloth image from camera</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For adding new cloth video from camera</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Add new cloth and save it</string>
 	<key>NSPhotoLibraryUsageDescription</key>
