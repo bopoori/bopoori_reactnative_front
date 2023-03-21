@@ -1,7 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import PickNextCloth from "../screens/stacks/PickNextCloth";
-import ClothCamera from "../screens/stacks/ClothCamera";
 import AddNewCloth from "../screens/stacks/AddNewCloth";
 import TipDetail from "../screens/stacks/TipDetail";
 import Alert from "../screens/settings/Alert";
@@ -25,7 +24,6 @@ const Stack: React.FC = () => {
         }}
       />
       <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
-      <NativeStack.Screen name="ClothCamera" component={ClothCamera} />
       <NativeStack.Screen name="TipDetail" component={TipDetail} />
       <NativeStack.Screen name="Alert" component={Alert} />
       <NativeStack.Screen name="MyInformation" component={MyInformation} />
