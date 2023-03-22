@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import mime from "mime";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
@@ -13,8 +13,9 @@ import {
   DialogName,
 } from "../../utils/clothReducers";
 import InputDialog from "../../components/InputDialog";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { uploadCloth } from "../../utils/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 
@@ -67,6 +68,16 @@ const AddNewCloth: React.FC<Props> = ({
   const [imageState, setImageState] =
     useState<ImagePicker.ImagePickerAsset>(image);
   const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
+  const [user_number, setUserNumber] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      const uid = await AsyncStorage.getItem("uid");
+      if (uid) {
+        setUserNumber(uid);
+      }
+    })();
+  }, []);
 
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
   const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
@@ -105,18 +116,24 @@ const AddNewCloth: React.FC<Props> = ({
   };
 
   const postNewCloth = async () => {
-    const uploadClothForm = {
-      ...state.info,
-      user_number: "1",
-      closet_number: "4",
-      table_name: "bottom",
-    };
-    const formData = createFormData(imageState!, uploadClothForm);
-    try {
-      const res = await mutateAsync(formData);
-      Alert.alert(JSON.stringify(res));
-    } catch {
-      console.error;
+    const user_number = await AsyncStorage.getItem("uid");
+    const closet_number = await AsyncStorage.getItem("closet_sequence");
+
+    if (user_number && closet_number) {
+      const uploadClothForm = {
+        ...state.info,
+        user_number,
+        closet_number,
+        table_name: "bottom",
+      };
+      const formData = createFormData(imageState!, uploadClothForm);
+      const key = { formData, user_number };
+      try {
+        const res = await mutateAsync(key);
+        Alert.alert(JSON.stringify(res));
+      } catch {
+        console.error;
+      }
     }
   };
 

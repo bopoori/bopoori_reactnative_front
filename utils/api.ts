@@ -35,8 +35,11 @@ export const signUp = (signUpForm: SignUpForm) =>
 
 export const uploadCloth = (uploadClothForm: any) =>
   axios
-    .post(`${BASE_URL}/bopool/closets/img`, uploadClothForm, {
-      headers: { "Content-Type": `multipart/form-data`, user_number: "1" },
+    .post(`${BASE_URL}/bopool/closets/img`, uploadClothForm.formData, {
+      headers: {
+        "Content-Type": `multipart/form-data`,
+        user_number: uploadClothForm.user_number,
+      },
       transformRequest: (data) => data,
     })
     .then(({ data }) => data);
