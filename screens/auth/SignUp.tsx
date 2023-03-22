@@ -45,13 +45,14 @@ const SignUp: React.FC<Props> = ({
 
   const onChangeOtp = (text: string) => setOtp(text);
   const sendEmail = (formData: GetOtpForm) => {
-    getOtpAsync(formData.user_id).then(({ success, message }) => {
-      if (success) {
+    getOtpAsync(formData.user_id).then((response) => {
+      if (response.success) {
+        console.log(response);
         setOtpSented(true);
         setGetOtpFormData(formData);
         Alert.alert("메일을 발송했습니다.");
       } else {
-        Alert.alert(message);
+        Alert.alert(response.message);
       }
     });
   };
