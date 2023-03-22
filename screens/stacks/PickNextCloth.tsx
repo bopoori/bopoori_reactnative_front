@@ -2,7 +2,6 @@ import { useNavigation } from "@react-navigation/native";
 import { Dimensions, Image, ScrollView } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
-import Weather from "../../components/Weather";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 const PickNextCloth = () => {
@@ -14,9 +13,8 @@ const PickNextCloth = () => {
         <Appbar.Content title="내일 입을 옷 고르기" />
       </Appbar.Header>
       <ScrollView>
-        <Weather />
+        {/* <Weather /> */}
         <Container>
-          <Title>내일 입을 옷 고르기</Title>
           <DressPicker>
             <Image
               style={{ width: 150, height: 150, position: "absolute" }}
@@ -111,10 +109,6 @@ const DressPicker = styled.View`
   align-items: center;
   padding: 14px 0;
 `;
-const Title = styled(Text)`
-  font-weight: 600;
-  font-size: 20px;
-`;
 const Column = styled.View`
   flex-direction: row;
 `;
@@ -134,6 +128,7 @@ const TouchableBox = styled.TouchableOpacity`
 `;
 const BoxText = styled(Text)`
   margin-top: 18px;
+  font-size: 13px;
 `;
 
 export default PickNextCloth;
