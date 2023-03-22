@@ -50,7 +50,9 @@ export default function App() {
       try {
         const loginData = await AsyncStorage.getItem("uid");
         if (loginData) {
-          setIsLoggedIn(true);
+          return setIsLoggedIn(true);
+        } else {
+          return setIsLoggedIn(false);
         }
       } catch {
         console.error;

@@ -55,7 +55,6 @@ const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
   const onLogoutPress = () => {
     AsyncStorage.clear();
     setIsLoggedIn(false);
-    navigate("Auth", { screen: "Login" });
   };
 
   const onMenuPress = (navigateTo: StackNavigators) => {

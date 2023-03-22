@@ -10,6 +10,8 @@ import { getClosetSeq, signIn } from "../../utils/api";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSetRecoilState } from "recoil";
+import { loginAtom } from "../../utils/recoil";
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<AuthParamList, "SignIn">,
@@ -25,6 +27,7 @@ export interface SignInForm {
 
 const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const { control, handleSubmit } = useForm<SignInForm>();
+  const setIsLoggedIn = useSetRecoilState(loginAtom);
 
   const { mutateAsync: signInAsync, isLoading: signInLoading } = useMutation(
     (signInForm: SignInForm) => signIn(signInForm)
@@ -50,13 +53,12 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
 
   const getSeq = async (user_uid: string) => {
     const response = await getClosetSeqAsync(user_uid);
-    console.log("옷장 정보", response);
     if (response.success) {
       await AsyncStorage.setItem(
         "closet_sequence",
         response.data[0].closet_sequence.toString()
       );
-      navigate("Tabs", { screen: "Home" });
+      setIsLoggedIn(true);
     }
   };
 

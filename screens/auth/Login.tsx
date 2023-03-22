@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import { Dimensions } from "react-native";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components/native";
 import LoginBtn from "../../components/LoginBtn";
 import { loginAtom } from "../../utils/recoil";
@@ -17,14 +17,14 @@ type Props = CompositeScreenProps<
 >;
 
 const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginAtom);
+  const setIsLoggedIn = useSetRecoilState(loginAtom);
   const onPassPress = () => {
     AsyncStorage.setItem("login", "pass");
     setIsLoggedIn(true);
   };
 
   const [token, setToken] = useState("");
-  console.log(token);
+  console.log("token", token);
 
   const signInWithKakao = async (): Promise<void> => {
     try {
@@ -34,12 +34,6 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
       console.error("login err", err);
     }
   };
-
-  useLayoutEffect(() => {
-    if (isLoggedIn) {
-      navigate("Tabs", { screen: "Home" });
-    }
-  }, [isLoggedIn]);
 
   const navigateToSignIn = () => navigate("SignIn");
 

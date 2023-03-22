@@ -44,20 +44,20 @@ const NativeStack = createNativeStackNavigator<RootParamList>();
 const Root: React.FC = () => {
   const isLoggedIn = useRecoilValue(loginAtom);
   return (
-    <NativeStack.Navigator
-      initialRouteName={isLoggedIn ? "Tabs" : "Auth"}
-      screenOptions={{ headerShown: false }}
-    >
-      <NativeStack.Screen
-        name="Auth"
-        component={Auth}
-        options={{ gestureEnabled: false }}
-      />
-      <NativeStack.Screen
-        name="Tabs"
-        component={Tabs}
-        options={{ gestureEnabled: false }}
-      />
+    <NativeStack.Navigator screenOptions={{ headerShown: false }}>
+      {!isLoggedIn ? (
+        <NativeStack.Screen
+          name="Auth"
+          component={Auth}
+          options={{ gestureEnabled: false }}
+        />
+      ) : (
+        <NativeStack.Screen
+          name="Tabs"
+          component={Tabs}
+          options={{ gestureEnabled: false }}
+        />
+      )}
       <NativeStack.Screen name="Stack" component={Stack} />
     </NativeStack.Navigator>
   );
