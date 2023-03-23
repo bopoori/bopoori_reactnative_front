@@ -16,12 +16,18 @@ const Selector = ({ value, setValue }: SelectorProps) => {
           {
             value: "이름별",
             label: "이름별",
+            showSelectedCheck: true,
           },
           {
             value: "카테고리별",
             label: "카테고리별",
+            showSelectedCheck: true,
           },
-          { value: "이별", label: "이별" },
+          {
+            value: "이별",
+            label: "이별",
+            showSelectedCheck: true,
+          },
         ]}
       />
     </View>
