@@ -27,6 +27,10 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
     navigate("Stack", { screen: "PickNextCloth" });
   };
 
+  const goCloset = () => {
+    navigate("Closet");
+  };
+
   const { isLoading, mutateAsync, data } = useMutation((sequence: string) =>
     getDashboardInfo(sequence)
   );
@@ -36,7 +40,8 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
       const seq = await AsyncStorage.getItem("closet_sequence");
       if (seq) {
         console.log("closet sequence is", seq);
-        mutateAsync(seq);
+        const res = await mutateAsync(seq);
+        console.log(res.frequently_clothes);
       }
     })();
   }, []);
@@ -84,7 +89,6 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                     }}
                     style={{ width: 50, height: 50 }}
                   />
-                  {/* <Avatar.Icon icon="tshirt-crew" size={50} /> */}
                 </View>
               </TouchableOpacity>
             </Card.Content>
@@ -96,7 +100,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
               title="내 옷장 속 들여다보기"
               right={({ size }) => (
                 <IconButton
-                  onPress={() => {}}
+                  onPress={goCloset}
                   icon="chevron-right"
                   size={size}
                 />
@@ -106,16 +110,25 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  flexWrap: "wrap",
                   paddingBottom: 8,
                 }}
               >
-                <Chip mode="flat" onPress={() => {}}>
-                  Outer
+                <Chip mode="flat" style={styles.chip}>
+                  Accessory ({data?.clothes_count?.accessory ?? "0"})
                 </Chip>
-                <Chip onPress={() => {}}>Shoes</Chip>
-                <Chip onPress={() => {}}>Top</Chip>
-                <Chip onPress={() => {}}>Bottom</Chip>
+                <Chip style={styles.chip}>
+                  Bottom ({data?.clothes_count?.bottom ?? "0"})
+                </Chip>
+                <Chip style={styles.chip}>
+                  Outer ({data?.clothes_count?.outer ?? "0"})
+                </Chip>
+                <Chip style={styles.chip}>
+                  Shoes ({data?.clothes_count?.shoes ?? "0"})
+                </Chip>
+                <Chip style={styles.chip}>
+                  Top ({data?.clothes_count?.top ?? "0"})
+                </Chip>
               </View>
             </Card.Content>
           </Card>
@@ -169,6 +182,9 @@ const styles = StyleSheet.create({
     padding: 4,
     margin: 16,
     marginBottom: 0,
+  },
+  chip: {
+    margin: 4,
   },
   card: {
     margin: 16,
