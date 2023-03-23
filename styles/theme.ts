@@ -1,13 +1,13 @@
 import { Theme } from "@react-navigation/native";
 
 export const styledLightTheme = {
-  bgColor: "#fff",
-  textColor: "#333",
+  bgColor: "rgb(255, 251, 254)",
+  textColor: "rgb(28, 28, 30)",
 };
 
 export const styledDarkTheme = {
-  bgColor: "#111",
-  textColor: "#fff",
+  bgColor: "rgb(28, 27, 31)",
+  textColor: "rgb(229, 229, 231)",
 };
 
 export const DarkTheme: Theme = {
