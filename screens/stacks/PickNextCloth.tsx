@@ -1,11 +1,18 @@
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Dimensions, Image, ScrollView } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
+import { StackParamList } from "../../navigation/Root";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
-const PickNextCloth = () => {
+type Props = NativeStackScreenProps<StackParamList, "PickNextCloth">;
+
+const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
   const { goBack } = useNavigation();
+  const openPicker = () => {
+    navigate("ClothPicker");
+  };
   return (
     <>
       <Appbar.Header>
@@ -25,13 +32,13 @@ const PickNextCloth = () => {
             <Column>
               <Box />
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>모자</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
               </Box>
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>악세사리</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
@@ -40,7 +47,7 @@ const PickNextCloth = () => {
             </Column>
             <Column>
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>상의</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
@@ -48,7 +55,7 @@ const PickNextCloth = () => {
               <Box />
               <Box />
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>아우터</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
@@ -56,7 +63,7 @@ const PickNextCloth = () => {
             </Column>
             <Column>
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>하의</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
@@ -64,7 +71,7 @@ const PickNextCloth = () => {
               <Box />
               <Box />
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>원피스</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
@@ -73,13 +80,13 @@ const PickNextCloth = () => {
             <Column>
               <Box />
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>신발</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>
               </Box>
               <Box>
-                <TouchableBox>
+                <TouchableBox onPress={openPicker}>
                   <BoxText>가방</BoxText>
                   <IconButton icon="plus" />
                 </TouchableBox>

@@ -24,6 +24,7 @@ export type AuthParamList = {
 
 export type StackParamList = {
   PickNextCloth: undefined;
+  ClothPicker: undefined;
   AddNewCloth: { image: ImagePickerAsset };
   TipDetail: undefined;
   Alert: undefined;

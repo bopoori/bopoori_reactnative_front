@@ -9,6 +9,7 @@ import ClosetSettings from "../screens/settings/ClosetSettings";
 import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 import { StackParamList } from "./Root";
+import ClothPicker from "../screens/modals/ClothPicker";
 
 const NativeStack = createNativeStackNavigator<StackParamList>();
 
@@ -18,9 +19,15 @@ const Stack: React.FC = () => {
       <NativeStack.Screen
         name="PickNextCloth"
         component={PickNextCloth}
+        options={{ presentation: "fullScreenModal" }}
+      />
+      <NativeStack.Screen
+        name="ClothPicker"
+        component={ClothPicker}
         options={{
-          presentation: "fullScreenModal",
-          headerShown: false,
+          presentation: "modal",
+          headerShown: true,
+          headerTitle: "내 옷장",
         }}
       />
       <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
