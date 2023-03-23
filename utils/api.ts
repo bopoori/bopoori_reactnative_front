@@ -23,6 +23,11 @@ export const getClosetSeq = (user_number: string) =>
     .get(`${BASE_URL}/bopool/auth/closet-info?user_number=${user_number}`)
     .then(({ data }) => data);
 
+export const getDashboardInfo = (seq: string) =>
+  axios
+    .get(`${BASE_URL}/bopool/closets/dashboard/${seq}`)
+    .then(({ data }) => data);
+
 export const getClosetInfo = (seq: string) =>
   axios
     .get(`${BASE_URL}/bopool/closets/info?closet_sequence=${seq}`)
