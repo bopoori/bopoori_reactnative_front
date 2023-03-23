@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { Appbar } from "react-native-paper";
 import TopCard from "../../components/ClosetTopCard";
 import Selector from "../../components/ClosetSelector";
@@ -17,7 +17,7 @@ type ClosetProps = CompositeScreenProps<
 >;
 
 const Closet: React.FC<ClosetProps> = () => {
-  const [selectedOption, setSelectedOption] = useState("카테고리별");
+  // const [selectedOption, setSelectedOption] = useState("카테고리별");
   return (
     <>
       <Appbar.Header>
@@ -25,7 +25,7 @@ const Closet: React.FC<ClosetProps> = () => {
       </Appbar.Header>
       <ScrollView>
         <TopCard />
-        <Selector value={selectedOption} setValue={setSelectedOption} />
+        {/* <Selector value={selectedOption} setValue={setSelectedOption} /> */}
         <Accordions />
       </ScrollView>
       <ClosetFAB />
