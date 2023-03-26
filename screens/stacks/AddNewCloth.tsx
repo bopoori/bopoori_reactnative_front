@@ -13,7 +13,7 @@ import {
   DialogName,
 } from "../../utils/clothReducers";
 import InputDialog from "../../components/InputDialog";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { uploadCloth } from "../../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -30,16 +30,21 @@ const informationKr = {
 };
 const lists = {
   category: [
-    "New",
-    "Top",
-    "Bottom",
-    "One piece",
-    "Outer",
-    "Bag",
-    "Socks",
-    "Shoes",
-    "Hat",
     "Accessory",
+    "Bottom",
+    "Outer",
+    "Shoes",
+    "Top",
+    // "New",
+    // "Top",
+    // "Bottom",
+    // "One piece",
+    // "Outer",
+    // "Bag",
+    // "Socks",
+    // "Shoes",
+    // "Hat",
+    // "Accessory",
   ],
   color: [
     "Red",
@@ -124,9 +129,10 @@ const AddNewCloth: React.FC<Props> = ({
         ...state.info,
         user_number,
         closet_number,
-        table_name: "bottom",
+        table_name: state.info.category.toLowerCase(),
       };
       const formData = createFormData(imageState!, uploadClothForm);
+      console.log("formData", formData);
       const key = { formData, user_number };
       try {
         const res = await mutateAsync(key);
