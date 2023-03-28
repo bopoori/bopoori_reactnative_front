@@ -1,9 +1,9 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { ScrollView } from "react-native";
 import { Appbar } from "react-native-paper";
 import TopCard from "../../components/ClosetTopCard";
-import Selector from "../../components/ClosetSelector";
-import Accordions from "../../components/ClosetAccordions";
+// import Selector from "../../components/ClosetSelector";
+import ClosetAccordions from "../../components/ClosetAccordions";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
@@ -26,7 +26,7 @@ const Closet: React.FC<ClosetProps> = () => {
       <ScrollView>
         <TopCard />
         {/* <Selector value={selectedOption} setValue={setSelectedOption} /> */}
-        <Accordions />
+        <ClosetAccordions />
       </ScrollView>
       <ClosetFAB />
     </>

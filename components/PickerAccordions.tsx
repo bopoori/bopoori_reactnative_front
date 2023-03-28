@@ -5,19 +5,23 @@ import { useEffect } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import { getClosetInfo } from "../utils/api";
+import { TommAction, TommTarget } from "../utils/tommReducers";
+
+type Dispatch = React.Dispatch<TommAction>;
+
+interface ClothData {
+  item_number: string;
+  path: string;
+}
 
 interface AccordionProps {
   title: string;
   data: { path: string }[];
+  onImagePress: (arg0: any) => void;
 }
 
-const Accordion: React.FC<AccordionProps> = ({ title, data }) => {
-  const { navigate, goBack } = useNavigation();
+const Accordion: React.FC<AccordionProps> = ({ title, data, onImagePress }) => {
   const count = data?.length;
-  const onImagePress = (clothData: any) => {
-    console.log(clothData);
-    navigate("Stack", { screen: "ClothDetail", params: { clothData } });
-  };
   return (
     <List.Accordion title={`${title} (${count})`} style={styles.accordions}>
       {count > 0 ? (
@@ -33,7 +37,13 @@ const Accordion: React.FC<AccordionProps> = ({ title, data }) => {
   );
 };
 
-const ClosetAccordions = () => {
+interface PickerAccordions {
+  dispatch: Dispatch;
+  target: TommTarget;
+}
+
+const PickerAccordions: React.FC<PickerAccordions> = ({ dispatch, target }) => {
+  const { goBack } = useNavigation();
   const { isLoading, mutateAsync, data } = useMutation((sequence: string) =>
     getClosetInfo(sequence)
   );
@@ -47,17 +57,38 @@ const ClosetAccordions = () => {
     })();
   }, []);
 
+  const onImagePress = (clothData: ClothData) => {
+    console.log(clothData);
+    dispatch({
+      type: "SAVE_CLOTH",
+      payload: {
+        item_number: clothData.item_number,
+        uri: clothData.path,
+        target,
+      },
+    });
+    goBack();
+  };
+
   return isLoading ? (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <ActivityIndicator animating />
     </View>
   ) : (
     <List.Section>
-      <Accordion title="Accessory" data={data?.accessory} />
-      <Accordion title="Bottom" data={data?.bottom} />
-      <Accordion title="Outer" data={data?.outer} />
-      <Accordion title="Shoes" data={data?.shoes} />
-      <Accordion title="Top" data={data?.top} />
+      <Accordion
+        title="Accessory"
+        data={data?.accessory}
+        onImagePress={onImagePress}
+      />
+      <Accordion
+        title="Bottom"
+        data={data?.bottom}
+        onImagePress={onImagePress}
+      />
+      <Accordion title="Outer" data={data?.outer} onImagePress={onImagePress} />
+      <Accordion title="Shoes" data={data?.shoes} onImagePress={onImagePress} />
+      <Accordion title="Top" data={data?.top} onImagePress={onImagePress} />
     </List.Section>
   );
 };
@@ -82,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ClosetAccordions;
+export default PickerAccordions;
