@@ -73,16 +73,6 @@ const AddNewCloth: React.FC<Props> = ({
   const [imageState, setImageState] =
     useState<ImagePicker.ImagePickerAsset>(image);
   const [state, dispatch] = useReducer(clothReducer, CLOTH_STATE);
-  const [user_number, setUserNumber] = useState("");
-
-  useEffect(() => {
-    (async () => {
-      const uid = await AsyncStorage.getItem("uid");
-      if (uid) {
-        setUserNumber(uid);
-      }
-    })();
-  }, []);
 
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
   const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
