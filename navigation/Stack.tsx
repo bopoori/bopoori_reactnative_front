@@ -10,6 +10,7 @@ import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 import { StackParamList } from "./Root";
 import ClothPicker from "../screens/modals/ClothPicker";
+import ClothDetail from "../screens/stacks/ClothDetail";
 
 const NativeStack = createNativeStackNavigator<StackParamList>();
 
@@ -29,6 +30,11 @@ const Stack: React.FC = () => {
           headerShown: true,
           headerTitle: "내 옷장",
         }}
+      />
+      <NativeStack.Screen
+        name="ClothDetail"
+        component={ClothDetail}
+        options={{ presentation: "modal", headerShown: true }}
       />
       <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
       <NativeStack.Screen name="TipDetail" component={TipDetail} />
