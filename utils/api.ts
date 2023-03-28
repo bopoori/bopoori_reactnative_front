@@ -48,3 +48,8 @@ export const uploadCloth = (uploadClothForm: any) =>
       transformRequest: (data) => data,
     })
     .then(({ data }) => data);
+
+export const uploadTommCloth = (tommClothForm: any) =>
+  axios
+    .post(`${BASE_URL}/bopool/closets/info/tomorrow/clothes`, tommClothForm)
+    .then(({ data }) => data);
