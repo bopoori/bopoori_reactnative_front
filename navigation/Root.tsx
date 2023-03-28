@@ -7,6 +7,7 @@ import { loginAtom } from "../utils/recoil";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import Auth from "./Auth";
 import { ImagePickerAsset } from "expo-image-picker";
+import { TommAction, TommTarget } from "../utils/tommReducers";
 
 export type TabsParamList = {
   Home: undefined;
@@ -24,7 +25,8 @@ export type AuthParamList = {
 
 export type StackParamList = {
   PickNextCloth: undefined;
-  ClothPicker: undefined;
+  ClothPicker: { dispatch: React.Dispatch<TommAction>; target: TommTarget };
+  ClothDetail: { clothData: any };
   AddNewCloth: { image: ImagePickerAsset };
   TipDetail: undefined;
   Alert: undefined;
