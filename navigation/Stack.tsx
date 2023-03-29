@@ -31,11 +31,7 @@ const Stack: React.FC = () => {
           headerTitle: "내 옷장",
         }}
       />
-      <NativeStack.Screen
-        name="ClothDetail"
-        component={ClothDetail}
-        options={{ presentation: "modal", headerShown: true }}
-      />
+      <NativeStack.Screen name="ClothDetail" component={ClothDetail} />
       <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
       <NativeStack.Screen name="TipDetail" component={TipDetail} />
       <NativeStack.Screen name="Alert" component={Alert} />
