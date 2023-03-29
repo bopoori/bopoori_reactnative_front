@@ -3,7 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useMutation } from "@tanstack/react-query";
 import { useReducer } from "react";
-import { Dimensions, Image, ScrollView } from "react-native";
+import { Alert, Dimensions, ScrollView } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
 import { StackParamList } from "../../navigation/Root";
@@ -13,22 +13,8 @@ const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<StackParamList, "PickNextCloth">;
 
-const OptionalImage = ({ option }: { option?: string }) => {
-  return option ? (
-    <Image
-      style={{
-        width: "100%",
-        height: "100%",
-        position: "absolute",
-        borderRadius: 6,
-        zIndex: 100,
-      }}
-      source={{
-        uri: option,
-      }}
-    />
-  ) : null;
-};
+const OptionalImage = ({ option }: { option?: string }) =>
+  option ? <ContainedImage source={{ uri: option }} /> : null;
 
 const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
   const [state, dispatch] = useReducer(tommReducer, TOMM_STATE);
@@ -36,16 +22,17 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
   const openPicker = (target: TommTarget) =>
     navigate("ClothPicker", { dispatch, target });
 
-  const { isLoading, mutateAsync } = useMutation(
-    (data: typeof state.postData) => uploadTommCloth(data)
+  const { isLoading, mutateAsync } = useMutation((data: any) =>
+    uploadTommCloth(data)
   );
 
   const postTommClothes = async () => {
     const user_number = await AsyncStorage.getItem("uid");
-    console.log(user_number);
+    const postData = { ...state.postData, user_number };
     if (user_number) {
-      const response = await mutateAsync(state.postData);
-      console.log(response);
+      const response = await mutateAsync(postData);
+      console.log("내일 입을 옷 RES >>>", response);
+      Alert.alert(response.message);
     }
   };
 
@@ -59,8 +46,7 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
         {/* <Weather /> */}
         <Container>
           <DressPicker>
-            <Image
-              style={{ width: 150, height: 150, position: "absolute" }}
+            <PersonImage
               source={{
                 uri: "https://cdn-icons-png.flaticon.com/512/2969/2969044.png",
               }}
@@ -172,7 +158,6 @@ const Box = styled.View`
 const TouchableBox = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
-  /* padding: 8px; */
   border: solid 2px #999;
   border-radius: 8px;
   justify-content: center;
@@ -181,6 +166,18 @@ const TouchableBox = styled.TouchableOpacity`
 const BoxText = styled(Text)`
   margin-top: 18px;
   font-size: 13px;
+`;
+const PersonImage = styled.Image`
+  width: 150px;
+  height: 150px;
+  position: absolute;
+`;
+const ContainedImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 6px;
+  z-index: 100;
 `;
 
 export default PickNextCloth;
