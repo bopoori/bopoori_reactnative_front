@@ -2,10 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import { getClosetInfo } from "../utils/api";
 import { TommAction, TommTarget } from "../utils/tommReducers";
+const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 type Dispatch = React.Dispatch<TommAction>;
 
@@ -95,8 +102,8 @@ const PickerAccordions: React.FC<PickerAccordions> = ({ dispatch, target }) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: 155,
-    height: 155,
+    width: SCREEN_WIDTH / 2 - 34,
+    height: SCREEN_WIDTH / 2 - 34,
     marginBottom: 14,
     backgroundColor: "#ccc",
   },
