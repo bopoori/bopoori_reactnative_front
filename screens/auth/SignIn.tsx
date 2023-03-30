@@ -11,14 +11,12 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSetRecoilState } from "recoil";
-import { loginAtom } from "../../utils/recoil";
+import { closetSeqAtom, loginDataAtom } from "../../utils/recoil";
 
 type Props = CompositeScreenProps<
   NativeStackScreenProps<AuthParamList, "SignIn">,
   NativeStackScreenProps<RootParamList>
 >;
-
-type keyValuePairs = [string, string];
 
 export interface SignInForm {
   user_id: string;
@@ -27,7 +25,8 @@ export interface SignInForm {
 
 const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const { control, handleSubmit } = useForm<SignInForm>();
-  const setIsLoggedIn = useSetRecoilState(loginAtom);
+  const setClosetSeq = useSetRecoilState(closetSeqAtom);
+  const setLoginData = useSetRecoilState(loginDataAtom);
 
   const { mutateAsync: signInAsync, isLoading: signInLoading } = useMutation(
     (signInForm: SignInForm) => signIn(signInForm)
@@ -42,13 +41,8 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
     const signInRes = await signInAsync(signInForm);
     if (signInRes.success) {
       console.log("로그인 성공", signInRes);
-      const id: keyValuePairs = ["id", signInRes.data.user_id.toString()];
-      const uid: keyValuePairs = ["uid", signInRes.data.user_uid.toString()];
-      const nickname: keyValuePairs = [
-        "nickname",
-        signInRes.data.user_nickname.toString(),
-      ];
-      await AsyncStorage.multiSet([id, uid, nickname]);
+      setLoginData(signInRes.data);
+      await AsyncStorage.setItem("loginData", JSON.stringify(signInRes.data));
       await getSeq(signInRes.data.user_uid);
     } else {
       Alert.alert(signInRes.message);
@@ -58,17 +52,15 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const getSeq = async (user_uid: string) => {
     const response = await getClosetSeqAsync(user_uid);
     if (response.success) {
-      await AsyncStorage.setItem(
-        "closet_sequence",
-        response.data[0].closet_sequence.toString()
-      );
-      setIsLoggedIn(true);
+      const seq = response.data[0].closet_sequence.toString();
+      await AsyncStorage.setItem("closetSequence", seq);
+      setClosetSeq(seq);
+    } else {
+      Alert.alert(response.message);
     }
   };
 
-  const navigateToSignUp = () => {
-    navigate("InformationForm");
-  };
+  const navigateToSignUp = () => navigate("InformationForm");
 
   return (
     <>

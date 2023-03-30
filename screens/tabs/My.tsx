@@ -1,7 +1,7 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSetRecoilState } from "recoil";
-import { loginAtom } from "../../utils/recoil";
+import { loginDataAtom } from "../../utils/recoil";
 import { StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, List, Text } from "react-native-paper";
 import styled from "styled-components/native";
@@ -51,10 +51,10 @@ type MyProps = CompositeScreenProps<
 >;
 
 const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
-  const setIsLoggedIn = useSetRecoilState(loginAtom);
+  const setLoginData = useSetRecoilState(loginDataAtom);
   const onLogoutPress = () => {
     AsyncStorage.clear();
-    setIsLoggedIn(false);
+    setLoginData(null);
   };
 
   const onMenuPress = (navigateTo: StackNavigators) => {

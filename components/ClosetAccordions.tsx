@@ -61,7 +61,7 @@ const ClosetAccordions = () => {
 
   useEffect(() => {
     (async () => {
-      const seq = await AsyncStorage.getItem("closet_sequence");
+      const seq = await AsyncStorage.getItem("closetSequence");
       if (seq) {
         mutateAsync(seq);
       }

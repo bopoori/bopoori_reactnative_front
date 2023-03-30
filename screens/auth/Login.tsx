@@ -1,10 +1,9 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useState } from "react";
-import { Dimensions } from "react-native";
+import { Alert, Dimensions } from "react-native";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components/native";
 import LoginBtn from "../../components/LoginBtn";
-import { loginAtom } from "../../utils/recoil";
+import { loginDataAtom } from "../../utils/recoil";
 import { login } from "@react-native-seoul/kakao-login";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
@@ -17,10 +16,9 @@ type Props = CompositeScreenProps<
 >;
 
 const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const setIsLoggedIn = useSetRecoilState(loginAtom);
+  const setLoginData = useSetRecoilState(loginDataAtom);
   const onPassPress = () => {
-    AsyncStorage.setItem("login", "pass");
-    setIsLoggedIn(true);
+    Alert.alert("기능 삭제할 예정입니다.");
   };
 
   const [token, setToken] = useState("");

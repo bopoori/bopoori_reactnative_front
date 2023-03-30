@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
 import Stack from "./Stack";
 import { useRecoilValue } from "recoil";
-import { loginAtom } from "../utils/recoil";
+import { loginDataAtom } from "../utils/recoil";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import Auth from "./Auth";
 import { ImagePickerAsset } from "expo-image-picker";
@@ -47,10 +47,10 @@ export type RootParamList = {
 const NativeStack = createNativeStackNavigator<RootParamList>();
 
 const Root: React.FC = () => {
-  const isLoggedIn = useRecoilValue(loginAtom);
+  const loginData = useRecoilValue(loginDataAtom);
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
-      {!isLoggedIn ? (
+      {!loginData ? (
         <NativeStack.Screen
           name="Auth"
           component={Auth}

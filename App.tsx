@@ -4,7 +4,6 @@ import {
   MD3DarkTheme,
   MD3LightTheme,
   Provider as PaperProvider,
-  useTheme,
 } from "react-native-paper";
 import { name as appName } from "./app.json";
 import * as SplashScreen from "expo-splash-screen";
@@ -24,42 +23,59 @@ import {
 } from "./styles/theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useSetRecoilState } from "recoil";
-import { loginAtom } from "./utils/recoil";
+import { closetSeqAtom, loginDataAtom } from "./utils/recoil";
 
 SplashScreen.preventAutoHideAsync();
+
+type LoginDataAtomType = {
+  id_domain: string;
+  reg_date: string;
+  user_gender: string;
+  user_height: string;
+  user_id: string;
+  user_nickname: string;
+  user_uid: number;
+  user_weight: string;
+};
 
 export default function App() {
   const queryClient = new QueryClient();
   const isDark = useColorScheme() === "dark";
-  const setIsLoggedIn = useSetRecoilState(loginAtom);
+  const setLoginData = useSetRecoilState(loginDataAtom);
+  const setClosetSeq = useSetRecoilState(closetSeqAtom);
 
   const [appIsReady, setAppIsReady] = useState(false);
+
+  const loadFonts = async () => {
+    await Font.loadAsync(MaterialCommunityIcons.font);
+    await Font.loadAsync(Ionicons.font);
+  };
+
+  const registerLoginData = async () => {
+    const loginData = await AsyncStorage.getItem("loginData");
+    const closetSeq = await AsyncStorage.getItem("closetSequence");
+    if (loginData && closetSeq) {
+      const parsedLoginData = JSON.parse(loginData);
+      setLoginData(parsedLoginData);
+      setClosetSeq(closetSeq);
+      return;
+    } else {
+      return;
+    }
+  };
 
   useEffect(() => {
     const prepare = async () => {
       try {
-        await Font.loadAsync(MaterialCommunityIcons.font);
-        await Font.loadAsync(Ionicons.font);
+        await loadFonts();
+        await registerLoginData();
       } catch {
         console.error;
       } finally {
         setAppIsReady(true);
       }
     };
-    const checkLogin = async () => {
-      try {
-        const loginData = await AsyncStorage.getItem("uid");
-        if (loginData) {
-          return setIsLoggedIn(true);
-        } else {
-          return setIsLoggedIn(false);
-        }
-      } catch {
-        console.error;
-      }
-    };
     prepare();
-    checkLogin();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {

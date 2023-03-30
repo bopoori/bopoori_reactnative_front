@@ -21,9 +21,11 @@ import {
   List,
   Text,
 } from "react-native-paper";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components/native";
 import { RootParamList, TabsParamList } from "../../navigation/Root";
 import { getDashboardInfo } from "../../utils/api";
+import { closetSeqAtom, loginDataAtom } from "../../utils/recoil";
 
 type HomeProps = CompositeScreenProps<
   MaterialBottomTabScreenProps<TabsParamList, "Home">,
@@ -39,7 +41,8 @@ interface Frequencies {
 }
 
 const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
-  const [nickname, setNickname] = useState<null | string>(null);
+  const { user_nickname } = useRecoilValue(loginDataAtom)!;
+  const closetSeq = useRecoilValue(closetSeqAtom)!;
   const { isLoading, mutateAsync, data } = useMutation((sequence: string) =>
     getDashboardInfo(sequence)
   );
@@ -49,15 +52,8 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
 
   useEffect(() => {
     (async () => {
-      const seq = await AsyncStorage.getItem("closet_sequence");
-      const nn = await AsyncStorage.getItem("nickname");
-      console.log("nickname >>", nn);
-      if (seq) {
-        console.log("closet sequence is", seq);
-        const res = await mutateAsync(seq);
-        setNickname(nn);
-        console.log("forgotten", res.forgotten_clothes);
-      }
+      // console.log("closet sequence is", closetSeq);
+      await mutateAsync(closetSeq);
     })();
   }, []);
 
@@ -77,7 +73,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
             <View style={styles.welcomeTexts}>
               <Text style={{ fontSize: 16, marginBottom: 6 }}>안녕하세요</Text>
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                {nickname} 님!
+                {user_nickname} 님!
               </Text>
             </View>
           </WelcomeContainer>
