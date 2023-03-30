@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Dimensions, Image } from "react-native";
-import { ActivityIndicator, Appbar, useTheme } from "react-native-paper";
+import { ActivityIndicator, Appbar } from "react-native-paper";
 import styled from "styled-components/native";
 import { RootParamList, StackParamList } from "../../navigation/Root";
 import { getClothInfo } from "../../utils/api";
@@ -27,7 +27,6 @@ const ClothDetail: React.FC<Props> = ({
     },
   },
 }) => {
-  const theme = useTheme();
   const { isLoading, data, mutateAsync } = useMutation((args: ClothInfoArgs) =>
     getClothInfo(args)
   );
@@ -48,7 +47,7 @@ const ClothDetail: React.FC<Props> = ({
         <Appbar.Content title={data?.item[0][`${table_name}_name`]} />
       </Appbar.Header>
       <Container>
-        <ImageWrapper bgColor={theme.colors.primaryContainer}>
+        <ImageWrapper>
           <Image
             source={{ uri: path }}
             resizeMode="contain"
@@ -69,8 +68,7 @@ const LoaderWrapper = styled.View`
   align-items: center;
 `;
 const Container = styled.ScrollView``;
-const ImageWrapper = styled.View<{ bgColor: string }>`
-  background-color: ${({ bgColor }) => bgColor};
+const ImageWrapper = styled.View`
   padding: 20px;
   justify-content: center;
   align-items: center;
