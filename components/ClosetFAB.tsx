@@ -8,7 +8,7 @@ import {
 import { RootParamList, TabsParamList } from "../navigation/Root";
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Linking } from "react-native";
+import { Alert, Linking } from "react-native";
 
 type NavigationProps = CompositeNavigationProp<
   MaterialBottomTabNavigationProp<TabsParamList, "Closet", undefined>,
@@ -24,13 +24,17 @@ const ClosetFAB = () => {
   const openCamera = async () => {
     const permission = await ImagePicker.requestCameraPermissionsAsync();
     if (permission.granted) {
-      const result = await ImagePicker.launchCameraAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        quality: 1,
-      });
-      if (!result.canceled) {
-        goToAddNewCloth(result.assets[0]);
+      try {
+        const result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: false,
+          quality: 1,
+        });
+        if (!result.canceled) {
+          goToAddNewCloth(result.assets[0]);
+        }
+      } catch (error) {
+        Alert.alert(String(error));
       }
     } else {
       Linking.openSettings();
@@ -40,13 +44,17 @@ const ClosetFAB = () => {
   const openPhotoLibrary = async () => {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permission.granted) {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: false,
-        quality: 1,
-      });
-      if (!result.canceled) {
-        goToAddNewCloth(result.assets[0]);
+      try {
+        const result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: false,
+          quality: 1,
+        });
+        if (!result.canceled) {
+          goToAddNewCloth(result.assets[0]);
+        }
+      } catch (error) {
+        Alert.alert(String(error));
       }
     } else {
       Linking.openSettings();
