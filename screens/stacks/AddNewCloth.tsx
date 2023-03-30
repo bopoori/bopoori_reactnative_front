@@ -3,7 +3,7 @@ import mime from "mime";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { Alert, Image, Platform } from "react-native";
+import { Alert, Dimensions, Image, Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { StackParamList } from "../../navigation/Root";
 import SelectDialog from "../../components/SelectDialog";
@@ -16,6 +16,7 @@ import InputDialog from "../../components/InputDialog";
 import { useMutation } from "@tanstack/react-query";
 import { uploadCloth } from "../../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
 
@@ -101,9 +102,11 @@ const AddNewCloth: React.FC<Props> = ({
     body: { [key: string]: string | number }
   ) => {
     const data = new FormData();
+    const fileName =
+      asset.fileName ?? asset.uri.split("/")[asset.uri.split("/").length - 1];
     data.append("image", {
-      name: asset.fileName,
-      type: mime.getType(asset.fileName!),
+      name: fileName,
+      type: mime.getType(fileName),
       uri: Platform.OS === "ios" ? asset.uri.replace("file://", "") : asset.uri,
     });
     Object.keys(body).forEach((key) => data.append(key, body[key]));
@@ -170,7 +173,14 @@ const AddNewCloth: React.FC<Props> = ({
       </Appbar.Header>
       <ScrollContainer>
         <ImageBox>
-          <Image source={{ uri: imageState.uri }} style={{ flex: 1 }} />
+          <Image
+            source={{ uri: imageState.uri }}
+            style={{
+              width: (WINDOW_WIDTH / 10) * 9,
+              height: (WINDOW_WIDTH / 10) * 9,
+            }}
+            resizeMode="contain"
+          />
         </ImageBox>
         <ListSection
           title="옷에 대한 정보"
@@ -247,12 +257,10 @@ const descriptionStyle = { paddingTop: 8 };
 const ScrollContainer = styled.ScrollView`
   flex: 1;
 `;
-const ImageBox = styled.TouchableOpacity`
-  width: 300px;
-  height: 400px;
-  margin: 24px auto;
-  border-radius: 8px;
-  overflow: hidden;
+const ImageBox = styled.View`
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
 `;
 const ListSection = styled(List.Section)`
   padding-top: 0;
