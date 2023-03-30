@@ -66,3 +66,6 @@ export const uploadTommCloth = (tommClothForm: any) =>
   axios
     .post(`${BASE_URL}/bopool/closets/info/tomorrow/clothes`, tommClothForm)
     .then(({ data }) => data);
+
+export const getCategoryLists = () =>
+  axios.get(`${BASE_URL}/bopool/closets/list`).then(({ data }) => data);
