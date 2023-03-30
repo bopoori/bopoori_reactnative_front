@@ -44,7 +44,11 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
       console.log("로그인 성공", signInRes);
       const id: keyValuePairs = ["id", signInRes.data.user_id.toString()];
       const uid: keyValuePairs = ["uid", signInRes.data.user_uid.toString()];
-      await AsyncStorage.multiSet([id, uid]);
+      const nickname: keyValuePairs = [
+        "nickname",
+        signInRes.data.user_nickname.toString(),
+      ];
+      await AsyncStorage.multiSet([id, uid, nickname]);
       await getSeq(signInRes.data.user_uid);
     } else {
       Alert.alert(signInRes.message);
