@@ -26,7 +26,9 @@ export type AuthParamList = {
 export type StackParamList = {
   PickNextCloth: undefined;
   ClothPicker: { dispatch: React.Dispatch<TommAction>; target: TommTarget };
-  ClothDetail: { clothData: any };
+  ClothDetail: {
+    clothData: { item_number: string; table_name: string; path: string };
+  };
   AddNewCloth: { image: ImagePickerAsset };
   TipDetail: undefined;
   Alert: undefined;
