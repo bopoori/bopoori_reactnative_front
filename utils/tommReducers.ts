@@ -42,7 +42,7 @@ export type TommState = {
 
 export const TOMM_STATE: TommState = {
   postData: {
-    date: new Date()
+    date: new Date(Date.now() + 1000 * 60 * 60 * 24)
       .toLocaleDateString("kr-ko", {
         year: "numeric",
         month: "2-digit",
