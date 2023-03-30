@@ -33,6 +33,19 @@ export const getClosetInfo = (seq: string) =>
     .get(`${BASE_URL}/bopool/closets/info?closet_sequence=${seq}`)
     .then(({ data }) => data);
 
+export const getClothInfo = ({
+  table_name,
+  item_number,
+}: {
+  table_name: string;
+  item_number: string;
+}) =>
+  axios
+    .get(
+      `${BASE_URL}/bopool/closets/info/detail/?table_name=${table_name}&item_number=${item_number}`
+    )
+    .then(({ data }) => data);
+
 export const signUp = (signUpForm: SignUpForm) =>
   axios
     .post(`${BASE_URL}/bopool/auth/registration`, signUpForm)
