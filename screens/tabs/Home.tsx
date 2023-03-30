@@ -3,8 +3,14 @@ import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect } from "react";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import {
   ActivityIndicator,
   Appbar,
@@ -12,8 +18,10 @@ import {
   Card,
   Chip,
   IconButton,
+  List,
   Text,
 } from "react-native-paper";
+import styled from "styled-components/native";
 import { RootParamList, TabsParamList } from "../../navigation/Root";
 import { getDashboardInfo } from "../../utils/api";
 
@@ -22,26 +30,33 @@ type HomeProps = CompositeScreenProps<
   NativeStackScreenProps<RootParamList>
 >;
 
+interface Frequencies {
+  closet_number: number;
+  clothes_name: string;
+  item_number: number;
+  path: string;
+  wear_count: number;
+}
+
 const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
-  const pickNextCloth = () => {
-    navigate("Stack", { screen: "PickNextCloth" });
-  };
-
-  const goCloset = () => {
-    navigate("Closet");
-  };
-
+  const [nickname, setNickname] = useState<null | string>(null);
   const { isLoading, mutateAsync, data } = useMutation((sequence: string) =>
     getDashboardInfo(sequence)
   );
 
+  const pickNextCloth = () => navigate("Stack", { screen: "PickNextCloth" });
+  const goCloset = () => navigate("Closet");
+
   useEffect(() => {
     (async () => {
       const seq = await AsyncStorage.getItem("closet_sequence");
+      const nn = await AsyncStorage.getItem("nickname");
+      console.log("nickname >>", nn);
       if (seq) {
         console.log("closet sequence is", seq);
         const res = await mutateAsync(seq);
-        console.log(res.frequently_clothes);
+        setNickname(nn);
+        console.log("forgotten", res.forgotten_clothes);
       }
     })();
   }, []);
@@ -52,32 +67,24 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
         <Appbar.Content title="Home" />
       </Appbar.Header>
       {isLoading ? (
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
+        <LoadWrapper>
           <ActivityIndicator animating />
-        </View>
+        </LoadWrapper>
       ) : (
-        <>
-          <View style={styles.welcomeContainer}>
+        <ScrollView>
+          <WelcomeContainer>
             <Avatar.Icon icon="account" />
             <View style={styles.welcomeTexts}>
               <Text style={{ fontSize: 16, marginBottom: 6 }}>안녕하세요</Text>
               <Text style={{ fontSize: 16, fontWeight: "bold" }}>
-                슈퍼 힙찔이 님!
+                {nickname} 님!
               </Text>
             </View>
-          </View>
+          </WelcomeContainer>
           <Card style={styles.tomorrow}>
             <Card.Content>
               <TouchableOpacity onPress={pickNextCloth}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
+                <PickNextCard>
                   <Text
                     style={{ color: "white", fontSize: 18, fontWeight: "bold" }}
                   >
@@ -89,13 +96,13 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                     }}
                     style={{ width: 50, height: 50 }}
                   />
-                </View>
+                </PickNextCard>
               </TouchableOpacity>
             </Card.Content>
           </Card>
-          <Card style={styles.card} mode="outlined">
+          <Card style={styles.card} mode="elevated">
             <Card.Title
-              titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
+              titleStyle={styles.cardTitle}
               titleVariant="titleMedium"
               title="내 옷장 속 들여다보기"
               right={({ size }) => (
@@ -107,13 +114,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
               )}
             />
             <Card.Content>
-              <View
-                style={{
-                  flexDirection: "row",
-                  flexWrap: "wrap",
-                  paddingBottom: 8,
-                }}
-              >
+              <CardInner>
                 <Chip mode="flat" style={styles.chip}>
                   Accessory ({data?.clothes_count?.accessory ?? "0"})
                 </Chip>
@@ -129,12 +130,12 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 <Chip style={styles.chip}>
                   Top ({data?.clothes_count?.top ?? "0"})
                 </Chip>
-              </View>
+              </CardInner>
             </Card.Content>
           </Card>
-          <Card style={styles.card} mode="outlined">
+          <Card style={styles.card} mode="elevated">
             <Card.Title
-              titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
+              titleStyle={styles.cardTitle}
               titleVariant="titleMedium"
               title="자주 입는 옷"
               right={({ size }) => (
@@ -145,10 +146,33 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 />
               )}
             />
+            <Card.Content>
+              <FqCard>
+                {data?.frequently_clothes.map(
+                  (fc: Frequencies, index: number) => (
+                    <List.Item
+                      key={index}
+                      onPress={() => {}}
+                      style={{ paddingHorizontal: 8, borderRadius: 8 }}
+                      title={`${fc.clothes_name} (${fc.wear_count}회)`}
+                      description={fc.wear_count}
+                      left={() => (
+                        <Image
+                          style={{ width: 50, height: 50, borderRadius: 4 }}
+                          source={{
+                            uri: `http://3.39.118.55:12023/${fc.path}`,
+                          }}
+                        />
+                      )}
+                    />
+                  )
+                )}
+              </FqCard>
+            </Card.Content>
           </Card>
-          <Card style={styles.card} mode="outlined">
+          <Card style={{ ...styles.card, marginBottom: 16 }} mode="elevated">
             <Card.Title
-              titleStyle={{ marginLeft: 6, marginTop: 6, fontWeight: "600" }}
+              titleStyle={styles.cardTitle}
               titleVariant="titleMedium"
               title="잊고 있던 옷"
               right={({ size }) => (
@@ -159,13 +183,60 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 />
               )}
             />
+            <Card.Content>
+              <FqCard>
+                {data?.forgotten_clothes.map(
+                  (fc: Frequencies, index: number) => (
+                    <List.Item
+                      key={index}
+                      onPress={() => {}}
+                      style={{ paddingHorizontal: 8, borderRadius: 8 }}
+                      title={`${fc.clothes_name} (${fc.wear_count}회)`}
+                      description={fc.wear_count}
+                      left={() => (
+                        <Image
+                          style={{ width: 50, height: 50, borderRadius: 4 }}
+                          source={{
+                            uri: `http://3.39.118.55:12023/${fc.path}`,
+                          }}
+                        />
+                      )}
+                    />
+                  )
+                )}
+              </FqCard>
+            </Card.Content>
           </Card>
-        </>
+        </ScrollView>
       )}
     </>
   );
 };
 
+const LoadWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const WelcomeContainer = styled.View`
+  margin: 16px;
+  margin-bottom: 0px;
+  padding-left: 16px;
+  padding-right: 16px;
+  flex-direction: row;
+  align-items: center;
+`;
+const PickNextCard = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
+const CardInner = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-bottom: 8px;
+`;
+const FqCard = styled.View``;
 const styles = StyleSheet.create({
   welcomeContainer: {
     margin: 16,
@@ -194,6 +265,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 18,
     fontWeight: "bold",
+    paddingLeft: 4,
   },
 });
 
