@@ -1,5 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMutation } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
@@ -10,6 +15,7 @@ import {
   View,
 } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
+import { RootParamList, TabsParamList } from "../navigation/Root";
 import { getClosetInfo } from "../utils/api";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
@@ -18,12 +24,20 @@ interface AccordionProps {
   data: { path: string }[];
 }
 
+type NavigationProps = CompositeNavigationProp<
+  MaterialBottomTabNavigationProp<TabsParamList, "Closet">,
+  NativeStackNavigationProp<RootParamList>
+>;
+
 const Accordion: React.FC<AccordionProps> = ({ title, data }) => {
-  const { navigate, goBack } = useNavigation();
+  const { navigate, goBack } = useNavigation<NavigationProps>();
   const count = data?.length;
   const onImagePress = (clothData: any) => {
     console.log(clothData);
-    navigate("Stack", { screen: "ClothDetail", params: { clothData } });
+    navigate("Stack", {
+      screen: "ClothDetail",
+      params: { clothData: { ...clothData, table_name: title.toLowerCase() } },
+    });
   };
   return (
     <List.Accordion title={`${title} (${count})`} style={styles.accordions}>
