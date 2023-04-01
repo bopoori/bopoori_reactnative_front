@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useReducer, useState } from "react";
 import mime from "mime";
 import { Appbar, Button, List, useTheme } from "react-native-paper";
 import styled from "styled-components/native";
@@ -13,8 +13,8 @@ import {
   DialogName,
 } from "../../utils/clothReducers";
 import InputDialog from "../../components/InputDialog";
-import { useMutation } from "@tanstack/react-query";
-import { uploadCloth } from "../../utils/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCategoryLists, uploadCloth } from "../../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
@@ -30,23 +30,7 @@ const informationKr = {
   explain: "설명",
 };
 const lists = {
-  category: [
-    "Accessory",
-    "Bottom",
-    "Outer",
-    "Shoes",
-    "Top",
-    // "New",
-    // "Top",
-    // "Bottom",
-    // "One piece",
-    // "Outer",
-    // "Bag",
-    // "Socks",
-    // "Shoes",
-    // "Hat",
-    // "Accessory",
-  ],
+  category: ["Accessory", "Bottom", "Outer", "Shoes", "Top"],
   color: [
     "Red",
     "Orange",
@@ -93,8 +77,8 @@ const AddNewCloth: React.FC<Props> = ({
   const onPressInputSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
 
-  const { mutateAsync, isLoading } = useMutation((uploadClothForm: any) =>
-    uploadCloth(uploadClothForm)
+  const { mutateAsync: uploadAsync, isLoading: uploadLoading } = useMutation(
+    (uploadClothForm: any) => uploadCloth(uploadClothForm)
   );
 
   const createFormData = (
@@ -128,7 +112,7 @@ const AddNewCloth: React.FC<Props> = ({
       console.log("formData", formData);
       const key = { formData, user_number };
       try {
-        const res = await mutateAsync(key);
+        const res = await uploadAsync(key);
         Alert.alert(JSON.stringify(res));
       } catch {
         console.error;
@@ -244,7 +228,7 @@ const AddNewCloth: React.FC<Props> = ({
           <Btn mode="outlined" onPress={openCamera}>
             다시 찍기
           </Btn>
-          <Btn mode="contained" onPress={postNewCloth} loading={isLoading}>
+          <Btn mode="contained" onPress={postNewCloth} loading={uploadLoading}>
             옷장에 추가
           </Btn>
         </Btns>
