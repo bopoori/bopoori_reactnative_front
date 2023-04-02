@@ -8,29 +8,40 @@ const BASE_URL = "http://3.39.118.55:12023";
 axios.defaults.headers.common["Content-Type"] =
   "application/json; charset=utf-8";
 
-export const getOtp = (user_id: string) =>
-  axios
-    .post(`${BASE_URL}/bopool/auth/registration/mail`, { user_id })
-    .then(({ data }) => data);
-
-export const signIn = (signInForm: SignInForm) =>
-  axios
-    .post(`${BASE_URL}/bopool/auth/log-in`, signInForm)
-    .then(({ data }) => data);
+export const API = {
+  auth: {
+    getOtp: (user_id: string) =>
+      axios
+        .post(`${BASE_URL}/bopool/auth/registration/mail`, { user_id })
+        .then(({ data }) => data),
+    signIn: (signInForm: SignInForm) =>
+      axios
+        .post(`${BASE_URL}/bopool/auth/log-in`, signInForm)
+        .then(({ data }) => data),
+    signUp: (signUpForm: SignUpForm) =>
+      axios
+        .post(`${BASE_URL}/bopool/auth/registration`, signUpForm)
+        .then(({ data }) => data),
+  },
+  dashboard: {},
+  closet: {},
+  cloth: {},
+  info: {},
+};
 
 export const getClosetSeq = (user_number: string) =>
   axios
     .get(`${BASE_URL}/bopool/auth/closet-info?user_number=${user_number}`)
     .then(({ data }) => data);
 
-export const getDashboardInfo = (seq: string) =>
+export const getDashboardInfo = (cloth_sequence: string) =>
   axios
-    .get(`${BASE_URL}/bopool/closets/dashboard/${seq}`)
+    .get(`${BASE_URL}/bopool/closets/dashboard/${cloth_sequence}`)
     .then(({ data }) => data);
 
-export const getClosetInfo = (seq: string) =>
+export const getClosetInfo = (closet_sequence: string) =>
   axios
-    .get(`${BASE_URL}/bopool/closets/info?closet_sequence=${seq}`)
+    .get(`${BASE_URL}/bopool/closets/info?closet_sequence=${closet_sequence}`)
     .then(({ data }) => data);
 
 export const getClothInfo = ({
@@ -44,11 +55,6 @@ export const getClothInfo = ({
     .get(
       `${BASE_URL}/bopool/closets/info/detail/?table_name=${table_name}&item_number=${item_number}`
     )
-    .then(({ data }) => data);
-
-export const signUp = (signUpForm: SignUpForm) =>
-  axios
-    .post(`${BASE_URL}/bopool/auth/registration`, signUpForm)
     .then(({ data }) => data);
 
 export const uploadCloth = (uploadClothForm: any) =>
