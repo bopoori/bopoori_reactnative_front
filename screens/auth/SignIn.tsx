@@ -6,7 +6,7 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import ControlledInput from "../../components/ControlledInput";
 import { useMutation } from "@tanstack/react-query";
-import { getClosetSeq, signIn } from "../../utils/api";
+import { API, getClosetSeq } from "../../utils/api";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,7 +29,7 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
   const setLoginData = useSetRecoilState(loginDataAtom);
 
   const { mutateAsync: signInAsync, isLoading: signInLoading } = useMutation(
-    (signInForm: SignInForm) => signIn(signInForm)
+    (signInForm: SignInForm) => API.auth.signIn(signInForm)
   );
 
   const { mutateAsync: getClosetSeqAsync, isLoading: getClosetLoading } =

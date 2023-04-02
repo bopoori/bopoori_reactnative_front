@@ -6,7 +6,7 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import ControlledInput from "../../components/ControlledInput";
 import { useMutation } from "@tanstack/react-query";
-import { getOtp, signUp } from "../../utils/api";
+import { API } from "../../utils/api";
 import { AuthParamList } from "../../navigation/Root";
 
 type Props = NativeStackScreenProps<AuthParamList, "SignUp">;
@@ -37,10 +37,10 @@ const SignUp: React.FC<Props> = ({
   const [getOtpFormData, setGetOtpFormData] = useState<GetOtpForm>();
 
   const { mutateAsync: getOtpAsync, isLoading: otpLoading } = useMutation(
-    (user_id: string) => getOtp(user_id)
+    (user_id: string) => API.auth.getOtp(user_id)
   );
   const { mutateAsync: signUpAsync, isLoading: signUpLoading } = useMutation(
-    (signUpForm: SignUpForm) => signUp(signUpForm)
+    (signUpForm: SignUpForm) => API.auth.signUp(signUpForm)
   );
 
   const onChangeOtp = (text: string) => setOtp(text);
