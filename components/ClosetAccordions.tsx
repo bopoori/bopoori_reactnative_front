@@ -1,22 +1,18 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialBottomTabNavigationProp } from "@react-navigation/material-bottom-tabs";
 import {
   CompositeNavigationProp,
   useNavigation,
 } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { ActivityIndicator, List } from "react-native-paper";
 import { RootParamList, TabsParamList } from "../navigation/Root";
-import { getClosetInfo } from "../utils/api";
+import { getCategoryLists, getClosetInfo } from "../utils/api";
+import { useRecoilValue } from "recoil";
+import { closetSeqAtom } from "../utils/recoil";
+import { capitalize } from "../utils/capitalize";
+import styled from "styled-components/native";
 const { width: SCREEN_WIDTH } = Dimensions.get("screen");
 
 interface AccordionProps {
@@ -30,73 +26,79 @@ type NavigationProps = CompositeNavigationProp<
 >;
 
 const Accordion: React.FC<AccordionProps> = ({ title, data }) => {
-  const { navigate, goBack } = useNavigation<NavigationProps>();
+  const { navigate } = useNavigation<NavigationProps>();
   const count = data?.length;
   const onImagePress = (clothData: any) => {
-    console.log(clothData);
     navigate("Stack", {
       screen: "ClothDetail",
-      params: { clothData: { ...clothData, table_name: title.toLowerCase() } },
+      params: { clothData: { ...clothData, table_name: title } },
     });
   };
   return (
-    <List.Accordion title={`${title} (${count})`} style={styles.accordions}>
+    <List.Accordion
+      title={`${capitalize(title)} (${count})`}
+      style={styles.accordions}
+    >
       {count > 0 ? (
-        <View style={styles.accordion}>
+        <AccordionWrapper>
           {data.map((cloth, index) => (
             <TouchableOpacity key={index} onPress={() => onImagePress(cloth)}>
               <Image style={styles.image} source={{ uri: cloth.path }} />
             </TouchableOpacity>
           ))}
-        </View>
+        </AccordionWrapper>
       ) : null}
     </List.Accordion>
   );
 };
 
 const ClosetAccordions = () => {
-  const { isLoading, mutateAsync, data } = useMutation((sequence: string) =>
-    getClosetInfo(sequence)
-  );
-
-  useEffect(() => {
-    (async () => {
-      const seq = await AsyncStorage.getItem("closetSequence");
-      if (seq) {
-        mutateAsync(seq);
-      }
-    })();
-  }, []);
+  const closetSeq = useRecoilValue(closetSeqAtom)!;
+  const { isLoading: categoryLoading, data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategoryLists,
+  });
+  const { isLoading: closetLoading, data: closetData } = useQuery({
+    queryKey: ["closetInfo", closetSeq],
+    queryFn: () => getClosetInfo(closetSeq),
+  });
+  const isLoading = categoryLoading || closetLoading;
 
   return isLoading ? (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <LoadingContainer>
       <ActivityIndicator animating />
-    </View>
+    </LoadingContainer>
   ) : (
     <List.Section>
-      <Accordion title="Accessory" data={data?.accessory} />
-      <Accordion title="Bottom" data={data?.bottom} />
-      <Accordion title="Outer" data={data?.outer} />
-      <Accordion title="Shoes" data={data?.shoes} />
-      <Accordion title="Top" data={data?.top} />
+      {Object.keys(categoryData.list).map((categoryName, index) => (
+        <Accordion
+          key={index}
+          title={categoryName}
+          data={closetData?.[categoryName]}
+        />
+      ))}
     </List.Section>
   );
 };
 
+const LoadingContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+const AccordionWrapper = styled.View`
+  flex: 1;
+  padding: 16px 24px;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`;
 const styles = StyleSheet.create({
   image: {
     width: SCREEN_WIDTH / 2 - 34,
     height: SCREEN_WIDTH / 2 - 34,
     marginBottom: 14,
     backgroundColor: "#ccc",
-  },
-  accordion: {
-    flex: 1,
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    flexWrap: "wrap",
   },
   accordions: {
     paddingHorizontal: 16,
