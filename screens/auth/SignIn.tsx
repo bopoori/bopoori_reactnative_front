@@ -41,9 +41,9 @@ const SignIn: React.FC<Props> = ({ navigation: { goBack, navigate } }) => {
     const signInRes = await signInAsync(signInForm);
     if (signInRes.success) {
       console.log("로그인 성공", signInRes);
-      setLoginData(signInRes.data);
-      await AsyncStorage.setItem("loginData", JSON.stringify(signInRes.data));
       await getSeq(signInRes.data.user_uid);
+      await AsyncStorage.setItem("loginData", JSON.stringify(signInRes.data));
+      setLoginData(signInRes.data);
     } else {
       Alert.alert(signInRes.message);
     }

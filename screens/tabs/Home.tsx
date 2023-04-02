@@ -1,9 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialBottomTabScreenProps } from "@react-navigation/material-bottom-tabs";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useMutation } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   Image,
   ScrollView,
@@ -51,10 +50,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   const goCloset = () => navigate("Closet");
 
   useEffect(() => {
-    (async () => {
-      // console.log("closet sequence is", closetSeq);
-      await mutateAsync(closetSeq);
-    })();
+    (async () => mutateAsync(closetSeq))();
   }, []);
 
   return (
