@@ -1,7 +1,6 @@
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useMutation } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Dimensions, Image } from "react-native";
 import { ActivityIndicator, Appbar } from "react-native-paper";
 import styled from "styled-components/native";
@@ -14,11 +13,6 @@ type Props = CompositeScreenProps<
   NativeStackScreenProps<RootParamList>
 >;
 
-interface ClothInfoArgs {
-  table_name: string;
-  item_number: string;
-}
-
 const ClothDetail: React.FC<Props> = ({
   navigation: { goBack },
   route: {
@@ -27,15 +21,11 @@ const ClothDetail: React.FC<Props> = ({
     },
   },
 }) => {
-  const { isLoading, data, mutateAsync } = useMutation((args: ClothInfoArgs) =>
-    getClothInfo(args)
-  );
-  useEffect(() => {
-    (async () => {
-      const response = await mutateAsync({ item_number, table_name });
-      console.log(response);
-    })();
-  }, []);
+  const { isLoading, data } = useQuery({
+    queryKey: ["clothInfo", { item_number, table_name }],
+    queryFn: () => getClothInfo({ item_number, table_name }),
+  });
+
   return isLoading ? (
     <LoaderWrapper>
       <ActivityIndicator />
