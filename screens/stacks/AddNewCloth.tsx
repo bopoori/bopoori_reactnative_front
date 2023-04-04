@@ -1,6 +1,12 @@
 import React, { useReducer, useState } from "react";
 import mime from "mime";
-import { Appbar, Button, List, useTheme } from "react-native-paper";
+import {
+  ActivityIndicator,
+  Appbar,
+  Button,
+  List,
+  useTheme,
+} from "react-native-paper";
 import styled from "styled-components/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { Alert, Dimensions, Image, Platform } from "react-native";
@@ -16,36 +22,10 @@ import InputDialog from "../../components/InputDialog";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getCategoryLists, uploadCloth } from "../../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { clothCategories } from "../../utils/clothCategories";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<StackParamList, "AddNewCloth">;
-
-const informationKr = {
-  name: "옷 이름",
-  category: "카테고리",
-  color: "색상",
-  brand: "브랜드",
-  buy_date: "구매일",
-  price: "구매가격",
-  explain: "설명",
-};
-const lists = {
-  category: ["Accessory", "Bottom", "Outer", "Shoes", "Top"],
-  color: [
-    "Red",
-    "Orange",
-    "Yellow",
-    "Green",
-    "Blue",
-    "Purple",
-    "Pink",
-    "White",
-    "Black",
-    "Grey",
-    "Brown",
-    "etc.",
-  ],
-};
 
 const AddNewCloth: React.FC<Props> = ({
   navigation: { goBack },
@@ -64,7 +44,7 @@ const AddNewCloth: React.FC<Props> = ({
   const openListDialog = (dialogName: "category" | "color") => {
     dispatch({
       type: "OPEN_LIST_DIALOG",
-      payload: { lists: lists[dialogName], dialogName },
+      payload: { lists: clothCategories.allTitles[dialogName], dialogName },
     });
   };
   const openInputDialog = (
@@ -77,6 +57,10 @@ const AddNewCloth: React.FC<Props> = ({
   const onPressInputSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
 
+  const { isLoading: categoryLoading, data: categoryData } = useQuery({
+    queryKey: ["categories"],
+    queryFn: getCategoryLists,
+  });
   const { mutateAsync: uploadAsync, isLoading: uploadLoading } = useMutation(
     (uploadClothForm: any) => uploadCloth(uploadClothForm)
   );
@@ -132,11 +116,16 @@ const AddNewCloth: React.FC<Props> = ({
     }
   };
 
+  if (categoryLoading) {
+    <LoadingWrapper>
+      <ActivityIndicator animating />
+    </LoadingWrapper>;
+  }
   return (
     <>
       <SelectDialog
         initialValue={state.info[state.dialogName]}
-        title={informationKr[state.dialogName]}
+        title={clothCategories.allTypes[state.dialogName]}
         dialogName={state.dialogName}
         visible={state.listDialog.status}
         lists={state.listDialog.lists}
@@ -145,7 +134,7 @@ const AddNewCloth: React.FC<Props> = ({
       />
       <InputDialog
         initialValue={state.info[state.dialogName]}
-        title={informationKr[state.dialogName]}
+        title={clothCategories.allTypes[state.dialogName]}
         dialogName={state.dialogName}
         visible={state.inputDialog.status}
         onPressSave={onPressInputSave}
@@ -237,6 +226,11 @@ const AddNewCloth: React.FC<Props> = ({
   );
 };
 
+const LoadingWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
 const descriptionStyle = { paddingTop: 8 };
 const ScrollContainer = styled.ScrollView`
   flex: 1;
