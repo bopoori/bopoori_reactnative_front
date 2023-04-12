@@ -55,7 +55,13 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   const isLoading = dashboardLoading || categoryLoading;
 
   const pickNextCloth = () => navigate("Stack", { screen: "PickNextCloth" });
+  const goMyInfo = () => navigate("Stack", { screen: "MyInformation" });
   const goCloset = () => navigate("Closet");
+  const goDetail = (item_number: string, table_name: string, path: string) =>
+    navigate("Stack", {
+      screen: "ClothDetail",
+      params: { clothData: { item_number, table_name, path } },
+    });
 
   if (isLoading)
     return (
@@ -69,7 +75,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
         <Appbar.Content title="Home" />
       </Appbar.Header>
       <ScrollView>
-        <WelcomeContainer>
+        <WelcomeContainer onPress={goMyInfo}>
           <Avatar.Icon icon="account" />
           <View style={styles.welcomeCard}>
             <Text style={styles.welcomeTitle}>안녕하세요</Text>
@@ -129,7 +135,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 (fc: Frequencies, index: number) => (
                   <List.Item
                     key={index}
-                    onPress={() => {}}
+                    // onPress={() => goDetail(fc.item_number, fc.)}
                     style={{ paddingHorizontal: 8, borderRadius: 8 }}
                     title={`${fc.clothes_name} (${fc.wear_count}회)`}
                     description={fc.wear_count}
@@ -188,7 +194,7 @@ const LoadWrapper = styled.View`
   justify-content: center;
   align-items: center;
 `;
-const WelcomeContainer = styled.View`
+const WelcomeContainer = styled.TouchableOpacity`
   margin: 16px;
   margin-bottom: 0px;
   padding-left: 16px;
