@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Dialog, Portal, TextInput } from "react-native-paper";
 import { DialogName } from "../utils/clothReducers";
