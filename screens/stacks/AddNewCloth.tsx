@@ -82,8 +82,10 @@ const AddNewCloth: React.FC<Props> = ({
   };
 
   const postNewCloth = async () => {
-    const user_number = await AsyncStorage.getItem("uid");
-    const closet_number = await AsyncStorage.getItem("closet_sequence");
+    console.log("post new cloth clicked!");
+    const loginData = await AsyncStorage.getItem("loginData");
+    const closet_number = await AsyncStorage.getItem("closetSequence");
+    const user_number = JSON.parse(loginData).user_uid;
 
     if (user_number && closet_number) {
       const uploadClothForm = {
@@ -101,6 +103,8 @@ const AddNewCloth: React.FC<Props> = ({
       } catch {
         console.error;
       }
+    } else {
+      console.log("no!!!");
     }
   };
 
