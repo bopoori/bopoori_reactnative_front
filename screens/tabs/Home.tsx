@@ -135,7 +135,13 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 (fc: Frequencies, index: number) => (
                   <List.Item
                     key={index}
-                    // onPress={() => goDetail(fc.item_number, fc.)}
+                    onPress={() =>
+                      goDetail(
+                        fc.item_number,
+                        fc.table_name,
+                        `http://3.39.118.55:12023/${fc.path}`
+                      )
+                    }
                     style={{ paddingHorizontal: 8, borderRadius: 8 }}
                     title={`${fc.clothes_name} (${fc.wear_count}회)`}
                     description={fc.wear_count}
@@ -167,7 +173,13 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
                 (fc: Frequencies, index: number) => (
                   <List.Item
                     key={index}
-                    onPress={() => {}}
+                    onPress={() =>
+                      goDetail(
+                        fc.item_number,
+                        fc.table_name,
+                        `http://3.39.118.55:12023/${fc.path}`
+                      )
+                    }
                     style={{ paddingHorizontal: 8, borderRadius: 8 }}
                     title={`${fc.clothes_name} (${fc.wear_count}회)`}
                     description={fc.wear_count}
