@@ -28,7 +28,7 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
 
   const postTommClothes = async () => {
     const loginData = await AsyncStorage.getItem("loginData");
-    const user_number = JSON.parse(loginData).user_uid;
+    const user_number = JSON.parse(loginData!).user_uid;
     const postData = { ...state.postData, user_number };
     if (user_number) {
       const response = await mutateAsync(postData);
