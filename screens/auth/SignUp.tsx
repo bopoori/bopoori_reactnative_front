@@ -60,16 +60,25 @@ const SignUp: React.FC<Props> = ({
   const certEmail = () => {
     const signUpForm = { ...informationFormData, ...getOtpFormData, otp };
     console.log(signUpForm);
-    signUpAsync(signUpForm).then((res) => {
-      console.log("res", res);
-      if (res.success) {
-        Alert.alert("회원가입 완료", "회원 가입이 정상적으로 완료되었습니다", [
-          { text: "로그인 페이지로", onPress: () => navigate("SignIn") },
-        ]);
-      } else {
-        Alert.alert(res.message);
-      }
-    });
+    signUpAsync(signUpForm)
+      .then((res) => {
+        console.log("res", res);
+        if (res.success) {
+          Alert.alert(
+            "회원가입 완료",
+            "회원 가입이 정상적으로 완료되었습니다",
+            [{ text: "로그인 페이지로", onPress: () => navigate("SignIn") }]
+          );
+        } else {
+          Alert.alert(res.message);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        Alert.alert(
+          "입력하신 정보로는 회원가입이 불가능합니다. 관리자에게 문의해주세요."
+        );
+      });
   };
 
   return (
@@ -112,6 +121,12 @@ const SignUp: React.FC<Props> = ({
               name="user_pw"
               autoComplete="password"
               control={control}
+              pattern={{
+                value:
+                  /^(?=(.*[a-zA-Z]){1,})(?=(.*\d){1,})(?=(.*[~!@#$%^&*()_+]){1,})[a-zA-Z\d~!@#$%^&*()_+]{8,25}$/,
+                message:
+                  "비밀번호는 영어, 숫자, 특수문자를 각각 하나 이상 포함하여 8자 이상 25자 미만으로 입력해주세요.",
+              }}
               secureTextEntry
             />
           </FormBox>
@@ -132,6 +147,7 @@ const SignUp: React.FC<Props> = ({
               disabled={!otpSented}
               label="인증번호"
               keyboardType="number-pad"
+              maxLength={6}
               value={otp}
               onChangeText={(text) => onChangeOtp(text)}
             />

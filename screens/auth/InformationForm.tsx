@@ -31,6 +31,11 @@ const InformationForm: React.FC<Props> = ({
     }
   };
 
+  const weightPattern = {
+    value: /^[0-9]{2,3}$/,
+    message: "올바른 숫자를 입력해주세요.",
+  };
+
   return (
     <>
       <Appbar.Header>
@@ -67,6 +72,7 @@ const InformationForm: React.FC<Props> = ({
             label="키"
             name="user_height"
             control={control}
+            pattern={weightPattern}
             numberPad
             rightText="cm"
           />
@@ -76,6 +82,7 @@ const InformationForm: React.FC<Props> = ({
             label="몸무게"
             name="user_weight"
             control={control}
+            pattern={weightPattern}
             numberPad
             rightText="kg"
           />
