@@ -26,19 +26,12 @@ import { getDashboardInfo } from "../../utils/api";
 import { closetSeqAtom, loginDataAtom } from "../../utils/recoil";
 import { getCategoryLists } from "../../utils/api";
 import { capitalize } from "../../utils/capitalize";
+import ListCard from "../../components/ListCard";
 
 type HomeProps = CompositeScreenProps<
   MaterialBottomTabScreenProps<TabsParamList, "Home">,
   NativeStackScreenProps<RootParamList>
 >;
-
-interface Frequencies {
-  closet_number: number;
-  clothes_name: string;
-  item_number: number;
-  path: string;
-  wear_count: number;
-}
 
 const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   const { user_nickname } = useRecoilValue(loginDataAtom)!;
@@ -120,82 +113,14 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
             </CardInner>
           </Card.Content>
         </Card>
-        <Card style={styles.card} mode="elevated">
-          <Card.Title
-            titleStyle={styles.cardTitle}
-            titleVariant="titleMedium"
-            title="자주 입는 옷"
-            right={({ size }) => (
-              <IconButton onPress={() => {}} icon="chevron-right" size={size} />
-            )}
-          />
-          <Card.Content>
-            <FqCard>
-              {dashboardData?.frequently_clothes.map(
-                (fc: Frequencies, index: number) => (
-                  <List.Item
-                    key={index}
-                    onPress={() =>
-                      goDetail(
-                        fc.item_number,
-                        fc.table_name,
-                        `http://3.39.118.55:12023/${fc.path}`
-                      )
-                    }
-                    style={{ paddingHorizontal: 8, borderRadius: 8 }}
-                    title={`${fc.clothes_name} (${fc.wear_count}회)`}
-                    description={fc.wear_count}
-                    left={() => (
-                      <Thumbnail
-                        source={{
-                          uri: `http://3.39.118.55:12023/${fc.path}`,
-                        }}
-                      />
-                    )}
-                  />
-                )
-              )}
-            </FqCard>
-          </Card.Content>
-        </Card>
-        <Card style={{ ...styles.card, marginBottom: 16 }} mode="elevated">
-          <Card.Title
-            titleStyle={styles.cardTitle}
-            titleVariant="titleMedium"
-            title="잊고 있던 옷"
-            right={({ size }) => (
-              <IconButton onPress={() => {}} icon="chevron-right" size={size} />
-            )}
-          />
-          <Card.Content>
-            <FqCard>
-              {dashboardData?.forgotten_clothes.map(
-                (fc: Frequencies, index: number) => (
-                  <List.Item
-                    key={index}
-                    onPress={() =>
-                      goDetail(
-                        fc.item_number,
-                        fc.table_name,
-                        `http://3.39.118.55:12023/${fc.path}`
-                      )
-                    }
-                    style={{ paddingHorizontal: 8, borderRadius: 8 }}
-                    title={`${fc.clothes_name} (${fc.wear_count}회)`}
-                    description={fc.wear_count}
-                    left={() => (
-                      <Thumbnail
-                        source={{
-                          uri: `http://3.39.118.55:12023/${fc.path}`,
-                        }}
-                      />
-                    )}
-                  />
-                )
-              )}
-            </FqCard>
-          </Card.Content>
-        </Card>
+        <ListCard
+          data={dashboardData?.frequently_clothes}
+          title="자주 찾는 옷"
+        />
+        <ListCard
+          data={dashboardData?.forgotten_clothes}
+          title="잊고 있던 옷"
+        />
       </ScrollView>
     </>
   );
@@ -223,12 +148,6 @@ const CardInner = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   padding-bottom: 8px;
-`;
-const FqCard = styled.View``;
-const Thumbnail = styled.Image`
-  width: 50px;
-  height: 50px;
-  border-radius: 4px;
 `;
 const styles = StyleSheet.create({
   welcomeContainer: {
