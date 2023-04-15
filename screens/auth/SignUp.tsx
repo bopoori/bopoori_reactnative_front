@@ -43,7 +43,11 @@ const SignUp: React.FC<Props> = ({
     (signUpForm: SignUpForm) => API.auth.signUp(signUpForm)
   );
 
-  const onChangeOtp = (text: string) => setOtp(text);
+  const onChangeOtp = (text: string) => {
+    if (!!Number(text) || text === "") {
+      setOtp(text);
+    }
+  };
   const sendEmail = (formData: GetOtpForm) => {
     getOtpAsync(formData.user_id).then((response) => {
       if (response.success) {
@@ -59,10 +63,8 @@ const SignUp: React.FC<Props> = ({
 
   const certEmail = () => {
     const signUpForm = { ...informationFormData, ...getOtpFormData, otp };
-    console.log(signUpForm);
     signUpAsync(signUpForm)
       .then((res) => {
-        console.log("res", res);
         if (res.success) {
           Alert.alert(
             "회원가입 완료",
