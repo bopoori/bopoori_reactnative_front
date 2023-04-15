@@ -37,8 +37,8 @@ const LocationDialog = ({
           </Text>
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={onPressGrant}>권한 허용하기</Button>
           <Button onPress={closeDialog}>닫기</Button>
+          <Button onPress={onPressGrant}>권한 허용하기</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

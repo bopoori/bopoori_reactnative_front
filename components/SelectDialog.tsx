@@ -45,8 +45,8 @@ const SelectDialog: React.FC<SelectDialogProps> = ({
           </ScrollView>
         </Dialog.ScrollArea>
         <Dialog.Actions>
-          <Button onPress={() => onPressSave(dialogName, value)}>저장</Button>
           <Button onPress={closeDialog}>닫기</Button>
+          <Button onPress={() => onPressSave(dialogName, value)}>저장</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>

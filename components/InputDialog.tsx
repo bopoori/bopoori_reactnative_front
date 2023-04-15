@@ -39,12 +39,12 @@ const InputDialog: React.FC<InputDialogProps> = ({
           />
         </Dialog.Content>
         <Dialog.Actions>
+          <Button onPress={closeDialog}>닫기</Button>
           <Button
             onPress={() => onPressSave(dialogName, getValues(dialogName))}
           >
             저장
           </Button>
-          <Button onPress={closeDialog}>닫기</Button>
         </Dialog.Actions>
       </Dialog>
     </Portal>
