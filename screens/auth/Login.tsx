@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { Alert, Dimensions } from "react-native";
-import { useSetRecoilState } from "recoil";
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import LoginBtn from "../../components/LoginBtn";
-import { loginDataAtom } from "../../utils/recoil";
 import { login } from "@react-native-seoul/kakao-login";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthParamList, RootParamList } from "../../navigation/Root";
@@ -16,13 +14,10 @@ type Props = CompositeScreenProps<
 >;
 
 const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
-  const setLoginData = useSetRecoilState(loginDataAtom);
-  const onPassPress = () => {
-    Alert.alert("기능 삭제할 예정입니다.");
-  };
+  const navigateToSignUp = () => navigate("InformationForm");
 
   const [token, setToken] = useState("");
-  console.log("token", token);
+  console.log("token is", token);
 
   const signInWithKakao = async (): Promise<void> => {
     try {
@@ -54,8 +49,8 @@ const Login: React.FC<Props> = ({ navigation: { navigate } }) => {
           onPress={navigateToSignIn}
         />
         <BottomBtns>
-          <UnderlineBtn onPress={onPassPress}>
-            <Text>그냥 둘러보기</Text>
+          <UnderlineBtn onPress={navigateToSignUp}>
+            <Text>회원가입 하기</Text>
           </UnderlineBtn>
           <UnderlineBtn>
             <Text>가입정보 찾기</Text>

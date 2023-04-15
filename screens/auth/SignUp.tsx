@@ -6,8 +6,12 @@ import { Alert, KeyboardAvoidingView, Platform } from "react-native";
 import { useForm } from "react-hook-form";
 import ControlledInput from "../../components/ControlledInput";
 import { useMutation } from "@tanstack/react-query";
-import { API } from "../../utils/api";
+import { API, getClosetSeq } from "../../utils/api";
 import { AuthParamList } from "../../navigation/Root";
+import { SignInForm } from "./SignIn";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useSetRecoilState } from "recoil";
+import { closetSeqAtom, loginDataAtom } from "../../utils/recoil";
 
 type Props = NativeStackScreenProps<AuthParamList, "SignUp">;
 
@@ -35,6 +39,8 @@ const SignUp: React.FC<Props> = ({
   const [otp, setOtp] = React.useState("");
   const [otpSented, setOtpSented] = React.useState(false);
   const [getOtpFormData, setGetOtpFormData] = useState<GetOtpForm>();
+  const setClosetSeq = useSetRecoilState(closetSeqAtom);
+  const setLoginData = useSetRecoilState(loginDataAtom);
 
   const { mutateAsync: getOtpAsync, isLoading: otpLoading } = useMutation(
     (user_id: string) => API.auth.getOtp(user_id)
@@ -42,12 +48,18 @@ const SignUp: React.FC<Props> = ({
   const { mutateAsync: signUpAsync, isLoading: signUpLoading } = useMutation(
     (signUpForm: SignUpForm) => API.auth.signUp(signUpForm)
   );
+  const { mutateAsync: signInAsync, isLoading: signInLoading } = useMutation(
+    (signInForm: SignInForm) => API.auth.signIn(signInForm)
+  );
+  const { mutateAsync: getClosetSeqAsync, isLoading: getClosetLoading } =
+    useMutation((user_number: string) => getClosetSeq(user_number));
 
   const onChangeOtp = (text: string) => {
     if (!!Number(text) || text === "") {
       setOtp(text);
     }
   };
+
   const sendEmail = (formData: GetOtpForm) => {
     getOtpAsync(formData.user_id).then((response) => {
       if (response.success) {
@@ -69,7 +81,16 @@ const SignUp: React.FC<Props> = ({
           Alert.alert(
             "회원가입 완료",
             "회원 가입이 정상적으로 완료되었습니다",
-            [{ text: "로그인 페이지로", onPress: () => navigate("SignIn") }]
+            [
+              {
+                text: "바로 로그인",
+                onPress: () =>
+                  getLoggedIn({
+                    user_id: signUpForm.user_id!,
+                    user_pw: signUpForm.user_pw!,
+                  }),
+              },
+            ]
           );
         } else {
           Alert.alert(res.message);
@@ -81,6 +102,29 @@ const SignUp: React.FC<Props> = ({
           "입력하신 정보로는 회원가입이 불가능합니다. 관리자에게 문의해주세요."
         );
       });
+  };
+
+  const getLoggedIn = async (signInForm: SignInForm) => {
+    const signInRes = await signInAsync(signInForm);
+    if (signInRes.success) {
+      console.log("로그인 성공", signInRes);
+      await getSeq(signInRes.data.user_uid);
+      await AsyncStorage.setItem("loginData", JSON.stringify(signInRes.data));
+      setLoginData(signInRes.data);
+    } else {
+      Alert.alert(signInRes.message);
+    }
+  };
+
+  const getSeq = async (user_uid: string) => {
+    const response = await getClosetSeqAsync(user_uid);
+    if (response.success) {
+      const seq = response.data[0].closet_sequence.toString();
+      await AsyncStorage.setItem("closetSequence", seq);
+      setClosetSeq(seq);
+    } else {
+      Alert.alert(response.message);
+    }
   };
 
   return (
