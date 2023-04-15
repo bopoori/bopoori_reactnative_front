@@ -16,7 +16,6 @@ import {
   Card,
   Chip,
   IconButton,
-  List,
   Text,
 } from "react-native-paper";
 import { useRecoilValue } from "recoil";
@@ -121,6 +120,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
           data={dashboardData?.forgotten_clothes}
           title="잊고 있던 옷"
         />
+        <EmptySpace />
       </ScrollView>
     </>
   );
@@ -148,6 +148,9 @@ const CardInner = styled.View`
   flex-direction: row;
   flex-wrap: wrap;
   padding-bottom: 8px;
+`;
+const EmptySpace = styled.View`
+  height: 16px;
 `;
 const styles = StyleSheet.create({
   welcomeContainer: {
