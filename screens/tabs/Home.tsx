@@ -49,11 +49,6 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   const pickNextCloth = () => navigate("Stack", { screen: "PickNextCloth" });
   const goMyInfo = () => navigate("Stack", { screen: "MyInformation" });
   const goCloset = () => navigate("Closet");
-  const goDetail = (item_number: string, table_name: string, path: string) =>
-    navigate("Stack", {
-      screen: "ClothInfoPage",
-      params: { clothData: { item_number, table_name, path } },
-    });
 
   if (isLoading)
     return (
