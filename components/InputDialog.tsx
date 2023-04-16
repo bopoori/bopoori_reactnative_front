@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Button, Dialog, Portal, TextInput } from "react-native-paper";
+import { Button, Dialog, Portal } from "react-native-paper";
 import { DialogName } from "../utils/clothReducers";
 import ControlledInput from "./ControlledInput";
 
@@ -39,11 +39,11 @@ const InputDialog: React.FC<InputDialogProps> = ({
           />
         </Dialog.Content>
         <Dialog.Actions>
-          <Button onPress={closeDialog}>닫기</Button>
+          <Button onPress={closeDialog}>취소</Button>
           <Button
             onPress={() => onPressSave(dialogName, getValues(dialogName))}
           >
-            저장
+            확인
           </Button>
         </Dialog.Actions>
       </Dialog>
