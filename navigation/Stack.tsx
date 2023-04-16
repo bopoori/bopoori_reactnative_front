@@ -10,7 +10,7 @@ import Privacy from "../screens/settings/Privacy";
 import Rules from "../screens/settings/Rules";
 import { StackParamList } from "./Root";
 import ClothPicker from "../screens/modals/ClothPicker";
-import ClothDetail from "../screens/stacks/ClothDetail";
+import ClothInfoPage from "../screens/stacks/ClothInfoPage";
 
 const NativeStack = createNativeStackNavigator<StackParamList>();
 
@@ -31,7 +31,7 @@ const Stack: React.FC = () => {
           headerTitle: "내 옷장",
         }}
       />
-      <NativeStack.Screen name="ClothDetail" component={ClothDetail} />
+      <NativeStack.Screen name="ClothInfoPage" component={ClothInfoPage} />
       <NativeStack.Screen name="AddNewCloth" component={AddNewCloth} />
       <NativeStack.Screen name="TipDetail" component={TipDetail} />
       <NativeStack.Screen name="Alert" component={Alert} />

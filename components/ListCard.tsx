@@ -32,7 +32,7 @@ const ListCard = ({
   const { navigate } = useNavigation<ListCardNav>();
   const goDetail = (item_number: string, table_name: string, path: string) =>
     navigate("Stack", {
-      screen: "ClothDetail",
+      screen: "ClothInfoPage",
       params: { clothData: { item_number, table_name, path } },
     });
   return (
