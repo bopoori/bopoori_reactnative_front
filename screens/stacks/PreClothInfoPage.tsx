@@ -47,6 +47,8 @@ const PreClothInfoPage: React.FC<Props> = ({
       }}
       title={data?.item[0][`${table_name}_name`]}
       uri={path}
+      itemNumber={item_number}
+      tableName={table_name}
     />
   );
 };
