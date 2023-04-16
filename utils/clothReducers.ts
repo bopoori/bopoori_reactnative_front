@@ -10,15 +10,17 @@ export type DialogName =
   | "explain";
 
 type ClothActionWithoutPayload = {
-  type: "CLOSE_LIST_DIALOG" | "CLOSE_INPUT_DIALOG";
+  type: "CLOSE_LIST_DIALOG" | "CLOSE_INPUT_DIALOG" | "CLOSE_DATE_DIALOG";
 };
 
 type ClothActionWithPayload = {
   type:
     | "SAVE_LIST_INFO"
     | "SAVE_INPUT_INFO"
+    | "SAVE_DATE_INFO"
     | "OPEN_LIST_DIALOG"
-    | "OPEN_INPUT_DIALOG";
+    | "OPEN_INPUT_DIALOG"
+    | "OPEN_DATE_DIALOG";
   payload: {
     dialogName?: DialogName;
     value?: string;
@@ -32,11 +34,13 @@ export type ClothStateType = {
   dialogName: DialogName;
   inputDialog: {
     status: boolean;
-    type: string;
   };
   listDialog: {
     status: boolean;
     lists: string[];
+  };
+  dateDialog: {
+    status: boolean;
   };
   info: {
     name: string;
@@ -53,11 +57,13 @@ export const CLOTH_STATE: ClothStateType = {
   dialogName: "name",
   inputDialog: {
     status: false,
-    type: "",
   },
   listDialog: {
     status: false,
     lists: [""],
+  },
+  dateDialog: {
+    status: false,
   },
   info: {
     name: "",
@@ -93,7 +99,18 @@ export const clothReducer: Reducer<ClothStateType, ClothAction> = (
         ...state,
         dialogName: action.payload.dialogName!,
         inputDialog: {
-          ...state.inputDialog,
+          status: false,
+        },
+        info: {
+          ...state.info,
+          [action.payload.dialogName!]: action.payload.value,
+        },
+      };
+    case "SAVE_DATE_INFO":
+      return {
+        ...state,
+        dialogName: action.payload.dialogName!,
+        dateDialog: {
           status: false,
         },
         info: {
@@ -109,20 +126,20 @@ export const clothReducer: Reducer<ClothStateType, ClothAction> = (
           status: true,
           lists: action.payload.lists!,
         },
-        inputDialog: {
-          ...state.inputDialog,
-        },
       };
     case "OPEN_INPUT_DIALOG":
       return {
         ...state,
         dialogName: action.payload.dialogName!,
-        listDialog: {
-          ...state.listDialog,
-          status: false,
-        },
         inputDialog: {
-          ...state.inputDialog,
+          status: true,
+        },
+      };
+    case "OPEN_DATE_DIALOG":
+      return {
+        ...state,
+        dialogName: action.payload.dialogName!,
+        dateDialog: {
           status: true,
         },
       };
@@ -130,7 +147,6 @@ export const clothReducer: Reducer<ClothStateType, ClothAction> = (
       return {
         ...state,
         inputDialog: {
-          ...state.inputDialog,
           status: false,
         },
       };
@@ -139,6 +155,13 @@ export const clothReducer: Reducer<ClothStateType, ClothAction> = (
         ...state,
         listDialog: {
           ...state.listDialog,
+          status: false,
+        },
+      };
+    case "CLOSE_DATE_DIALOG":
+      return {
+        ...state,
+        dateDialog: {
           status: false,
         },
       };

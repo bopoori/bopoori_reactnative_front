@@ -9,6 +9,7 @@ import {
 import { clothCategories } from "../utils/clothCategories";
 import SelectDialog from "./SelectDialog";
 import InputDialog from "./InputDialog";
+import DateDialog from "./DateDialog";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 interface ClothDetailListProps {
@@ -25,6 +26,7 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
   const theme = useTheme();
   const closeListDialog = () => dispatch({ type: "CLOSE_LIST_DIALOG" });
   const closeInputDialog = () => dispatch({ type: "CLOSE_INPUT_DIALOG" });
+  const closeDateDialog = () => dispatch({ type: "CLOSE_DATE_DIALOG" });
   const openListDialog = (dialogName: "category" | "color") => {
     dispatch({
       type: "OPEN_LIST_DIALOG",
@@ -36,10 +38,15 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
   ) => {
     dispatch({ type: "OPEN_INPUT_DIALOG", payload: { dialogName } });
   };
+  const openDateDialog = (dialogName: "buy_date") => {
+    dispatch({ type: "OPEN_DATE_DIALOG", payload: { dialogName } });
+  };
   const onPressListSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_LIST_INFO", payload: { dialogName, value } });
   const onPressInputSave = (dialogName: DialogName, value: string) =>
     dispatch({ type: "SAVE_INPUT_INFO", payload: { dialogName, value } });
+  const onPressDateSave = (dialogName: DialogName, value: string) =>
+    dispatch({ type: "SAVE_DATE_INFO", payload: { dialogName, value } });
 
   return (
     <>
@@ -59,6 +66,13 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
         visible={state.inputDialog.status}
         onPressSave={onPressInputSave}
         closeDialog={closeInputDialog}
+      />
+      <DateDialog
+        visible={state.dateDialog.status}
+        onDismiss={closeDateDialog}
+        dialogName={state.dialogName}
+        initialValue={state.info[state.dialogName]}
+        onConfirm={onPressDateSave}
       />
       <ImageWrapper>
         <PreviewImage source={{ uri }} resizeMode="contain" />
@@ -99,7 +113,7 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
         <ListItem
           descriptionStyle={descriptionStyle}
           title="구매일"
-          onPress={() => openInputDialog("buy_date")}
+          onPress={() => openDateDialog("buy_date")}
           description={description(state.info.buy_date)}
         />
         <ListItem
