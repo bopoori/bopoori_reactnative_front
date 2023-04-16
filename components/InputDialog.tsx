@@ -36,6 +36,7 @@ const InputDialog: React.FC<InputDialogProps> = ({
             name={dialogName}
             autoFocus
             defaultValue={initialValue}
+            numberPad={dialogName === "price"}
           />
         </Dialog.Content>
         <Dialog.Actions>
