@@ -30,7 +30,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, data }) => {
   const count = data?.length;
   const onImagePress = (clothData: any) => {
     navigate("Stack", {
-      screen: "ClothDetail",
+      screen: "ClothInfoPage",
       params: { clothData: { ...clothData, table_name: title } },
     });
   };
