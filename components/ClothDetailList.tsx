@@ -60,63 +60,61 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
         onPressSave={onPressInputSave}
         closeDialog={closeInputDialog}
       />
-      <Container>
-        <ImageWrapper>
-          <PreviewImage source={{ uri }} resizeMode="contain" />
-        </ImageWrapper>
-        <ListSection
-          title="옷에 대한 필수 정보"
-          titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
-        >
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="옷 이름"
-            onPress={() => openInputDialog("name")}
-            description={description(state.info.name)}
-          />
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="카테고리"
-            onPress={() => openListDialog("category")}
-            description={description(state.info.category)}
-          />
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="색상"
-            onPress={() => openListDialog("color")}
-            description={description(state.info.color)}
-          />
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="브랜드"
-            onPress={() => openInputDialog("brand")}
-            description={description(state.info.brand)}
-          />
-        </ListSection>
-        <List.Accordion
-          title="더 자세한 내용 기록하기"
-          titleStyle={{ marginLeft: 8 }}
-        >
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="구매일"
-            onPress={() => openInputDialog("buy_date")}
-            description={description(state.info.buy_date)}
-          />
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="구매가격"
-            onPress={() => openInputDialog("price")}
-            description={description(state.info.price)}
-          />
-          <ListItem
-            descriptionStyle={descriptionStyle}
-            title="설명"
-            onPress={() => openInputDialog("explain")}
-            description={description(state.info.explain)}
-          />
-        </List.Accordion>
-      </Container>
+      <ImageWrapper>
+        <PreviewImage source={{ uri }} resizeMode="contain" />
+      </ImageWrapper>
+      <ListSection
+        title="옷에 대한 필수 정보"
+        titleStyle={{ color: theme.colors.primary, marginLeft: 8 }}
+      >
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="옷 이름"
+          onPress={() => openInputDialog("name")}
+          description={description(state.info.name)}
+        />
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="카테고리"
+          onPress={() => openListDialog("category")}
+          description={description(state.info.category)}
+        />
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="색상"
+          onPress={() => openListDialog("color")}
+          description={description(state.info.color)}
+        />
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="브랜드"
+          onPress={() => openInputDialog("brand")}
+          description={description(state.info.brand)}
+        />
+      </ListSection>
+      <List.Accordion
+        title="더 자세한 내용 기록하기"
+        titleStyle={{ marginLeft: 8 }}
+      >
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="구매일"
+          onPress={() => openInputDialog("buy_date")}
+          description={description(state.info.buy_date)}
+        />
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="구매가격"
+          onPress={() => openInputDialog("price")}
+          description={description(state.info.price)}
+        />
+        <ListItem
+          descriptionStyle={descriptionStyle}
+          title="설명"
+          onPress={() => openInputDialog("explain")}
+          description={description(state.info.explain)}
+        />
+      </List.Accordion>
     </>
   );
 };
@@ -124,7 +122,6 @@ const ClothDetailList: React.FC<ClothDetailListProps> = ({
 function description(text: string) {
   return text === "" ? "없음" : text;
 }
-const Container = styled.ScrollView``;
 const ImageWrapper = styled.View`
   padding: 20px;
   justify-content: center;
