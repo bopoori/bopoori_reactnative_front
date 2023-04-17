@@ -1,5 +1,5 @@
 // import { useState } from "react";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import TopCard from "../../components/ClosetTopCard";
 // import Selector from "../../components/ClosetSelector";
@@ -23,9 +23,9 @@ const Closet: React.FC<ClosetProps> = () => {
       <Appbar.Header>
         <Appbar.Content title="Closet" />
       </Appbar.Header>
-      <ScrollView>
+      {/* <Selector value={selectedOption} setValue={setSelectedOption} /> */}
+      <ScrollView style={{ flex: 1 }}>
         <TopCard />
-        {/* <Selector value={selectedOption} setValue={setSelectedOption} /> */}
         <ClosetAccordions />
       </ScrollView>
       <ClosetFAB />
