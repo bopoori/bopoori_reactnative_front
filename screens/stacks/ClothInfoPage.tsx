@@ -53,11 +53,16 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   const saveEdits = async () => {
     const form = {
       cloth_sequence: itemNumber,
-      data: { ...state.info, table_name: tableName },
+      data: { ...state.info },
     };
     const result = await editAsync(form);
-    Alert.alert(result.message);
-    queryClient.invalidateQueries(["clothInfo"]);
+    console.log(result);
+    if (result.success) {
+      queryClient.invalidateQueries(["clothInfo"]);
+      queryClient.invalidateQueries(["dashboard"]);
+      queryClient.invalidateQueries(["closetInfo"]);
+      Alert.alert("옷 정보가 수정되었습니다.");
+    }
   };
 
   const removeCloth = async () => {
