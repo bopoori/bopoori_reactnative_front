@@ -1,5 +1,6 @@
 import { DatePickerModal } from "react-native-paper-dates";
 import { DialogName } from "../utils/clothReducers";
+import dateParser from "../utils/dateParser";
 
 interface DateDialogProps {
   visible: boolean;
@@ -24,19 +25,7 @@ const DateDialog: React.FC<DateDialogProps> = ({
       mode="single"
       visible={visible}
       onDismiss={onDismiss}
-      onConfirm={({ date }) =>
-        onConfirm(
-          dialogName,
-          date!
-            .toLocaleDateString("kr-ko", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-            })
-            .replaceAll(". ", "-")
-            .split(".")[0]
-        )
-      }
+      onConfirm={({ date }) => onConfirm(dialogName, dateParser(date!))}
     />
   );
 };

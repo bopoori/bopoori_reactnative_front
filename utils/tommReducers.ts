@@ -1,4 +1,5 @@
 import { Reducer } from "react";
+import dateParser from "./dateParser";
 
 export type TommTarget =
   | "top"
@@ -42,14 +43,7 @@ export type TommState = {
 
 export const TOMM_STATE: TommState = {
   postData: {
-    date: new Date(Date.now() + 1000 * 60 * 60 * 24)
-      .toLocaleDateString("kr-ko", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-      })
-      .replaceAll(". ", "-")
-      .split(".")[0],
+    date: dateParser(new Date(Date.now() + 1000 * 60 * 60 * 24)),
     user_number: "",
   },
   uris: {},
