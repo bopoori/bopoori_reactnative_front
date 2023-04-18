@@ -1,11 +1,9 @@
 import axios from "axios";
 import { SignInForm } from "../screens/auth/SignIn";
 import { SignUpForm } from "../screens/auth/SignUp";
+import { API_BASE_URL } from "@env";
 
-const BASE_URL = "http://3.39.118.55:12023";
-// const BASE_URL = "http://localhost:12023";
-
-axios.defaults.baseURL = BASE_URL;
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common["Content-Type"] =
   "application/json; charset=utf-8";
 
