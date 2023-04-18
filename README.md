@@ -25,6 +25,12 @@
 - Expo
 - Styled Components
 
+## 🤼‍♀️ Members
+
+- 정형진 (Fronend)
+- 배정훈 (Backend)
+- 김연희 (Planner)
+
 ## 🚀 Deploy
 
 - Deploy with AppStore
