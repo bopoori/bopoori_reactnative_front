@@ -1,14 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useMutation } from "@tanstack/react-query";
-import { useReducer } from "react";
-import { Alert, Dimensions, ScrollView } from "react-native";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useReducer, useState } from "react";
+import { Alert, Dimensions, ScrollView, useColorScheme } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
 import { StackParamList } from "../../navigation/Root";
-import { uploadTommCloth } from "../../utils/api";
+import { getTommCloth, uploadTommCloth } from "../../utils/api";
 import { tommReducer, TommTarget, TOMM_STATE } from "../../utils/tommReducers";
+import { CalendarProvider, WeekCalendar } from "react-native-calendars";
+import dateParser from "../../utils/dateParser";
+import { getDarkTheme, getLightTheme } from "../../utils/calendarTheme";
+import { useRecoilValue } from "recoil";
+import { loginDataAtom } from "../../utils/recoil";
 const { width: WINDOW_WIDTH } = Dimensions.get("window");
 
 type Props = NativeStackScreenProps<StackParamList, "PickNextCloth">;
@@ -17,22 +22,44 @@ const OptionalImage = ({ option }: { option?: string }) =>
   option ? <ContainedImage source={{ uri: option }} /> : null;
 
 const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
+  const isDark = useColorScheme() === "dark";
   const [state, dispatch] = useReducer(tommReducer, TOMM_STATE);
+  const loginData = useRecoilValue(loginDataAtom)!;
   const { goBack } = useNavigation();
   const openPicker = (target: TommTarget) =>
     navigate("ClothPicker", { dispatch, target });
 
-  const { isLoading, mutateAsync } = useMutation((data: any) =>
-    uploadTommCloth(data)
+  const [date, setDate] = useState(dateParser(new Date()));
+  const onDateChange = async (date: string) => {
+    setDate(date);
+    const response = await refetchNext();
+    if (response !== undefined) {
+      dispatch({
+        type: "CHANGE_DATE",
+        payload: { date, response: response?.data?.data?.clothes },
+      });
+    }
+  };
+
+  const {
+    isLoading: nextLoading,
+    data: nextData,
+    refetch: refetchNext,
+  } = useQuery({
+    queryKey: ["nextCloth", { user_number: loginData.user_uid, date }],
+    queryFn: () => getTommCloth({ user_number: loginData.user_uid, date }),
+  });
+  const { isLoading: postLoading, mutateAsync: postAsync } = useMutation(
+    (data: any) => uploadTommCloth(data)
   );
 
   const postTommClothes = async () => {
     const loginData = await AsyncStorage.getItem("loginData");
     const user_number = JSON.parse(loginData!).user_uid;
     const postData = { ...state.postData, user_number };
+    console.log("postData >>>", postData);
     if (user_number) {
-      const response = await mutateAsync(postData);
-      console.log("내일 입을 옷 RES >>>", response);
+      const response = await postAsync(postData);
       Alert.alert(response.message);
     }
   };
@@ -43,8 +70,13 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="내일 입을 옷 고르기" />
       </Appbar.Header>
+      <CalendarProvider date={date} onDateChanged={onDateChange}>
+        <WeekCalendar
+          theme={isDark ? getDarkTheme() : getLightTheme()}
+          allowShadow={false}
+        />
+      </CalendarProvider>
       <ScrollView>
-        {/* <Weather /> */}
         <Container>
           <DressPicker>
             <PersonImage
@@ -62,7 +94,10 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
                 </TouchableBox>
               </Box>
               <Box>
-                <TouchableBox onPress={() => openPicker("accessory")}>
+                <TouchableBox
+                  onPress={() => openPicker("accessory")}
+                  onLongPress={() => Alert.alert("악세사리 항목을 비울까요?")}
+                >
                   <OptionalImage option={state.uris.accessory} />
                   <BoxText>악세사리</BoxText>
                   <IconButton icon="plus" />
@@ -128,7 +163,7 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
           <Button
             mode="contained"
             style={{ marginVertical: 12 }}
-            loading={isLoading}
+            loading={postLoading}
             onPress={postTommClothes}
           >
             내일 입을 옷 저장

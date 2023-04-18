@@ -14,10 +14,15 @@ export type TommTarget =
 export type TommAction = {
   type: "SAVE_CLOTH" | "CHANGE_DATE";
   payload: {
-    target: TommTarget;
+    target?: TommTarget;
     item_number?: string;
     uri?: string;
     date?: string;
+    response?: {
+      [key: string]:
+        | { category: string; item_number: number; path: string }
+        | undefined;
+    } | null;
   };
 };
 
@@ -56,21 +61,37 @@ export const tommReducer: Reducer<TommState, TommAction> = (state, action) => {
         ...state,
         uris: {
           ...state.uris,
-          [action.payload.target]: action.payload.uri,
+          [action.payload.target!]: action.payload.uri,
         },
         postData: {
           ...state.postData,
-          [action.payload.target]: action.payload.item_number,
+          [action.payload.target!]: action.payload.item_number,
         },
       };
-    // case "CHANGE_DATE":
-    //   return {
-    //     ...state,
-    //     postData: {
-    //       ...state.postData,
-    //       date: action.payload.date,
-    //     },
-    //   };
+    case "CHANGE_DATE":
+      if (action.payload.response) {
+        let payloadNumbers = {};
+        let payloadPathes = {};
+        Object.keys(action.payload.response).forEach((cloth) => {
+          payloadNumbers = {
+            ...payloadNumbers,
+            [cloth.toLowerCase()]: action.payload.response![cloth]?.item_number,
+          };
+          payloadPathes = {
+            ...payloadPathes,
+            [cloth.toLowerCase()]: action.payload.response![cloth]?.path,
+          };
+        });
+        return {
+          postData: {
+            ...state.postData,
+            date: action.payload.date!,
+            ...payloadNumbers,
+          },
+          uris: { ...payloadPathes },
+        };
+      }
+      return TOMM_STATE;
     default:
       return state;
   }
