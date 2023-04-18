@@ -2,14 +2,14 @@
   <img alt="carrot" src="https://cdn-icons-png.flaticon.com/512/2954/2954918.png" width="60" />
 </p>
 <h1 align="center">
-  보풀 (now in development 👨‍🔧)
+  보풀 (in development 👨‍🔧)
 </h1>
 
 <div align="center">
-  <img alt="screenshot1" src="./screenshots/closet.png" />
-  <img alt="screenshot2" src="./screenshots/picknextcloth.png" />
-  <img alt="screenshot2" src="./screenshots/clothdetail.png" />
-  <img alt="screenshot2" src="./screenshots/alarm.png" />
+  <img alt="screenshot1" src="./screenshots/closet.png" width="200" />
+  <img alt="screenshot2" src="./screenshots/picknextcloth.png" width="200" />
+  <img alt="screenshot2" src="./screenshots/clothdetail.png" width="200" />
+  <img alt="screenshot2" src="./screenshots/alarm.png" width="200" />
 </div>
 
 ## 👔 Introductions
