@@ -31,6 +31,6 @@
 - 배정훈 (Backend)
 - 김연희 (Planner)
 
-## 🚀 Deploy
+## 🚀 Deploy (예정)
 
 - Deploy with AppStore
