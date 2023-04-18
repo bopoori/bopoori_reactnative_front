@@ -70,8 +70,8 @@ const AddNewCloth: React.FC<Props> = ({
       try {
         const res = await uploadAsync(uploadArgs);
         if (res.success) {
-          queryClient.invalidateQueries(["closetInfo"]);
-          queryClient.invalidateQueries(["dashboard"]);
+          await queryClient.invalidateQueries(["closetInfo"]);
+          await queryClient.invalidateQueries(["dashboard"]);
           navigate("Tabs", { screen: "Closet" });
           Alert.alert(res.message);
         } else {

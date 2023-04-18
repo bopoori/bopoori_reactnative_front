@@ -58,9 +58,9 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
     const result = await editAsync(form);
     console.log(result);
     if (result.success) {
-      queryClient.invalidateQueries(["clothInfo"]);
-      queryClient.invalidateQueries(["dashboard"]);
-      queryClient.invalidateQueries(["closetInfo"]);
+      await queryClient.invalidateQueries(["clothInfo"]);
+      await queryClient.invalidateQueries(["dashboard"]);
+      await queryClient.invalidateQueries(["closetInfo"]);
       Alert.alert("옷 정보가 수정되었습니다.");
     }
   };
@@ -72,8 +72,8 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
     });
     Alert.alert(result.message);
     if (result.success) {
-      queryClient.invalidateQueries(["closetInfo"]);
-      queryClient.invalidateQueries(["dashboard"]);
+      await queryClient.invalidateQueries(["closetInfo"]);
+      await queryClient.invalidateQueries(["dashboard"]);
       goBack();
     }
   };
