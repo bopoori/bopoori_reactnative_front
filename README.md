@@ -27,8 +27,8 @@
 
 ## 🤼‍♀️ Members
 
-- 정형진 (Fronend)
-- 배정훈 (Backend)
+- 정형진 (Front-end)
+- 배정훈 (Back-end)
 - 김연희 (Planner)
 
 ## 🚀 Deploy (예정)
