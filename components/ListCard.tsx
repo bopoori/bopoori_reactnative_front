@@ -35,6 +35,10 @@ const ListCard = ({
       screen: "ClothInfoPage",
       params: { clothData: { item_number, table_name, path } },
     });
+
+  if (data.length === 0) {
+    return null;
+  }
   return (
     <Card style={styles.card} mode="elevated">
       <Card.Title
