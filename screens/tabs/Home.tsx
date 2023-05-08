@@ -108,8 +108,8 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
           </Card.Content>
         </Card>
         <ListCard
-          data={dashboardData?.frequently_clothes}
-          title="자주 찾는 옷"
+          data={dashboardData.frequently_clothes}
+          title="즐겨 찾는 옷"
         />
         <ListCard
           data={dashboardData?.forgotten_clothes}
