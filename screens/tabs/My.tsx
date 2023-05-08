@@ -63,7 +63,7 @@ const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title="My" />
+        <Appbar.Content title="마이" />
       </Appbar.Header>
       <Card style={styles.card}>
         <Card.Title

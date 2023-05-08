@@ -18,7 +18,7 @@ const Tips: React.FC<TipsProps> = ({ navigation: { navigate } }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title="Tips" />
+        <Appbar.Content title="팁" />
       </Appbar.Header>
       <ScrollView style={styles.scrollView}>
         <Card onPress={showTipDetail} style={styles.card}>

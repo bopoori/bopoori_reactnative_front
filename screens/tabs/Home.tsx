@@ -59,7 +59,7 @@ const Home: React.FC<HomeProps> = ({ navigation: { navigate } }) => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title="Home" />
+        <Appbar.Content title="홈" />
       </Appbar.Header>
       <ScrollView>
         <WelcomeContainer onPress={goMyInfo}>

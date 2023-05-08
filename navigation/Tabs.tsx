@@ -16,7 +16,7 @@ const Tabs = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: "Home",
+          tabBarLabel: "홈",
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? "home" : "home-outline"}
@@ -30,7 +30,7 @@ const Tabs = () => {
         name="Closet"
         component={Closet}
         options={{
-          tabBarLabel: "Closet",
+          tabBarLabel: "옷장",
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? "dresser" : "dresser-outline"}
@@ -44,7 +44,7 @@ const Tabs = () => {
         name="Tips"
         component={Tips}
         options={{
-          tabBarLabel: "Tips",
+          tabBarLabel: "팁",
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? "lightbulb" : "lightbulb-outline"}
@@ -58,7 +58,7 @@ const Tabs = () => {
         name="My"
         component={My}
         options={{
-          tabBarLabel: "My",
+          tabBarLabel: "마이",
           tabBarIcon: ({ color, focused }) => (
             <MaterialCommunityIcons
               name={focused ? "account" : "account-outline"}

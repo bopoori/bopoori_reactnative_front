@@ -21,7 +21,7 @@ const Closet: React.FC<ClosetProps> = () => {
   return (
     <>
       <Appbar.Header>
-        <Appbar.Content title="Closet" />
+        <Appbar.Content title="옷장" />
       </Appbar.Header>
       {/* <Selector value={selectedOption} setValue={setSelectedOption} /> */}
       <ScrollView style={{ flex: 1 }}>
