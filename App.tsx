@@ -27,17 +27,6 @@ import { closetSeqAtom, loginDataAtom } from "./utils/recoil";
 
 SplashScreen.preventAutoHideAsync();
 
-type LoginDataAtomType = {
-  id_domain: string;
-  reg_date: string;
-  user_gender: string;
-  user_height: string;
-  user_id: string;
-  user_nickname: string;
-  user_uid: number;
-  user_weight: string;
-};
-
 export default function App() {
   const queryClient = new QueryClient();
   const isDark = useColorScheme() === "dark";
