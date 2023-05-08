@@ -23,9 +23,9 @@ export const API = {
   dashboard: {},
   closet: {},
   cloth: {
-    edit: ({ cloth_sequence, form }: { cloth_sequence: string; form: any }) =>
+    edit: ({ cloth_sequence, data }: { cloth_sequence: string; data: any }) =>
       axios
-        .put(`/bopool/closets/info/detail/${cloth_sequence}`, form)
+        .put(`/bopool/closets/info/detail/${cloth_sequence}`, data)
         .then(({ data }) => data),
     remove: ({
       item_number,
