@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { Alert, Dimensions, ScrollView, useColorScheme } from "react-native";
 import { Appbar, Button, IconButton, Text } from "react-native-paper";
 import styled from "styled-components/native";
@@ -23,30 +23,35 @@ const OptionalImage = ({ option }: { option?: string }) =>
 
 const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
   const isDark = useColorScheme() === "dark";
+  const queryClient = useQueryClient();
   const [state, dispatch] = useReducer(tommReducer, TOMM_STATE);
   const loginData = useRecoilValue(loginDataAtom)!;
   const { goBack } = useNavigation();
   const openPicker = (target: TommTarget) =>
     navigate("ClothPicker", { dispatch, target });
 
-  const [date, setDate] = useState(dateParser(new Date()));
+  // when date component changed
   const onDateChange = async (date: string) => {
     setDate(date);
-    const response = await refetchNext();
-    if (response !== undefined) {
-      dispatch({
-        type: "CHANGE_DATE",
-        payload: { date, response: response?.data?.data?.clothes },
-      });
-    }
   };
 
-  const {
-    isLoading: nextLoading,
-    data: nextData,
-    refetch: refetchNext,
-  } = useQuery({
-    queryKey: ["nextCloth", { user_number: loginData.user_uid, date }],
+  // when date state changed
+  const [date, setDate] = useState(dateParser(new Date()));
+  useEffect(() => {
+    (async () => {
+      await queryClient.invalidateQueries(["nextCloth"]);
+      const response = await refetchNext();
+      if (response !== undefined) {
+        dispatch({
+          type: "CHANGE_DATE",
+          payload: { date, response: response?.data?.data?.clothes },
+        });
+      }
+    })();
+  }, [date]);
+
+  const { isLoading: nextLoading, refetch: refetchNext } = useQuery({
+    queryKey: ["nextCloth", loginData.user_uid, date],
     queryFn: () => getTommCloth({ user_number: loginData.user_uid, date }),
   });
   const { isLoading: postLoading, mutateAsync: postAsync } = useMutation(
@@ -164,9 +169,10 @@ const PickNextCloth: React.FC<Props> = ({ navigation: { navigate } }) => {
             mode="contained"
             style={{ marginVertical: 12 }}
             loading={postLoading}
+            disabled={nextLoading}
             onPress={postTommClothes}
           >
-            내일 입을 옷 저장
+            {nextLoading ? "로딩 중..." : "내일 입을 옷으로 저장하기"}
           </Button>
         </Container>
       </ScrollView>
