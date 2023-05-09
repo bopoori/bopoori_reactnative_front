@@ -25,6 +25,8 @@ const PreClothInfoPage: React.FC<Props> = ({
     queryFn: () => getClothInfo({ item_number, table_name }),
   });
 
+  console.log(data);
+
   if (isLoading)
     return (
       <LoaderWrapper>
