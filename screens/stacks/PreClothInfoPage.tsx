@@ -25,6 +25,8 @@ const PreClothInfoPage: React.FC<Props> = ({
     queryFn: () => getClothInfo({ item_number, table_name }),
   });
 
+  console.log(data);
+
   if (isLoading)
     return (
       <LoaderWrapper>
@@ -49,7 +51,7 @@ const PreClothInfoPage: React.FC<Props> = ({
       uri={path}
       itemNumber={item_number}
       tableName={table_name}
-      bookmark={data?.item[0].bookmark === 1}
+      isLiked={data?.item[0].bookmark === 1}
     />
   );
 };

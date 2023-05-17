@@ -17,6 +17,11 @@ interface ClothInfoPageProps {
   tableName: string;
   isLiked: boolean;
 }
+export interface LikeForm {
+  flag: 0 | 1;
+  item_number: string;
+}
+
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
 
 const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
@@ -42,8 +47,8 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   const openMenu = () => setShowMenu(true);
   const closeMenu = () => setShowMenu(false);
 
-  const { mutateAsync: likeAsync } = useMutation((item_number: string) =>
-    API.cloth.like(item_number)
+  const { mutateAsync: likeAsync } = useMutation((likeForm: LikeForm) =>
+    API.cloth.like(likeForm)
   );
   const { mutateAsync: editAsync, isLoading: editLoading } = useMutation(
     (form: any) => API.cloth.edit(form)
@@ -56,16 +61,18 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   const [state, dispatch] = useReducer(clothReducer, initialState);
 
   const likeCloth = async () => {
-    const result = await likeAsync(itemNumber);
+    const result = await likeAsync({
+      item_number: itemNumber,
+      flag: isLiked ? 0 : 1,
+    });
+    closeMenu();
     if (result.success) {
       await queryClient.invalidateQueries(["clothInfo"]);
       await queryClient.invalidateQueries(["dashboard"]);
       await queryClient.invalidateQueries(["closetInfo"]);
-      Alert.alert("옷 정보가 수정되었습니다.");
-      return closeMenu();
+      return Alert.alert("옷 정보가 수정되었습니다.");
     }
     Alert.alert(result.message);
-    return closeMenu();
   };
 
   const saveEdits = async () => {
