@@ -2,6 +2,7 @@ import axios from "axios";
 import { SignInForm } from "../screens/auth/SignIn";
 import { SignUpForm } from "../screens/auth/SignUp";
 import { API_BASE_URL } from "@env";
+import { EditInfoForm } from "../screens/settings/MyInformation";
 
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common["Content-Type"] =
@@ -18,6 +19,10 @@ export const API = {
     signUp: (signUpForm: SignUpForm) =>
       axios
         .post(`/bopool/auth/registration`, signUpForm)
+        .then(({ data }) => data),
+    editInfo: (editInfoForm: EditInfoForm) =>
+      axios
+        .put(`/bopool/users/my-info/${editInfoForm.user_number}`, editInfoForm)
         .then(({ data }) => data),
   },
   dashboard: {},

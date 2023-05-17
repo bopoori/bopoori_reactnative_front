@@ -1,69 +1,100 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { TextInput } from "react-native";
-import { Appbar, Button, Dialog, List, Portal } from "react-native-paper";
+import { Appbar, Button } from "react-native-paper";
 import styled from "styled-components/native";
+import ControlledInput from "../../components/ControlledInput";
+import { useForm } from "react-hook-form";
+import { useRecoilValue } from "recoil";
+import { loginDataAtom } from "../../utils/recoil";
+import { useMutation } from "@tanstack/react-query";
+import { API } from "../../utils/api";
+import { Alert } from "react-native";
+
+interface Form {
+  user_nickname: string;
+  user_pw: string;
+  user_email: string;
+}
+
+export interface EditInfoForm extends Form {
+  user_number: number;
+}
 
 const MyInformation = () => {
+  const loginData = useRecoilValue(loginDataAtom);
+  const { mutateAsync } = useMutation({
+    mutationFn: (editInfoForm: EditInfoForm) => API.auth.editInfo(editInfoForm),
+  });
   const { goBack } = useNavigation();
-  const [showDialog, setShowDialog] = useState(false);
-  const [nickname, setNickname] = useState("멋쟁이");
-  const onChangeNickname = (text: string) => setNickname(text);
-  const openDialog = () => setShowDialog(true);
-  const closeDialog = () => setShowDialog(false);
+  const { control, handleSubmit } = useForm<Form>();
+
+  const editInfo = async (form: Form) => {
+    const editInfoForm = { ...form, user_number: loginData?.user_uid! };
+    const result = await mutateAsync(editInfoForm);
+    Alert.alert(result.message);
+  };
+
   return (
     <>
-      <Portal>
-        <Dialog visible={showDialog} onDismiss={closeDialog}>
-          <Dialog.Title>닉네임 변경</Dialog.Title>
-          <Dialog.Content>
-            <TextInput
-              defaultValue={nickname}
-              style={{ backgroundColor: "white", padding: 8, borderRadius: 12 }}
-            />
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={closeDialog}>닫기</Button>
-            <Button>변경하기</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
       <Appbar.Header>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title="내 정보" />
       </Appbar.Header>
       <Container>
-        <ListSection>
-          <ListItem
-            descriptionStyle={{ paddingTop: 8 }}
-            title="닉네임"
-            description={nickname}
-            onPress={openDialog}
+        <InputWrapper>
+          <ControlledInput
+            name="user_nickname"
+            label="닉네임"
+            control={control}
+            defaultValue={loginData?.user_nickname}
           />
-        </ListSection>
-        <Wrapper>
-          <Button onPress={() => {}}>비밀번호 변경</Button>
-          <Button labelStyle={{ color: "crimson" }} onPress={() => {}}>
-            회원 탈퇴
-          </Button>
-        </Wrapper>
+        </InputWrapper>
+        <InputWrapper>
+          <ControlledInput
+            name="user_email"
+            label="이메일"
+            control={control}
+            defaultValue={`${loginData?.user_id}@${loginData?.id_domain}`}
+            pattern={{
+              value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+              message: "이메일 형식이 올바르지 않습니다.",
+            }}
+          />
+        </InputWrapper>
+        <InputWrapper>
+          <ControlledInput
+            name="user_password"
+            label="비밀번호"
+            secureTextEntry
+            control={control}
+            pattern={{
+              value:
+                /^(?=(.*[a-zA-Z]){1,})(?=(.*\d){1,})(?=(.*[~!@#$%^&*()_+]){1,})[a-zA-Z\d~!@#$%^&*()_+]{8,25}$/,
+              message:
+                "비밀번호는 영어, 숫자, 특수문자를 각각 하나 이상 포함하여 8자 이상 25자 미만으로 입력해주세요.",
+            }}
+          />
+        </InputWrapper>
+        <Button
+          style={{ marginTop: 20 }}
+          mode="contained"
+          onPress={handleSubmit(editInfo)}
+        >
+          내 정보 변경하기
+        </Button>
+        <Button style={{ marginTop: 16 }} labelStyle={{ color: "crimson" }}>
+          회원 탈퇴하기
+        </Button>
       </Container>
     </>
   );
 };
 
-const Container = styled.View``;
-const ListSection = styled(List.Section)`
-  padding-top: 0;
+const Container = styled.View`
+  padding: 24px;
 `;
-const ListItem = styled(List.Item)`
-  padding-left: 8px;
-`;
-const Wrapper = styled.View`
-  justify-content: center;
-  align-items: center;
-  margin-top: 24px;
+const InputWrapper = styled.View`
+  padding-bottom: 12px;
 `;
 
 export default MyInformation;
