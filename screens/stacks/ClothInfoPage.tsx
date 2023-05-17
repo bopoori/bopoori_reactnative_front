@@ -15,6 +15,7 @@ interface ClothInfoPageProps {
   uri: string;
   itemNumber: string;
   tableName: string;
+  isLiked: boolean;
 }
 const MORE_ICON = Platform.OS === "ios" ? "dots-horizontal" : "dots-vertical";
 
@@ -24,6 +25,7 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   uri,
   itemNumber,
   tableName,
+  isLiked,
 }) => {
   const { goBack } = useNavigation();
   const queryClient = useQueryClient();
@@ -40,6 +42,9 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   const openMenu = () => setShowMenu(true);
   const closeMenu = () => setShowMenu(false);
 
+  const { mutateAsync: likeAsync } = useMutation((item_number: string) =>
+    API.cloth.like(item_number)
+  );
   const { mutateAsync: editAsync, isLoading: editLoading } = useMutation(
     (form: any) => API.cloth.edit(form)
   );
@@ -49,6 +54,19 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   );
 
   const [state, dispatch] = useReducer(clothReducer, initialState);
+
+  const likeCloth = async () => {
+    const result = await likeAsync(itemNumber);
+    if (result.success) {
+      await queryClient.invalidateQueries(["clothInfo"]);
+      await queryClient.invalidateQueries(["dashboard"]);
+      await queryClient.invalidateQueries(["closetInfo"]);
+      Alert.alert("옷 정보가 수정되었습니다.");
+      return closeMenu();
+    }
+    Alert.alert(result.message);
+    return closeMenu();
+  };
 
   const saveEdits = async () => {
     const form = {
@@ -98,17 +116,15 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
       <Appbar.Header elevated>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title={title} />
-        {/* <Appbar.Action icon="star-outline" onPress={openDialog} /> */}
-        {/* <Appbar.Action icon="trash-can-outline" onPress={openDialog} /> */}
         <Menu
           visible={showMenu}
           onDismiss={closeMenu}
           anchor={<Appbar.Action icon={MORE_ICON} onPress={openMenu} />}
         >
           <Menu.Item
-            leadingIcon="star-outline"
-            onPress={() => {}}
-            title="즐겨 찾는 옷 추가"
+            leadingIcon={isLiked ? "star" : "star-outline"}
+            onPress={likeCloth}
+            title={isLiked ? "즐겨찾기에서 제거" : "즐겨찾기에 추가"}
           />
           <Menu.Item
             leadingIcon="trash-can-outline"
