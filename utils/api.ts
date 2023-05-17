@@ -20,14 +20,27 @@ export const API = {
       axios
         .post(`/bopool/auth/registration`, signUpForm)
         .then(({ data }) => data),
-    editInfo: (editInfoForm: EditInfoForm) =>
+    editInfo: ({
+      user_email,
+      user_nickname,
+      user_number,
+      user_pw,
+    }: EditInfoForm) =>
       axios
-        .put(`/bopool/users/my-info/${editInfoForm.user_number}`, editInfoForm)
+        .put(`/bopool/users/my-info/${user_number}`, {
+          user_pw,
+          user_nickname,
+          user_email,
+        })
         .then(({ data }) => data),
   },
   dashboard: {},
   closet: {},
   cloth: {
+    like: (item_number: string) =>
+      axios
+        .patch(`/bopool/closets/info/detail/bookmark/${item_number}`)
+        .then(({ data }) => data),
     edit: ({ cloth_sequence, data }: { cloth_sequence: string; data: any }) =>
       axios
         .put(`/bopool/closets/info/detail/${cloth_sequence}`, data)
