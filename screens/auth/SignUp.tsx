@@ -32,7 +32,7 @@ export interface SignUpForm {
 }
 
 const SignUp: React.FC<Props> = ({
-  navigation: { goBack, navigate },
+  navigation: { goBack },
   route: { params: informationFormData },
 }) => {
   const { control, handleSubmit } = useForm<GetOtpForm>();

@@ -43,7 +43,7 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
   const { mutateAsync: editAsync, isLoading: editLoading } = useMutation(
     (form: any) => API.cloth.edit(form)
   );
-  const { mutateAsync: removeAsync, isLoading: removeLoading } = useMutation(
+  const { mutateAsync: removeAsync } = useMutation(
     (form: { item_number: string; table_name: string }) =>
       API.cloth.remove(form)
   );
@@ -98,15 +98,22 @@ const ClothInfoPage: React.FC<ClothInfoPageProps> = ({
       <Appbar.Header elevated>
         <Appbar.BackAction onPress={goBack} />
         <Appbar.Content title={title} />
+        {/* <Appbar.Action icon="star-outline" onPress={openDialog} /> */}
+        {/* <Appbar.Action icon="trash-can-outline" onPress={openDialog} /> */}
         <Menu
           visible={showMenu}
           onDismiss={closeMenu}
           anchor={<Appbar.Action icon={MORE_ICON} onPress={openMenu} />}
         >
           <Menu.Item
+            leadingIcon="star-outline"
+            onPress={() => {}}
+            title="즐겨 찾는 옷 추가"
+          />
+          <Menu.Item
             leadingIcon="trash-can-outline"
             onPress={openDialog}
-            title="옷 삭제하기"
+            title="옷 삭제"
           />
         </Menu>
       </Appbar.Header>
