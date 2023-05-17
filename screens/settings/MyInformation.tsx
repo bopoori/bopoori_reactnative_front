@@ -31,6 +31,9 @@ const MyInformation = () => {
   const editInfo = async (form: Form) => {
     const editInfoForm = { ...form, user_number: loginData?.user_uid! };
     const result = await mutateAsync(editInfoForm);
+    if (result.success) {
+      return Alert.alert("정보가 성공적으로 변경되었습니다.");
+    }
     Alert.alert(result.message);
   };
 
@@ -63,7 +66,7 @@ const MyInformation = () => {
         </InputWrapper>
         <InputWrapper>
           <ControlledInput
-            name="user_password"
+            name="user_pw"
             label="비밀번호"
             secureTextEntry
             control={control}
