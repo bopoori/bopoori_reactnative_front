@@ -35,7 +35,7 @@ const ControlledInput: React.FC<InputProps> = ({
     formState: { errors },
   } = useController({
     control,
-    defaultValue: "",
+    defaultValue,
     name,
     rules: {
       required: `${label} 항목을 작성해주세요.`,
