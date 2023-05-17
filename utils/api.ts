@@ -3,6 +3,7 @@ import { SignInForm } from "../screens/auth/SignIn";
 import { SignUpForm } from "../screens/auth/SignUp";
 import { API_BASE_URL } from "@env";
 import { EditInfoForm } from "../screens/settings/MyInformation";
+import { LikeForm } from "../screens/stacks/ClothInfoPage";
 
 axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.common["Content-Type"] =
@@ -37,9 +38,9 @@ export const API = {
   dashboard: {},
   closet: {},
   cloth: {
-    like: (item_number: string) =>
+    like: ({ item_number, flag }: LikeForm) =>
       axios
-        .patch(`/bopool/closets/info/detail/bookmark/${item_number}`)
+        .patch(`/bopool/closets/info/detail/bookmark/${item_number}`, { flag })
         .then(({ data }) => data),
     edit: ({ cloth_sequence, data }: { cloth_sequence: string; data: any }) =>
       axios
