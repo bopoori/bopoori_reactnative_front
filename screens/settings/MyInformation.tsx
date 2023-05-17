@@ -1,14 +1,16 @@
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
 import { Appbar, Button } from "react-native-paper";
 import styled from "styled-components/native";
 import ControlledInput from "../../components/ControlledInput";
 import { useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { loginDataAtom } from "../../utils/recoil";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API } from "../../utils/api";
 import { Alert } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootParamList, StackParamList } from "../../navigation/Root";
 
 interface Form {
   user_nickname: string;
@@ -20,18 +22,27 @@ export interface EditInfoForm extends Form {
   user_number: number;
 }
 
-const MyInformation = () => {
-  const loginData = useRecoilValue(loginDataAtom);
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<StackParamList, "MyInformation">,
+  NativeStackScreenProps<RootParamList>
+>;
+
+const MyInformation: React.FC<Props> = ({ navigation: { goBack } }) => {
+  const [loginData, setLoginData] = useRecoilState(loginDataAtom);
   const { mutateAsync } = useMutation({
     mutationFn: (editInfoForm: EditInfoForm) => API.auth.editInfo(editInfoForm),
   });
-  const { goBack } = useNavigation();
   const { control, handleSubmit } = useForm<Form>();
+
+  const queryClient = useQueryClient();
 
   const editInfo = async (form: Form) => {
     const editInfoForm = { ...form, user_number: loginData?.user_uid! };
     const result = await mutateAsync(editInfoForm);
     if (result.success) {
+      setLoginData(result.data);
+      await queryClient.invalidateQueries(["dashboard"]);
+      goBack();
       return Alert.alert("정보가 성공적으로 변경되었습니다.");
     }
     Alert.alert(result.message);
