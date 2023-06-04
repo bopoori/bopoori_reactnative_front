@@ -3,12 +3,22 @@ const en = {
     ok: "OK!",
     cancel: "Cancel",
     back: "Back",
+    logOut: "Log Out",
+  },
+  navigator: {
+    homeTab: "Home",
+    closetTab: "Closet",
+    tipsTab: "Tips",
+    myTab: "My",
   },
   welcomeScreen: {
     postscript:
       "psst  — This probably isn't what your app looks like. (Unless your designer handed you these screens, and in that case, ship it!)",
-    readyForLaunch: "Your app, almost ready for launch!",
+    welcome: "Your app, almost ready for launch!",
     exciting: "(ohh, this is exciting!)",
+    signUp: "Sign up for new",
+    kakaoLogin: "Sign in with kakao account",
+    emailLogin: "Sign in with email",
   },
   loginScreen: {
     signIn: "Sign In",

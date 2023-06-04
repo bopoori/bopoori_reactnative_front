@@ -5,21 +5,31 @@ const ko: Translations = {
     ok: "확인!",
     cancel: "취소",
     back: "뒤로",
+    logOut: "로그아웃",
+  },
+  navigator: {
+    homeTab: "홈",
+    closetTab: "옷장",
+    tipsTab: "팁",
+    myTab: "마이",
   },
   welcomeScreen: {
     postscript:
-      "잠깐! — 지금 보시는 것은 아마도 당신의 앱의 모양새가 아닐겁니다. (디자이너분이 이렇게 건내주셨다면 모를까요. 만약에 그렇다면, 이대로 가져갑시다!) ",
-    readyForLaunch: "출시 준비가 거의 끝난 나만의 앱!",
-    exciting: "(오, 이거 신나는데요!)",
+      "보풀은 여러분의 옷장 속 아이템들을 앱으로 옮겨서 한 눈에 볼 수 있도록 도와주고, 미리 입을 옷들의 조합을 정해두거나 옷장 속에서 빛을 보지 못한 옷들을 더 자주 입을 수 있게 도와주는 앱이에요. 이제 시작해볼까요?",
+    welcome: "환영해요!",
+    exciting:
+      "반가워요 저는 보푸리에요. 아래의 방법 중 하나를 통해 보풀 서비스를 이용하실 수 있답니다!",
+    signUp: "새롭게 회원 가입하기",
+    kakaoLogin: "카카오 계정으로 로그인 하기",
+    emailLogin: "이메일로 로그인 하기",
   },
   loginScreen: {
     signIn: "로그인",
-    enterDetails:
-      "일급비밀 정보를 해제하기 위해 상세 정보를 입력하세요. 무엇이 기다리고 있는지 절대 모를겁니다. 혹은 알 수 있을지도 모르겠군요. 엄청 복잡한 뭔가는 아닙니다.",
+    enterDetails: "보풀 서비스를 이용하기 위해서 먼저 로그인이 필요해요.",
     emailFieldLabel: "이메일",
     passwordFieldLabel: "비밀번호",
     emailFieldPlaceholder: "이메일을 입력하세요",
-    passwordFieldPlaceholder: "엄청 비밀스러운 암호를 입력하세요",
+    passwordFieldPlaceholder: "비밀번호를 입력하세요",
     tapToSignIn: "눌러서 로그인 하기!",
     hint: "힌트: 가장 좋아하는 암호와 아무런 아무 이메일 주소나 사용할 수 있어요 :)",
   },
