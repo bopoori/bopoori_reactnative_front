@@ -21,6 +21,8 @@ import { ErrorBoundary } from "./screens/ErrorScreen/ErrorBoundary"
 import * as storage from "./utils/storage"
 import { customFontsToLoad } from "./theme"
 import { setupReactotron } from "./services/reactotron"
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import * as Font from "expo-font"
 import Config from "./config"
 
 // Set up Reactotron, which is a free desktop app for inspecting and debugging
@@ -48,14 +50,14 @@ const config = {
       path: "",
     },
     Welcome: "welcome",
-    Demo: {
+    Bopool: {
       screens: {
-        DemoShowroom: {
-          path: "showroom/:queryIndex?/:itemIndex?",
+        Home: {
+          path: "home",
         },
-        DemoDebug: "debug",
-        DemoPodcastList: "podcast",
-        DemoCommunity: "community",
+        Closet: "closet",
+        Tips: "tips",
+        My: "my",
       },
     },
   },
@@ -80,6 +82,7 @@ function App(props: AppProps) {
 
   const { rehydrated } = useInitialRootStore(() => {
     // This runs after the root store has been initialized and rehydrated.
+    Font.loadAsync(MaterialCommunityIcons.font)
 
     // If your initialization scripts run very fast, it's good to show the splash screen for just a bit longer to prevent flicker.
     // Slightly delaying splash screen hiding for better UX; can be customized or removed as needed,
