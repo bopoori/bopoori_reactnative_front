@@ -1,6 +1,6 @@
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { loginDataAtom } from "../../utils/recoil";
 import { StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, List, Text } from "react-native-paper";
@@ -51,15 +51,15 @@ type MyProps = CompositeScreenProps<
 >;
 
 const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
-  const setLoginData = useSetRecoilState(loginDataAtom);
+  const [loginData, setLoginData] = useRecoilState(loginDataAtom);
   const onLogoutPress = () => {
     AsyncStorage.clear();
     setLoginData(null);
   };
-
   const onMenuPress = (navigateTo: StackNavigators) => {
     navigate("Stack", { screen: navigateTo });
   };
+  console.log(loginData?.reg_date);
   return (
     <>
       <Appbar.Header>
@@ -67,7 +67,7 @@ const My: React.FC<MyProps> = ({ navigation: { navigate } }) => {
       </Appbar.Header>
       <Card style={styles.card}>
         <Card.Title
-          title="슈퍼힙찔이"
+          title={loginData?.user_nickname}
           subtitle="보풀과 함께한지 129일째"
           titleStyle={{ ...styles.whiteText, fontWeight: "700" }}
           subtitleStyle={styles.whiteText}
