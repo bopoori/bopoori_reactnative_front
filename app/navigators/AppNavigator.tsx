@@ -8,6 +8,7 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
+  NavigatorScreenParams,
 } from "@react-navigation/native"
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack"
 import { observer } from "mobx-react-lite"
@@ -17,6 +18,8 @@ import * as Screens from "app/screens"
 import Config from "../config"
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities"
 import { colors } from "app/theme"
+import { useStores } from "app/models"
+import { BopoolNavigator, BopoolTabParamList } from "./BopoolNavigator"
 
 /**
  * This type allows TypeScript to know what routes are defined in this navigator
@@ -33,8 +36,8 @@ import { colors } from "app/theme"
  */
 export type AppStackParamList = {
   Welcome: undefined
-  // 🔥 Your screens go here
-  // IGNITE_GENERATOR_ANCHOR_APP_STACK_PARAM_LIST
+  Login: undefined
+  Bopool: NavigatorScreenParams<BopoolTabParamList>
 }
 
 /**
@@ -52,13 +55,21 @@ export type AppStackScreenProps<T extends keyof AppStackParamList> = NativeStack
 const Stack = createNativeStackNavigator<AppStackParamList>()
 
 const AppStack = observer(function AppStack() {
+  const {
+    authenticationStore: { isAuthenticated },
+  } = useStores()
   return (
-    <Stack.Navigator
-      screenOptions={{ headerShown: false, navigationBarColor: colors.background }}
-    >
+    <Stack.Navigator screenOptions={{ headerShown: false, navigationBarColor: colors.background }}>
+      {isAuthenticated ? (
+        <>
+          <Stack.Screen name="Bopool" component={BopoolNavigator} />
+        </>
+      ) : (
+        <>
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
-      {/** 🔥 Your screens go here */}
-      {/* IGNITE_GENERATOR_ANCHOR_APP_STACK_SCREENS */}
+          <Stack.Screen name="Login" component={Screens.LoginScreen} />
+        </>
+      )}
     </Stack.Navigator>
   )
 })
