@@ -1,6 +1,6 @@
 {
   "name": "Bopoori",
-  "displayName": "Bopoori",
+  "displayName": "Bopool",
   "expo": {
     "name": "Bopoori",
     "slug": "Bopoori",
@@ -17,9 +17,7 @@
       "fallbackToCacheTimeout": 0
     },
     "jsEngine": "hermes",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "android": {
       "icon": "./assets/images/app-icon-android-legacy.png",
       "package": "com.bopoori",
@@ -52,8 +50,6 @@
         "backgroundColor": "#191015"
       }
     },
-    "plugins": [
-      "expo-localization"
-    ]
+    "plugins": ["expo-localization"]
   }
 }
