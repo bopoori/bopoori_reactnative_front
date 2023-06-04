@@ -1,5 +1,5 @@
 import React from "react";
-import { CompositeScreenProps, useNavigation } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { Appbar, Button } from "react-native-paper";
 import styled from "styled-components/native";
 import ControlledInput from "../../components/ControlledInput";
