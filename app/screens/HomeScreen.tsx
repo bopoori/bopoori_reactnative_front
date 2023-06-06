@@ -28,7 +28,7 @@ export const HomeScreen = () => {
           />
         }
       />
-      <Card style={$clothSummary} heading="내 옷장 속 들여다보기" />
+      {/* <Card style={$clothSummary} heading="내 옷장 속 들여다보기" /> */}
       <Card
         style={$clothSummary}
         heading="즐겨 찾는 옷"
