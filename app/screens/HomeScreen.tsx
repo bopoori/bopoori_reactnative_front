@@ -46,7 +46,7 @@ export const HomeScreen = () => {
                   />
                 }
                 text="파란 티셔츠"
-                bottomSeparator
+                bottomSeparator={i !== 2}
               />
             ))}
           </>
@@ -69,7 +69,7 @@ export const HomeScreen = () => {
                   />
                 }
                 text="카고 팬츠"
-                bottomSeparator
+                bottomSeparator={i !== 2}
               />
             ))}
           </>
@@ -91,22 +91,23 @@ const $avatar: ViewStyle = {
   justifyContent: "center",
   alignItems: "center",
   borderRadius: 25,
-  marginRight: 14,
+  marginRight: spacing.md,
 }
 const $welcomeBox: ViewStyle = {
   flexDirection: "row",
-  marginTop: 20,
 }
 const $welcomeTexts: ViewStyle = {
   justifyContent: "center",
 }
 const $nextClothBox: ViewStyle = {
-  padding: 20,
-  marginTop: 20,
+  marginTop: spacing.lg,
+  padding: spacing.lg,
 }
 const $nextClothImage: ImageStyle = {
   width: 50,
   height: 50,
+  marginTop: "auto",
+  marginBottom: "auto",
 }
 const $clothSummary: ViewStyle = {
   ...$nextClothBox,
@@ -117,5 +118,5 @@ const $listImage: ImageStyle = {
   borderRadius: 4,
   marginTop: "auto",
   marginBottom: "auto",
-  marginRight: 10,
+  marginRight: spacing.sm,
 }
