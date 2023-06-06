@@ -268,6 +268,7 @@ const $containerPresets = {
   default: [
     $containerBase,
     {
+      padding: spacing.lg,
       backgroundColor: colors.palette.neutral100,
       borderColor: colors.palette.neutral300,
     },
@@ -280,7 +281,7 @@ const $containerPresets = {
 }
 
 const $headingPresets: Record<Presets, TextStyle> = {
-  default: {},
+  default: { fontSize: 18, paddingBottom: spacing.xs },
   reversed: { color: colors.palette.neutral100 },
 }
 
