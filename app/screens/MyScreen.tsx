@@ -1,16 +1,18 @@
 import React from "react"
-import { Button, Screen, Text } from "app/components"
+import { Button, ListItem, Screen } from "app/components"
 import { useStores } from "app/models"
 import { spacing } from "app/theme"
-import { View, ViewStyle } from "react-native"
+import { TextStyle, View, ViewStyle } from "react-native"
 
 export const MyScreen = () => {
   const {
     authenticationStore: { logout },
   } = useStores()
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$container}>
-      <Text tx="navigator.myTab" size="lg" />
+    <Screen preset="scroll" safeAreaEdges={["top", "bottom"]} contentContainerStyle={$container}>
+      {["알람", "내 정보", "옷장 설정", "개인정보처리방침", "이용약관"].map((i) => (
+        <ListItem key={i} text={i} textStyle={$listItem} />
+      ))}
       <View style={$buttonContainer}>
         <Button style={$button} tx="common.logOut" onPress={logout} />
       </View>
@@ -24,8 +26,13 @@ const $container: ViewStyle = {
   paddingHorizontal: spacing.lg,
 }
 const $buttonContainer: ViewStyle = {
+  marginTop: spacing.lg,
   marginBottom: spacing.md,
 }
 const $button: ViewStyle = {
   marginBottom: spacing.xs,
+}
+const $listItem: TextStyle = {
+  fontWeight: "bold",
+  fontSize: 20,
 }
