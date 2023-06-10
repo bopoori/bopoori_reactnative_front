@@ -38,6 +38,9 @@ export type AppStackParamList = {
   Welcome: undefined
   Login: undefined
   Bopool: NavigatorScreenParams<BopoolTabParamList>
+  AuthInfoScreen: undefined
+  BodyInfoScreen: undefined
+  OtpScreen: undefined
 }
 
 /**
@@ -66,8 +69,12 @@ const AppStack = observer(function AppStack() {
         </>
       ) : (
         <>
+          {/* <Stack.Screen name="SignUp" component={SignUpNavigator} /> */}
           <Stack.Screen name="Welcome" component={Screens.WelcomeScreen} />
           <Stack.Screen name="Login" component={Screens.LoginScreen} />
+          <Stack.Screen name="AuthInfoScreen" component={Screens.AuthInfoScreen} />
+          <Stack.Screen name="BodyInfoScreen" component={Screens.BodyInfoScreen} />
+          <Stack.Screen name="OtpScreen" component={Screens.OtpScreen} />
         </>
       )}
     </Stack.Navigator>
