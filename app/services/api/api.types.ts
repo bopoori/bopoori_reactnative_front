@@ -34,6 +34,16 @@ export interface ApiFeedResponse {
   items: EpisodeItem[]
 }
 
+export interface GetOtpResponse {
+  success: boolean
+  otp: string
+}
+
+export interface LoginForm {
+  user_id: string
+  user_pw: string
+}
+
 /**
  * The options used to configure apisauce.
  */

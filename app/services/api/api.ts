@@ -1,18 +1,7 @@
-/**
- * This Api class lets you define an API endpoint and methods to request
- * data and process it.
- *
- * See the [Backend API Integration](https://github.com/infinitered/ignite/blob/master/docs/Backend-API-Integration.md)
- * documentation for more details.
- */
-import {
-  ApisauceInstance,
-  create,
-} from "apisauce"
+import { ApiResponse, ApisauceInstance, create } from "apisauce"
 import Config from "../../config"
-import type {
-  ApiConfig,
-} from "./api.types"
+import type { ApiConfig, GetOtpResponse } from "./api.types"
+import { GeneralApiProblem, getGeneralApiProblem } from "./apiProblem"
 
 /**
  * Configuring the apisauce instance.
@@ -44,6 +33,27 @@ export class Api {
     })
   }
 
+  async getOtp(userId: string): Promise<{ kind: "ok"; otp: string } | GeneralApiProblem> {
+    const response: ApiResponse<GetOtpResponse> = await this.apisauce.post(
+      `/bopool/auth/registration/mail`,
+      { userId },
+    )
+
+    if (!response.ok) {
+      const problem = getGeneralApiProblem(response)
+      if (problem) return problem
+    }
+
+    try {
+      const otp = response.data.otp
+      return { kind: "ok", otp }
+    } catch (e) {
+      if (__DEV__) {
+        console.tron.error(`Bad data: ${e.message}\n${response.data}`, e.stack)
+      }
+      return { kind: "bad-data" }
+    }
+  }
 }
 
 // Singleton instance of the API for convenience
