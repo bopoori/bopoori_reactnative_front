@@ -33,6 +33,22 @@ const ko: Translations = {
     tapToSignIn: "눌러서 로그인 하기!",
     hint: "힌트: 가장 좋아하는 암호와 아무런 아무 이메일 주소나 사용할 수 있어요 :)",
   },
+  signUpScreen: {
+    genderFieldLabel: "성별",
+    genderFieldPlaceholder: "성별을 입력하세요",
+    weightFieldLabel: "몸무게",
+    weightFieldPlaceholder: "몸무게를 입력하세요",
+    heightFieldLabel: "키",
+    heightFieldPlaceholder: "신장 정보를 입력하세요",
+    nicknameFieldLabel: "닉네임",
+    nicknameFieldPlaceholder: "닉네임을 입력하세요",
+    emailFieldLabel: "이메일",
+    emailFieldPlaceholder: "이메일을 입력하세요",
+    passwordFieldLabel: "비밀번호",
+    passwordFieldPlaceholder: "비밀번호를 입력하세요",
+    otpFieldLabel: "인증번호",
+    otpFieldPlaceholder: "인증번호를 입력하세요",
+  },
   errorScreen: {
     title: "뭔가 잘못되었습니다!",
     friendlySubtitle:

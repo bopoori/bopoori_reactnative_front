@@ -31,6 +31,22 @@ const en = {
     tapToSignIn: "Tap to sign in!",
     hint: "Hint: you can use any email address and your favorite password :)",
   },
+  signUpScreen: {
+    genderFieldLabel: "Gender",
+    genderFieldPlaceholder: "Enter your current weight",
+    weightFieldLabel: "Weight",
+    weightFieldPlaceholder: "Enter your current weight",
+    heightFieldLabel: "Height",
+    heightFieldPlaceholder: "Enter your current height",
+    nicknameFieldLabel: "Nickname",
+    nicknameFieldPlaceholder: "Enter your nickname",
+    emailFieldLabel: "Email",
+    emailFieldPlaceholder: "Enter your email",
+    passwordFieldLabel: "Password",
+    passwordFieldPlaceholder: "Enter your password",
+    otpFieldLabel: "OTP",
+    otpFieldPlaceholder: "Enter your otp",
+  },
   errorScreen: {
     title: "Something went wrong!",
     friendlySubtitle:
