@@ -101,16 +101,16 @@ const $welcomeTexts: ViewStyle = {
 }
 const $nextClothBox: ViewStyle = {
   marginTop: spacing.lg,
-  padding: spacing.lg,
+  paddingHorizontal: spacing.lg,
 }
 const $nextClothImage: ImageStyle = {
-  width: 50,
-  height: 50,
+  width: 40,
+  height: 40,
   marginTop: "auto",
   marginBottom: "auto",
 }
 const $clothSummary: ViewStyle = {
-  ...$nextClothBox,
+  marginTop: spacing.md,
 }
 const $listImage: ImageStyle = {
   width: 35,

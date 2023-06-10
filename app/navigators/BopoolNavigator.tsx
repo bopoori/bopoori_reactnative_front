@@ -1,6 +1,6 @@
+import React from "react"
 import { BottomTabScreenProps, createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import { CompositeScreenProps } from "@react-navigation/native"
-import React from "react"
 import { TextStyle, ViewStyle } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
@@ -16,12 +16,7 @@ export type BopoolTabParamList = {
   My: undefined
 }
 
-/**
- * Helper for automatically generating navigation prop types for each route.
- *
- * More info: https://reactnavigation.org/docs/typescript/#organizing-types
- */
-export type DemoTabScreenProps<T extends keyof BopoolTabParamList> = CompositeScreenProps<
+export type BopoolTabScreenProps<T extends keyof BopoolTabParamList> = CompositeScreenProps<
   BottomTabScreenProps<BopoolTabParamList, T>,
   AppStackScreenProps<keyof AppStackParamList>
 >
@@ -122,5 +117,3 @@ const $tabBarLabel: TextStyle = {
   lineHeight: 16,
   flex: 1,
 }
-
-// @demo remove-file
