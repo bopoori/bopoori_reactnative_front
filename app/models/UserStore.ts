@@ -96,11 +96,13 @@ export const UserStoreModel = types
       store.otp = value
     },
     cleanUp() {
+      store.userNickname = ""
+      store.userId = ""
+      store.userPw = ""
       store.userGender = ""
       store.userHeight = ""
-      store.userId = ""
-      store.userNickname = ""
       store.userWeight = ""
+      store.otp = ""
     },
   }))
 

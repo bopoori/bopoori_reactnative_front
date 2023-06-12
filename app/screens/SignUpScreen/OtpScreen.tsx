@@ -16,12 +16,13 @@ export const OtpScreen: React.FC<OtpScreenProps> = observer(function OtpScreen(_
     if (error) return
 
     setAuthToken(String(Date.now()))
+    cleanUp()
     console.log("sign up")
   }
 
   const {
     authenticationStore: { setAuthToken },
-    userStore: { otp, setOtp },
+    userStore: { otp, setOtp, cleanUp },
   } = useStores()
   const error = otp.length !== 6 ? "error" : ""
 
